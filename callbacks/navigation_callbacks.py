@@ -8,7 +8,7 @@ def display_page(app):
         [Input('url', 'pathname')]
     )
     def callback(pathname='/'):
-        if pathname == '/jdcreation':
+        if pathname == '/jdpreparation':
             return jd_creation_page()
         else:
             return home_page()

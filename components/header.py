@@ -25,7 +25,7 @@ def header():
                     dbc.Nav(
                         [
                             dbc.NavItem(dbc.NavLink("Home", href="/")),
-                            dbc.NavItem(dbc.NavLink("JD Preparation", href="/jdcreation")),
+                            dbc.NavItem(dbc.NavLink("JD Preparation", href="/jdpreparation")),
                             dbc.NavItem(dbc.NavLink("JS Screening", href="/screening")),
                         ],
                         className="ms-auto",

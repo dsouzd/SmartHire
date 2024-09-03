@@ -1,4 +1,4 @@
-from dash import html
+from dash import html, dcc
 import dash_bootstrap_components as dbc
 
 def home():
@@ -19,16 +19,22 @@ def home():
                         [
                             dbc.CardBody(
                                 [
-                                    html.H5("Job Postings", className="card-title"),
+                                    html.H5("JD Preparation", className="card-title text-center"),
                                     html.P(
-                                        "Create and manage job postings with ease.",
-                                        className="card-text"
+                                        "Create and manage job descriptions with ease.",
+                                        className="card-text text-center"
                                     ),
-                                    html.Div(className="recruitment-icon posting-icon", style={"fontSize": "50px"}),
-                                ]
-                            )
+                                    html.Div(
+                                        html.I(className="fas fa-file-alt", style={"fontSize": "50px"}),
+                                        className="d-flex justify-content-center mb-3"
+                                    ),
+                                    dbc.Button("Get Started", href="/jdpreparation", className="btn btn-primary d-block mx-auto")
+                                ],
+                                className="d-flex flex-column align-items-center justify-content-center text-center h-100"
+                            ),
                         ],
-                        className="mb-4 shadow"
+                        className="mb-4 shadow h-100",
+                        style={"height": "350px"}
                     ),
                     width=4
                 ),
@@ -37,16 +43,22 @@ def home():
                         [
                             dbc.CardBody(
                                 [
-                                    html.H5("Candidate Management", className="card-title"),
+                                    html.H5("JD Screening", className="card-title text-center"),
                                     html.P(
-                                        "Organize and review candidate applications efficiently.",
-                                        className="card-text"
+                                        "Screen and filter job descriptions efficiently.",
+                                        className="card-text text-center"
                                     ),
-                                    html.Div(className="recruitment-icon management-icon", style={"fontSize": "50px"}),
-                                ]
-                            )
+                                    html.Div(
+                                        html.I(className="fas fa-filter", style={"fontSize": "50px"}),
+                                        className="d-flex justify-content-center mb-3"
+                                    ),
+                                    dbc.Button("Get Started", href="/jdscreening", className="btn btn-primary d-block mx-auto")
+                                ],
+                                className="d-flex flex-column align-items-center justify-content-center text-center h-100"
+                            ),
                         ],
-                        className="mb-4 shadow"
+                        className="mb-4 shadow h-100",
+                        style={"height": "350px"}
                     ),
                     width=4
                 ),
@@ -55,16 +67,22 @@ def home():
                         [
                             dbc.CardBody(
                                 [
-                                    html.H5("Interviews", className="card-title"),
+                                    html.H5("Generate Questions", className="card-title text-center"),
                                     html.P(
-                                        "Schedule and conduct interviews seamlessly.",
-                                        className="card-text"
+                                        "Generate interview questions based on job descriptions.",
+                                        className="card-text text-center"
                                     ),
-                                    html.Div(className="recruitment-icon interview-icon", style={"fontSize": "50px"}),
-                                ]
-                            )
+                                    html.Div(
+                                        html.I(className="fas fa-question", style={"fontSize": "50px"}),
+                                        className="d-flex justify-content-center mb-3"
+                                    ),
+                                    dbc.Button("Get Started", href="/generatequestions", className="btn btn-primary d-block mx-auto")
+                                ],
+                                className="d-flex flex-column align-items-center justify-content-center text-center h-100"
+                            ),
                         ],
-                        className="mb-4 shadow"
+                        className="mb-4 shadow h-100",
+                        style={"height": "350px"}
                     ),
                     width=4
                 ),

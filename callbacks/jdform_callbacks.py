@@ -1,28 +1,62 @@
-from dash import Output, Input, State, html
+from dash.dependencies import Input, Output, State
 import requests
-import base64
+from dash import html
 
-def generate_pdf(app):
+def generate_jd(app):
     @app.callback(
-        Output('output-state', 'children'),
-        Output('pdf-container', 'children'),
+        [Output('output-state', 'children'),
+         Output('download-link', 'children')],
         [Input('submit-button', 'n_clicks')],
-        [State('skill-input', 'value'), State('experience-input', 'value')]
+        [State('job-title-input', 'value'), 
+         State('experience-input', 'value'), 
+         State('skill-input', 'value')]
     )
-    def update_output(n_clicks, skill, experience):
-        print(n_clicks, skill, experience)
+    def update_output(n_clicks, job_title, experience, skills):
         if n_clicks:
-            api_url = 'https://localhose:4758/api/generate-pdf'
-            payload = {'skill': skill, 'experience': experience}
-            response = requests.get(api_url, json=payload)
-            print(f"API Response Status Code: {response.status_code}")
-
-            if response.status_code == 200:
-                pdf_content = response.content
-                pdf_base64 = base64.b64encode(pdf_content).decode('utf-8')
-                pdf_src = f'data:application/pdf;base64,{pdf_base64}'
-                pdf_display = html.Iframe(src=pdf_src, style={'width': '100%', 'height': '600px'})
-                return 'Form submitted successfully!', pdf_display
-            else:
-                return 'Failed to generate PDF. Please try again.', ''
+            api_url = 'http://localhost:8000/generate-jd'
+            payload = {'job_title': job_title, 'experience': experience, 'skills': skills}
+            
+            try:
+                response = requests.post(api_url, json=payload)
+                response.raise_for_status()  # Raise an error if the request fails
+                
+                response_data = response.json()
+                if response_data['message'] == 'Success':
+                    filename = response_data['file_name']
+                    download_link = html.A(
+                        html.I(className='fas fa-download me-2'),
+                        href=f'http://localhost:8000/download?f_name={filename}&f_type=pdf',
+                        target='_blank',
+                        className='btn btn-primary btn-sm'
+                    )
+                    return (
+                        html.Div(
+                            [
+                                html.Div(
+                                    f'File generated successfully: {filename}',
+                                    className='alert alert-success d-flex align-items-center'
+                                ),
+                                download_link
+                            ],
+                            className='d-flex justify-content-between align-items-center'
+                        ),
+                        ''
+                    )
+                else:
+                    return (
+                        html.Div(
+                            'Failed to generate file. Please try again.',
+                            className='alert alert-danger'
+                        ),
+                        ''
+                    )
+            except requests.RequestException as e:
+                return (
+                    html.Div(
+                        f'Error: {str(e)}',
+                        className='alert alert-danger'
+                    ),
+                    ''
+                )
+        
         return '', ''
