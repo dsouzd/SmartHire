@@ -9,9 +9,12 @@ def header():
                 dbc.Row(
                     [
                         dbc.Col(
-                            html.Img(
-                                src='/assets/img/logo_msg_global_RGB.svg',
-                                height='50px'
+                            dbc.NavLink(
+                                html.Img(
+                                    src='/assets/img/logo_msg_global_RGB.svg',
+                                    height='50px'
+                                ),
+                                href='/',  # Link to the home page
                             ),
                             width='auto'
                         ),
@@ -26,7 +29,7 @@ def header():
                         [
                             dbc.NavItem(dbc.NavLink("Home", href="/")),
                             dbc.NavItem(dbc.NavLink("JD Preparation", href="/jdpreparation")),
-                            dbc.NavItem(dbc.NavLink("JS Screening", href="/screening")),
+                            dbc.NavItem(dbc.NavLink("JD Screening", href="/screening")),
                         ],
                         className="ms-auto",
                         navbar=True,
