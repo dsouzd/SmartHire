@@ -13,6 +13,9 @@ app = dash.Dash(__name__,
                                       "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"], 
                 suppress_callback_exceptions=True)
 # Define the app layout
+
+app.title = 'Smart Hire' 
+
 app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
     header(), 
