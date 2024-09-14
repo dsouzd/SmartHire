@@ -20,8 +20,10 @@ def header():
                     align="center",
                     className="g-0", 
                 ),
-                # Toggler for small screens
-                dbc.NavbarToggler(id="navbar-toggler"),
+                # Toggler for small screens with Font Awesome icons
+                dbc.NavbarToggler(id="navbar-toggler", className="navbar-toggler-custom", children=[
+                    html.I(className="fas fa-bars fa-lg", style={"color": "#a01441"})
+                ]),
                 
                 # Collapsible navbar links
                 dbc.Collapse(
@@ -46,5 +48,3 @@ def header():
         className="header-navbar"
     )
     return html.Div(header, className="header")
-
-

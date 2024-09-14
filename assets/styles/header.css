@@ -48,7 +48,6 @@
   @media (max-width: 767px) {
     .navbar-collapse {
       background-color: white;
-      position: absolute;
       top: 60px;
       width: 100%;
       left: 0;
@@ -61,5 +60,12 @@
       width: 100%;
       display: block;
     }
+    .navbar-toggler-custom {
+        border: none; 
+        background: none; 
+        outline: none; 
+        box-shadow: none;  
+    }
+    
   }
 }
