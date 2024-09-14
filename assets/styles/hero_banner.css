@@ -1,0 +1,65 @@
+/* Full banner background image */
+.banner-container {
+    background-image: url('/assets/img/hero_banner_res.webp'); /* Path to your background image */
+    background-size: auto;
+    background-position: center;
+    height: 500px; /* Adjust the height as necessary */
+    color: #ffffff;
+    border-radius:  0px 0px 10px 10px;
+    position: relative;
+    padding: 0; /* Remove padding for full coverage */
+    display: flex;
+    align-items: center;
+}
+
+.banner-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.3); 
+    border-radius:  0px 0px 10px 10px;
+}
+
+/* Left side text styling, ensuring it always stays aligned to the left */
+.banner-text {
+    padding-left: 30px; /* Add padding for text spacing */
+    color: white;
+    z-index: 1; /* Ensure the text appears above the background overlay */
+    text-align: left; /* Ensure text stays aligned left */
+}
+
+.banner-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.banner-subtitle {
+    font-size: 1.25rem;
+    margin-bottom: 20px;
+    color: white;
+}
+
+/* Text background styling */
+.bg-text {
+    background-color: rgba(160, 20, 65, 0.85); /* #a01441 with opacity */
+    border-radius: 12px; /* Rounded corners */
+    padding: 15px 20px; /* Padding around the text */
+    display: inline-block; /* Ensure the background fits the text size */
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .banner-text {
+        text-align: left; /* Keep text aligned left even on smaller screens */
+        padding-left: 15px; /* Adjust padding for smaller screens */
+    }
+    .banner-container {
+        height: 500px; /* Let the height adjust on smaller screens */
+        padding: 20px; /* Add some padding for smaller screens */
+    }
+}

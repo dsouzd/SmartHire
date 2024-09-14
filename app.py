@@ -2,6 +2,7 @@ import dash
 from dash import dcc, html
 import dash_bootstrap_components as dbc
 
+from callbacks.components_callbacks import header_callback
 from callbacks.navigation_callbacks import display_page
 from callbacks.jdform_callbacks import generate_jd
 from components.header import header
@@ -20,12 +21,12 @@ app.title = 'Smart Hire'
 
 app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
-    header(app), 
+    header(), 
     html.Div(id='page-content'),
     # footer()
 ])
 
-
+header_callback(app)
 generate_jd(app)
 display_page(app)
 

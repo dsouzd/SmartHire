@@ -13,7 +13,7 @@ def generate_jd(app):
     )
     def update_output(n_clicks, job_title, experience, skills):
         if n_clicks:
-            api_url = 'http://localhost:8000/generate-jd'
+            api_url = 'http://localhost:8000/generatejd'
             payload = {'job_title': job_title, 'experience': experience, 'skills': skills}
             
             try:

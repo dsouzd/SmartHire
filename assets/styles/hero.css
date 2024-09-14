@@ -1,0 +1,83 @@
+/* Hero container - responsive flexbox */
+.hero-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #F3F4F6;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex-wrap: wrap; /* Makes content wrap on smaller screens */
+}
+
+/* Hero content */
+.hero-content {
+    flex-basis: 50%;  /* Takes up 50% of the container width */
+    margin: 10px;
+}
+
+/* Hero animation (image section) */
+.hero-animation {
+    flex-basis: 40%;  /* Takes up 40% of the container width */
+    text-align: center;
+    margin: 10px;
+}
+
+/* Responsive styling for image */
+.hero-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    height: 350px;
+}
+
+/* Hero title */
+.hero-title {
+    font-size: 2.5em;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Hero description */
+.hero-description {
+    font-size: 1.2em;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+/* Responsive list items */
+.hero-list li {
+    margin-bottom: 10px;
+    font-size: 1em;
+    color: #555;
+}
+
+/* Media query to adjust layout on mobile screens */
+@media (max-width: 768px) {
+    .hero-container {
+        flex-direction: column;  /* Stack content vertically on small screens */
+        text-align: center;
+    }
+
+    .hero-image {
+        height: auto;
+    }
+    
+    .hero-content, .hero-animation {
+        flex-basis: 100%;  /* Full width for each section on small screens */
+        margin-bottom: 20px;
+    }
+
+    .hero-title {
+        font-size: 2em;
+    }
+
+    .hero-description {
+        font-size: 1.1em;
+    }
+    
+    .hero-list li {
+        font-size: 0.9em;
+    }
+}
