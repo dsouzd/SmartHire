@@ -10,7 +10,9 @@ from components.footer import footer
 # Initialize the Dash app
 app = dash.Dash(__name__, 
                 external_stylesheets=[dbc.themes.BOOTSTRAP, 
-                                      "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"], 
+                                      "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css",
+                                      "https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+                                      ], 
                 suppress_callback_exceptions=True)
 # Define the app layout
 
@@ -18,7 +20,7 @@ app.title = 'Smart Hire'
 
 app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
-    header(), 
+    header(app), 
     html.Div(id='page-content'),
     # footer()
 ])
