@@ -3,7 +3,7 @@ from dash import html
 
 def hero_banner():
     """Creates a banner with a full background image, rounded text background, and padding."""
-    banner = dbc.Container(
+    hero_banner = dbc.Container(
         [
             dbc.Row(
                 [
@@ -26,4 +26,4 @@ def hero_banner():
         fluid=True,
         className="banner-container",
     )
-    return banner
+    return html.Div(hero_banner, className="hero-banner")

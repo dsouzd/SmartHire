@@ -1,8 +1,8 @@
 # hero.py
 from dash import html
 
-def hero():
-    return html.Div(
+def hero_text():
+    hero_text = html.Div(
         className="hero-container",
         children=[
             html.Div(
@@ -34,3 +34,4 @@ def hero():
             ),
         ]
     )
+    return html.Div(hero_text, className="hero-text")

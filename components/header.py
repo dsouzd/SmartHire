@@ -3,7 +3,7 @@ from dash import dcc, html
 import dash_bootstrap_components as dbc
 
 def header():
-    return dbc.Navbar(
+    header =  dbc.Navbar(
         dbc.Container(
             [
                 # Logo Section
@@ -45,5 +45,6 @@ def header():
         dark=False,    
         className="header-navbar"
     )
+    return html.Div(header, className="header")
 
 

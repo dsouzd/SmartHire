@@ -1,4 +1,5 @@
 /* Hero container - responsive flexbox */
+.hero-text{
 .hero-container {
     display: flex;
     flex-direction: row;
@@ -80,4 +81,5 @@
     .hero-list li {
         font-size: 0.9em;
     }
+}
 }
