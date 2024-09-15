@@ -1,5 +1,5 @@
 from dash import Output, Input
-from pages.pages import home_page, jd_creation_page
+from pages.pages import home_page, jd_creation_page, jd_screning_page
 
 def display_page(app):
     @app.callback(
@@ -9,5 +9,7 @@ def display_page(app):
     def callback(pathname='/'):
         if pathname == '/jdpreparation':
             return jd_creation_page()
+        elif pathname == '/screening':
+            return jd_screning_page()
         else:
             return home_page()

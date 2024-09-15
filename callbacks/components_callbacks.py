@@ -3,7 +3,6 @@ from dash import html, Input, Output, State, callback_context
 import requests
 
 def header_callback(app):
-    # First callback: Navbar toggle logic
     @app.callback(
         [Output("navbar-collapse", "is_open"),
          Output("navbar-toggler", "children")],
