@@ -28,8 +28,7 @@ def hero_text():
             html.Div(
                 className="hero-animation",
                 children=[
-                    # Use your image here
-                    html.Img(src="/assets/img/hero_banner.webp", className="hero-image"),
+                    html.Img(src="/assets/img/banner.webp", className="hero-image"),
                 ]
             ),
         ]

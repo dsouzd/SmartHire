@@ -7,17 +7,16 @@ def hero_banner():
         [
             dbc.Row(
                 [
-                    # Left side text content
                     dbc.Col(
                         html.Div(
                             [
                                 html.H1("Smart Hiring Automation", className="banner-title"),
                                 html.P("Streamlining your hiring process with smart automation.", className="banner-subtitle"),
                             ],
-                            className="banner-text bg-text",  # Add background color class
+                            className="banner-text bg-text", 
                         ),
                         md=6,
-                        className="d-flex align-items-center"  # Vertically align content
+                        className="d-flex align-items-center" 
                     ),
                 ],
                 align="center",

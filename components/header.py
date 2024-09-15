@@ -6,7 +6,7 @@ def header():
     header =  dbc.Navbar(
         dbc.Container(
             [
-                # Logo Section
+                dcc.Location(id='url', refresh=False),
                 dbc.Row(
                     [
                         dbc.Col(
@@ -20,12 +20,9 @@ def header():
                     align="center",
                     className="g-0", 
                 ),
-                # Toggler for small screens with Font Awesome icons
                 dbc.NavbarToggler(id="navbar-toggler", className="navbar-toggler-custom", children=[
                     html.I(className="fas fa-bars fa-lg", style={"color": "#a01441"})
                 ]),
-                
-                # Collapsible navbar links
                 dbc.Collapse(
                     dbc.Nav(
                         [
@@ -34,11 +31,11 @@ def header():
                             dbc.NavLink("JD Screening", href="/screening", className="nav-link"),
                             dbc.NavLink("Question Generation", href="/qfg", className="nav-link"),
                         ],
-                        className="ml-auto",  # Align links to the right on large screens
+                        className="ml-auto",  
                         navbar=True
                     ),
                     id="navbar-collapse",
-                    is_open=False,  # Ensure the navbar is collapsed by default
+                    is_open=False, 
                     navbar=True,
                 ),
             ]

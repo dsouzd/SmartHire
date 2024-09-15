@@ -6,7 +6,6 @@ from callbacks.components_callbacks import header_callback
 from callbacks.navigation_callbacks import display_page
 from callbacks.jdform_callbacks import generate_jd
 from components.header import header
-from components.footer import footer
 
 # Initialize the Dash app
 app = dash.Dash(__name__, 
