@@ -1,11 +1,10 @@
-/* Background color for the entire form container */
-#form-container {
+/* #form-container {
     background-color: #4d4d4d;
     padding: 50px;
     height: 100vh;
 }
 
-/* Styles for the form card */
+
 .form-card {
     background-color: #333;
     padding: 20px;
@@ -13,24 +12,23 @@
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Label text style */
+
 .label-text {
     color: white;
 }
 
-/* Form title styling */
+
 .form-title {
     color: white;
     text-align: center;
 }
 
-/* Input field group styling */
+
 .input-group-addon {
     background-color: #555;
     color: white;
 }
 
-/* Submit button full width and styled with #a01441 */
 .w-100 {
     width: 100%;
     background-color: #a01441;
@@ -40,16 +38,15 @@
 }
 
 .w-100:hover {
-    background-color: #b32a4d;  /* Lighter shade of the primary color for hover */
+    background-color: #b32a4d; 
 }
 
-/* Dropdown background color and text color */
+
 select, .dropdown-menu {
     background-color: #fff;
     color: #4d4d4d;
 }
 
-/* Placeholder text color */
 ::placeholder {
     color: #aaa;
-}
+} */

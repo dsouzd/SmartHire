@@ -4,7 +4,7 @@ from pages.pages import home_page, jd_creation_page
 def display_page(app):
     @app.callback(
         Output('page-content', 'children'),
-        [Input('url', 'pathname')]
+        [Input('route-url', 'pathname')]
     )
     def callback(pathname='/'):
         if pathname == '/jdpreparation':

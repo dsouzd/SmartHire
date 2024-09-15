@@ -19,7 +19,7 @@ app = dash.Dash(__name__,
 app.title = 'Smart Hire' 
 
 app.layout = html.Div([
-    dcc.Location(id='url', refresh=False),
+    dcc.Location(id='route-url', refresh=False),
     header(), 
     html.Div(id='page-content'),
     # footer()
