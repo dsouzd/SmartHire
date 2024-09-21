@@ -1,128 +1,189 @@
-import dash
-from dash.dependencies import Input, Output, State
 import requests
-from dash import html, dcc, callback_context, no_update
-
+from dash.dependencies import Input, Output, State
+from dash import html, dcc, no_update, callback_context
+import dash_bootstrap_components as dbc
 
 def generate_jd(app):
-    # Load Business Units
+    # Load Business Units (on page load)
     @app.callback(
         Output('business-unit-dropdown', 'options'),
         Input('submit-btn', 'n_clicks')
     )
     def load_business_units(n_clicks):
         url = 'https://smarthire-e32r.onrender.com/businessunits'
+        try:
+            response = requests.get(url, timeout=10)
+            if response.status_code == 200:
+                business_units = response.json()['data']
+                return [{'label': unit['name'], 'value': unit['id']} for unit in business_units]
+            return []
+        except requests.exceptions.RequestException:
+            return []
 
-        response = requests.get(url)
-        if response.status_code == 200:
-            business_units = response.json()['data']
-            return [{'label': unit['name'], 'value': unit['id']} for unit in business_units]
-
-        return []
-
-    # Combined callback to handle generate JD, view, save, and reset actions
+    # Handle JD submission, save/discard actions, and resetting the form
     @app.callback(
         [
-            Output('response-section', 'children'),  # To show messages like JD saved/discarded
-            Output('save-btn', 'style'),             # Control the visibility of the Save button
-            Output('reset-btn', 'style'),            # Control the visibility of the Discard button
-            Output('job-title-input', 'value'),      # To reset the Job Title field
-            Output('experience-input', 'value'),     # To reset the Experience field
-            Output('skills-input', 'value'),         # To reset the Skills field
-            Output('business-unit-dropdown', 'value'),  # To reset the Business Unit dropdown
-            Output('toast-message', 'is_open'),      # Open/Close the toast notification
-            Output('toast-message', 'children'),     # Set the content of the toast message
+            Output('response-section', 'children'),
+            Output('save-btn', 'style'),
+            Output('reset-btn', 'style'),
+            Output('toast-message', 'is_open'),
+            Output('toast-message', 'children'),
+            Output('toast-message', 'header'),
+            Output('business-unit-dropdown', 'disabled'),
+            Output('job-title-input', 'disabled'),
+            Output('experience-input', 'disabled'),
+            Output('skills-input', 'disabled'),
+            Output('business-unit-dropdown', 'value'),
+            Output('job-title-input', 'value'),
+            Output('experience-input', 'value'),
+            Output('skills-input', 'value'),
         ],
         [
             Input('submit-btn', 'n_clicks'),
             Input('save-btn', 'n_clicks'),
-            Input('reset-btn', 'n_clicks'),
-            Input('response-section', 'children'),  # Dynamically added content for view icon
+            Input('reset-btn', 'n_clicks')
         ],
         [
             State('job-title-input', 'value'),
             State('experience-input', 'value'),
             State('skills-input', 'value'),
-            State('business-unit-dropdown', 'value'),
+            State('business-unit-dropdown', 'value')
         ]
     )
-    def handle_actions(submit_clicks, save_clicks, reset_clicks, response_section, job_title, experience, skills, bu_id):
+    def handle_form_actions(submit_clicks, save_clicks, reset_clicks, job_title, experience, skills, bu_id):
         ctx = callback_context
-        if not ctx.triggered:
-            return no_update, {'display': 'none'}, {'display': 'none'}, no_update, no_update, no_update, no_update, False, ""
 
-        # Get the ID of the triggering input
+        # No action triggered
+        if not ctx.triggered:
+            return no_update, {'display': 'none'}, {'display': 'none'}, False, "", "", False, False, False, False, no_update, no_update, no_update, no_update
+
         trigger_id = ctx.triggered[0]['prop_id'].split('.')[0]
 
-        # Handle Submit action (generate JD)
+        # Handle Save Button Click (reset form and clear View/Download section)
+        if trigger_id == 'save-btn' and save_clicks:
+            file_name = f"{job_title}.docx"
+            url = f'https://smarthire-e32r.onrender.com/savejd?bu_id={bu_id}&jd_title={file_name}&is_save=true'
+            try:
+                response = requests.get(url)
+                if response.status_code == 200:
+                    return (
+                        "", {'display': 'none'}, {'display': 'none'},  # Clear the response section and hide buttons
+                        True, "Job description saved successfully!", "Success",  # Toast notification
+                        False, False, False, False,  # Re-enable inputs
+                        None, "", "", ""  # Clear form fields
+                    )
+                else:
+                    return (
+                        no_update, no_update, no_update,
+                        True, "Failed to save the job description.", "Error",
+                        False, False, False, False,
+                        no_update, no_update, no_update, no_update
+                    )
+            except requests.exceptions.RequestException as e:
+                return (
+                    no_update, no_update, no_update,
+                    True, f"Error: {str(e)}", "Request Failed",
+                    False, False, False, False,
+                    no_update, no_update, no_update, no_update
+                )
+
+        # Handle Discard Button Click (reset form and clear View/Download section)
+        if trigger_id == 'reset-btn' and reset_clicks:
+            file_name = f"{job_title}.docx"
+            url = f'https://smarthire-e32r.onrender.com/savejd?bu_id={bu_id}&jd_title={file_name}&is_save=false'
+            try:
+                response = requests.get(url)
+                if response.status_code == 200:
+                    return (
+                        "", {'display': 'none'}, {'display': 'none'},  # Clear the response section and hide buttons
+                        True, "Job description discarded successfully!", "Success",  # Toast notification
+                        False, False, False, False,  # Re-enable inputs
+                        None, "", "", ""  # Clear form fields
+                    )
+                else:
+                    return (
+                        no_update, no_update, no_update,
+                        True, "Failed to discard the job description.", "Error",
+                        False, False, False, False,
+                        no_update, no_update, no_update, no_update
+                    )
+            except requests.exceptions.RequestException as e:
+                return (
+                    no_update, no_update, no_update,
+                    True, f"Error: {str(e)}", "Request Failed",
+                    False, False, False, False,
+                    no_update, no_update, no_update, no_update
+                )
+
+        # Handle JD Generation (Submit Button)
         if trigger_id == 'submit-btn' and submit_clicks:
+            if not job_title or not experience or not skills or not bu_id:
+                # Handle empty field errors
+                return (
+                    no_update, no_update, no_update,
+                    True, "Please fill in all the fields!", "Error",
+                    False, False, False, False,
+                    no_update, no_update, no_update, no_update
+                )
+
+            # Disable input fields and show loading animation during processing
+            return_list = [no_update] * 13
+            return_list[6:] = [True] * 4  # Disable input fields during loading
+
+            # Proceed with the API call after disabling inputs
             payload = {
                 "job_title": job_title,
                 "experience": experience,
                 "skills": skills,
                 "bu_id": bu_id
             }
-            url = "https://smarthire-e32r.onrender.com/generatejd"
-            response = requests.post(url, json=payload)
 
-            if response.status_code == 200:
-                file_name = response.json().get('file_name')
-                # Display file name with icons for viewing and downloading
-                return (
-                    html.Div([
+            try:
+                url = "https://smarthire-e32r.onrender.com/generatejd"
+                response = requests.post(url, json=payload, timeout=30)
+
+                if response.status_code == 200:
+                    file_name = response.json().get('file_name')
+                    response_content = html.Div([
                         html.P(f"Generated File: {file_name}.docx"),
-                        html.I(className="fas fa-eye fa-lg", id='view-file-icon', style={'cursor': 'pointer', 'marginRight': '10px'}, n_clicks=0),
-                        html.I(className="fas fa-download fa-lg", id='download-file-icon', style={'cursor': 'pointer', 'marginRight': '10px'})
-                    ]),
-                    {'display': 'inline-block'},  # Show the save button
-                    {'display': 'inline-block'},  # Show the discard button
-                    no_update, no_update, no_update, no_update,  # Don't reset form inputs on submit
-                    False, "",  # No toast on submit
-                )
-            return "Error generating JD. Please enter Fill the form", {'display': 'none'}, {'display': 'none'}, no_update, no_update, no_update, no_update, False, ""
+                        dcc.Link(
+                            "View as PDF",
+                            href=f"https://smarthire-e32r.onrender.com/download?f_name={file_name}&f_type=pdf&bu_id={bu_id}",
+                            target="_blank",
+                            className="btn btn-info",
+                            style={'marginRight': '10px'}
+                        ),
+                        dcc.Link(
+                            "Download DOCX",
+                            href=f"https://smarthire-e32r.onrender.com/download?f_name={file_name}&f_type=docx&bu_id={bu_id}",
+                            target="_blank",
+                            className="btn btn-primary"
+                        )
+                    ])
 
-        # Handle Save action
-        elif trigger_id == 'save-btn' and save_clicks:
-            children_list = response_section['props']['children']
-            file_name_section = children_list[0]['props']['children']
-            file_name = file_name_section.split(": ")[1]
-            url = f'https://smarthire-e32r.onrender.com/savejd?bu_id={bu_id}&jd_title={file_name}&is_save=true'
-            response = requests.get(url)
-            if response.status_code == 200:
-                # Reset the form inputs and show success message in toast
+                    # Show save and discard buttons after JD generation
+                    return (
+                        response_content,
+                        {'display': 'inline-block'},  # Show save button
+                        {'display': 'inline-block'},  # Show discard button
+                        True, "Job description generated successfully!", "Success",
+                        False, False, False, False,  # Re-enable inputs after success
+                        no_update, no_update, no_update, no_update  # Keep form values intact after JD generation
+                    )
+                else:
+                    # Handle non-200 responses
+                    return (
+                        no_update, no_update, no_update,
+                        True, "Failed to generate JD. Please try again.", "Error",
+                        False, False, False, False,
+                        no_update, no_update, no_update, no_update
+                    )
+
+            except requests.exceptions.RequestException as e:
+                # Handle request timeout or connection issues
                 return (
-                    "",  # Clear the response section
-                    {'display': 'none'},  # Hide the save button
-                    {'display': 'none'},  # Hide the discard button
-                    "",  # Clear Job Title field
-                    "",  # Clear Experience field
-                    "",  # Clear Skills field
-                    None,  # Clear Business Unit dropdown
-                    True,  # Show toast message
-                    "JD saved successfully!"  # Toast message content
+                    no_update, no_update, no_update,
+                    True, f"Error: {str(e)}", "Request Failed",
+                    False, False, False, False,
+                    no_update, no_update, no_update, no_update
                 )
-            return "Error saving JD.", no_update, no_update, no_update, no_update, no_update, no_update, False, ""
-
-        # Handle Reset (Discard) action
-        elif trigger_id == 'reset-btn' and reset_clicks:
-            children_list = response_section['props']['children']
-            file_name_section = children_list[0]['props']['children']
-            file_name = file_name_section.split(": ")[1]
-            url = f'https://smarthire-e32r.onrender.com/savejd?bu_id={bu_id}&jd_title={file_name}&is_save=false'
-            response = requests.get(url)
-            if response.status_code == 200:
-                # Reset the form inputs and show discard message in toast
-                return (
-                    "",  # Clear the response section
-                    {'display': 'none'},  # Hide the save button
-                    {'display': 'none'},  # Hide the discard button
-                    "",  # Clear Job Title field
-                    "",  # Clear Experience field
-                    "",  # Clear Skills field
-                    None,  # Clear Business Unit dropdown
-                    True,  # Show toast message
-                    "JD discarded successfully!"  # Toast message content
-                )
-            return "Error discarding JD.", no_update, no_update, no_update, no_update, no_update, no_update, False, ""
-
-        return no_update, no_update, no_update, no_update, no_update, no_update, no_update, False, ""
