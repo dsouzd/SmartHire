@@ -3,9 +3,9 @@ from dash import dcc, html
 import dash_bootstrap_components as dbc
 
 from callbacks.components_callbacks import header_callback
-from callbacks.js_screenig_callback import register_callbacks
+from callbacks.jf_creation_callbacks import generate_jd
+from callbacks.js_screenig_callback import jd_screening
 from callbacks.navigation_callbacks import display_page
-from callbacks.jdform_callbacks import generate_jd
 from components.header import header
 
 # Initialize the Dash app
@@ -29,7 +29,7 @@ app.layout = html.Div([
 header_callback(app)
 generate_jd(app)
 display_page(app)
-register_callbacks(app)
+jd_screening(app)
 
 
 if __name__ == '__main__':

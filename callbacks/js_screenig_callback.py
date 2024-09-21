@@ -5,7 +5,7 @@ from dash import html, dcc
 from dash.dependencies import Input, Output, State, ALL
 import dash
 
-def register_callbacks(app):
+def jd_screening(app):
     # Callback to fetch and display Business Units
     @app.callback(
         Output('bu-dropdown', 'options'),

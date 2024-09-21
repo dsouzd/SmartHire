@@ -1,6 +1,6 @@
 from dash import dcc, html
 
-def layout():
+def jd_screnning():
     return html.Div(
         className="main-container",
         children=[
