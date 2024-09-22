@@ -35,7 +35,9 @@ def jd_screening_callbacks(app):
             Output('jd-screen-upload-data', 'filename'),
             Output('jd-screen-upload-data', 'contents'),
             Output('toast-container', 'children'),  # Toast for feedback
-            Output('jd-screen-loading-spinner', 'children')  # For loader
+            Output('jd-screen-loading-spinner', 'children'),  # For loader
+            Output('jd-screen-business-unit-dropdown', 'value'),  # Added Business Unit Dropdown Reset
+            Output('jd-screen-jd-dropdown', 'value')  # Added Job Description Dropdown Reset
         ],
         [
             Input('jd-screen-business-unit-dropdown', 'value'),
@@ -68,14 +70,14 @@ def jd_screening_callbacks(app):
                 response = requests.get(url)
                 if response.status_code == 200:
                     jd_options = [{'label': jd['title'], 'value': jd['jd_id']} for jd in response.json()['data']]
-                    return jd_options, False, True, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update
+                    return jd_options, False, True, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update
             except requests.exceptions.RequestException:
                 toast_message.append(dbc.Toast("Failed to load Business Units", header="Error", duration=4000, is_open=True))
-                return [], True, True, no_update, no_update, no_update, no_update, no_update, no_update, toast_message, no_update
+                return [], True, True, no_update, no_update, no_update, no_update, no_update, no_update, toast_message, no_update, no_update, no_update 
 
         # Enable Job Description and Upload when JD is selected
         if trigger_id == 'jd-screen-jd-dropdown' and jd_id:
-            return no_update, no_update, False, no_update, {'display': 'inline-block'}, {'display': 'inline-block'}, no_update, no_update, no_update, no_update, no_update
+            return no_update, no_update, False, no_update, {'display': 'inline-block'}, {'display': 'inline-block'}, no_update, no_update, no_update, no_update, no_update, no_update, no_update
 
         # Reset the entire form, including Business Unit, JD, and uploaded files
         if trigger_id == 'jd-screen-reset-btn' and reset_clicks:
@@ -92,6 +94,8 @@ def jd_screening_callbacks(app):
                 [],  # Clear contents
                 toast_message,  # Show toast message
                 no_update,  # No change to spinner
+                None,
+                None
             )
 
         # Handle file uploads (triggered by jd-screen-upload-data)
@@ -149,10 +153,10 @@ def jd_screening_callbacks(app):
 
             # If new files are uploaded, update the file list and show the submit button
             if new_files_uploaded:
-                return no_update, no_update, False, current_file_list, {'display': 'inline-block'}, no_update, no_update, filenames, contents, toast_message, no_update
+                return no_update, no_update, False, current_file_list, {'display': 'inline-block'}, no_update, no_update, filenames, contents, toast_message, no_update, no_update, no_update
 
             # If duplicates are found and no new files, don't show the submit button
-            return no_update, no_update, False, current_file_list, no_update, no_update, no_update, filenames, contents, toast_message, no_update
+            return no_update, no_update, False, current_file_list, no_update, no_update, no_update, filenames, contents, toast_message, no_update, no_update, no_update
 
         # Handle form submission (triggered by jd-screen-submit-btn)
         if trigger_id == 'jd-screen-submit-btn' and submit_clicks and (current_file_list or filenames):
@@ -188,11 +192,11 @@ def jd_screening_callbacks(app):
                     toast_message.append(dbc.Toast("Submission successful", header="Success", duration=3000, is_open=True))
 
                     # Keep the files in the list and allow new files to be appended later
-                    return no_update, no_update, False, current_file_list, {'display': 'none'}, {'display': 'inline-block'}, table, [], [], toast_message, None
+                    return no_update, no_update, False, current_file_list, {'display': 'none'}, {'display': 'inline-block'}, table, [], [], toast_message, None, no_update, no_update
 
             except requests.exceptions.RequestException as e:
                 toast_message.append(dbc.Toast(f"Error: {str(e)}", header="Error", duration=4000, is_open=True))
-                return no_update, no_update, no_update, no_update, no_update, no_update, f"Error: {str(e)}", no_update, no_update, toast_message, None
+                return no_update, no_update, no_update, no_update, no_update, no_update, f"Error: {str(e)}", no_update, no_update, toast_message, None, no_update, no_update
 
         # Handle file removal
         if trigger_id and trigger_id.startswith('{"index":'):
@@ -211,8 +215,8 @@ def jd_screening_callbacks(app):
                         html.Button(html.I(className="fas fa-trash"), id={'type': 'remove-file-btn', 'index': filename}, n_clicks=0, className="ml-3 btn-icon")
                     ]) for filename, content in zip(new_filenames, new_contents)
                 ]
-                return no_update, no_update, False, file_list, no_update, no_update, no_update, new_filenames, new_contents, no_update, no_update
+                return no_update, no_update, False, file_list, no_update, no_update, no_update, new_filenames, new_contents, no_update, no_update, no_update, no_update
             except json.JSONDecodeError:
-                return no_update, no_update, no_update, no_update, no_update, no_update, no_update, state_filenames, state_contents, no_update
+                return no_update, no_update, no_update, no_update, no_update, no_update, no_update, state_filenames, state_contents, no_update, no_update, no_update
 
-        return no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update
+        return no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update
