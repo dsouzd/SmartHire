@@ -2,7 +2,7 @@ import dash_bootstrap_components as dbc
 from dash import dcc, html
 
 def jd_form():
-    return html.Div(
+    jd_form = html.Div(
         id="form-container",
         style={"backgroundColor": "#f7f7f7", "padding": "50px", "minHeight": "100vh", "backgroundImage": "url('/assets/img/banner.webp')", "backgroundSize": "cover"},
         children=[
@@ -120,3 +120,4 @@ def jd_form():
             )
         ]
     )
+    return html.Div(jd_form, className="jd-forms")

@@ -1,4 +1,8 @@
 /* General Form Container */
+
+.jd-form{
+
+
 #form-container {
     background-color: #f5f6f7;
     padding: 40px;
@@ -175,4 +179,5 @@
 /* Button Transition */
 button {
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
 }
