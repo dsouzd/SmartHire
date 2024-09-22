@@ -96,7 +96,10 @@ def jdscreen():
                                 ),
 
                                 # Table to display screening results
-                                html.Div(id="jd-screen-screening-results", className="mt-4")
+                                html.Div(id="jd-screen-screening-results", className="mt-4"),
+
+                                # Toast messages container
+                                html.Div(id="toast-container", className="toast-container")
                             ]),
                             className="form-card"
                         ),

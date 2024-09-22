@@ -12,12 +12,14 @@ def generate_jd(app):
     def load_business_units(n_clicks):
         url = 'https://smarthire-e32r.onrender.com/businessunits'
         try:
-            response = requests.get(url, timeout=10)
+            response = requests.get(url, timeout=500)
+            print(response)
             if response.status_code == 200:
                 business_units = response.json()['data']
                 return [{'label': unit['name'], 'value': unit['id']} for unit in business_units]
             return []
-        except requests.exceptions.RequestException:
+        except requests.exceptions.RequestException as e:
+            print(f"Error fetching business units: {e}")
             return []
 
     # Handle JD submission, save/discard actions, and resetting the form
