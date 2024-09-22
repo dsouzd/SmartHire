@@ -1,51 +1,178 @@
-.form-card {
-    background-color: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+/* General Form Container */
+#form-container {
+    background-color: #f5f6f7;
+    padding: 40px;
+    min-height: 100vh;
+    background-image: url("/assets/background-image.jpg"); /* Ensure you have the image in your assets folder */
+    background-size: cover;
+    background-position: center;
 }
 
+/* Card Style */
+.form-card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Title Styling */
+.form-title {
+    font-weight: bold;
+    font-size: 24px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Label Style */
 .label-text {
+    font-weight: 600;
+    font-size: 14px;
+    color: #444;
+}
+
+/* Input and Dropdown Styling */
+.custom-dropdown, input[type="text"] {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 10px;
+    transition: border-color 0.3s ease;
+}
+
+.custom-dropdown:focus, input[type="text"]:focus {
+    border-color: #a01441;
+    box-shadow: 0 0 5px rgba(160, 20, 65, 0.3);
+}
+
+/* Input Group */
+.input-group-addon {
+    background-color: #f1f1f1;
+    border-right: none;
+    border-radius: 6px 0 0 6px;
+}
+
+.input-group-text {
+    font-size: 16px;
     color: #333;
 }
 
-.form-title {
-    color: #a01441;
-    text-align: center;
-    font-weight: bold;
-}
-
-.input-group-addon {
-    background-color: #f1f1f1;
-    color: #a01441;
-}
-
+/* Submit Button */
 .custom-btn {
     background-color: #a01441;
     color: white;
+    font-weight: 600;
+    font-size: 16px;
     border: none;
-    transition: background-color 0.3s ease;
-}
-
-.custom-btn:hover {
-    background-color: #b32a4d;
-}
-
-.custom-dropdown {
-    background-color: white;
-    border: 1px solid #ccc;
-    color: #333;
-}
-
-.w-100 {
+    padding: 12px 20px;
+    border-radius: 6px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
     width: 100%;
 }
 
-::placeholder {
-    color: #aaa;
+.custom-btn:hover {
+    background-color: #7f1034;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.toast-message {
-    background-color: #a01441;
+/* Response Section Styling */
+#response-section {
+    font-size: 16px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.generated-file-text {
+    font-size: 14px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* View/Download Icons */
+#response-section .action-icon {
+    font-size: 28px;
+    margin: 0 10px;
+    transition: transform 0.3s ease;
+    display: inline-block;
+}
+
+#response-section .action-icon:hover {
+    transform: translateY(-2px);
+}
+
+.action-icon.text-info {
+    color: #17a2b8;
+}
+
+.action-icon.text-primary {
+    color: #007bff;
+}
+
+/* Save and Discard Buttons */
+#save-btn, #reset-btn {
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    margin: 10px 0;
+}
+
+#save-btn {
+    background-color: #28a745;
     color: white;
+    border: none;
+}
+
+#save-btn:hover {
+    background-color: #218838;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+#reset-btn {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+}
+
+#reset-btn:hover {
+    background-color: #5a6268;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Spinner Below Submit Button */
+#loading-submit {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+/* Form Focus Effects */
+.custom-dropdown:focus, input[type="text"]:focus {
+    outline: none;
+    border-color: #a01441;
+    box-shadow: 0 0 10px rgba(160, 20, 65, 0.4);
+}
+
+/* Hover Animations */
+#response-section a {
+    display: inline-block;
+    margin-right: 10px;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+#response-section a:hover {
+    transform: translateY(-2px);
+}
+
+/* Button Transition */
+button {
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }

@@ -145,22 +145,22 @@ def generate_jd(app):
                 if response.status_code == 200:
                     file_name = response.json().get('file_name')
                     response_content = html.Div([
-                        html.P(f"Generated File: {file_name}.docx"),
-                        dcc.Link(
-                            "View as PDF",
-                            href=f"https://smarthire-e32r.onrender.com/download?f_name={file_name}&f_type=pdf&bu_id={bu_id}",
-                            target="_blank",
-                            className="btn btn-info",
-                            style={'marginRight': '10px'}
-                        ),
-                        dcc.Link(
-                            "Download DOCX",
-                            href=f"https://smarthire-e32r.onrender.com/download?f_name={file_name}&f_type=docx&bu_id={bu_id}",
-                            target="_blank",
-                            className="btn btn-primary"
-                        )
+                        html.P(f"Generated File: {file_name}.docx", className="generated-file-text"),
+                        html.Div([
+                            html.A(
+                                html.I(className="fas fa-eye action-icon text-info"),  # Eye icon for view
+                                href=f"https://smarthire-e32r.onrender.com/download?f_name={file_name}&f_type=pdf&bu_id={bu_id}",
+                                target="_blank",
+                                title="View as PDF"
+                            ),
+                            html.A(
+                                html.I(className="fas fa-download action-icon text-primary"),  # Download icon
+                                href=f"https://smarthire-e32r.onrender.com/download?f_name={file_name}&f_type=docx&bu_id={bu_id}",
+                                target="_blank",
+                                title="Download DOCX"
+                            )
+                        ], style={'display': 'inline-flex', 'justify-content': 'center', 'align-items': 'center'})
                     ])
-
                     # Show save and discard buttons after JD generation
                     return (
                         response_content,

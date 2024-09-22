@@ -4,8 +4,9 @@ from dash import dcc, html
 def jd_form():
     return html.Div(
         id="form-container",
-        style={"backgroundColor": "#f7f7f7", "padding": "50px", "minHeight": "100vh"},
+        style={"backgroundColor": "#f7f7f7", "padding": "50px", "minHeight": "100vh", "backgroundImage": "url('/assets/img/banner.webp')", "backgroundSize": "cover"},
         children=[
+            dcc.Location(id="jdform-url", refresh=False),
             dbc.Container(
                 dbc.Row(
                     dbc.Col(
@@ -79,7 +80,7 @@ def jd_form():
                                                         id="loading-submit",
                                                         type="circle",
                                                         children=[
-                                                            dbc.Button("Submit", id="submit-btn", color="primary", className="custom-btn")
+                                                            dbc.Button("Submit", id="submit-btn", color="primary", className="custom-btn w-100")
                                                         ]
                                                     ),
                                                     width=12
@@ -95,8 +96,8 @@ def jd_form():
 
                                 # Save and Discard Buttons
                                 dbc.Row([
-                                    dbc.Col(dbc.Button("Save", id="save-btn", color="success", className="w-100", style={'display': 'none'}), width=6),
-                                    dbc.Col(dbc.Button("Discard", id="reset-btn", color="secondary", className="w-100", style={'display': 'none'}), width=6),
+                                    dbc.Col(dbc.Button("Save", id="save-btn", color="success", className="w-100", style={'display': 'none', 'backgroundColor': '#28a745', 'borderColor': '#28a745'}), width=6),
+                                    dbc.Col(dbc.Button("Discard", id="reset-btn", color="secondary", className="w-100", style={'display': 'none', 'backgroundColor': '#6c757d', 'borderColor': '#6c757d'}), width=6),
                                 ], className="mt-4"),
 
                                 # Toast Notification for Save/Discard
@@ -109,7 +110,8 @@ def jd_form():
                                     style={"position": "fixed", "top": 10, "right": 10, "width": 350}
                                 )
                             ]),
-                            className="form-card"
+                            className="form-card",
+                            style={"boxShadow": "0 4px 8px rgba(0,0,0,0.1)", "border": "1px solid #ddd", "borderRadius": "10px"}
                         ),
                         width=6
                     ),
