@@ -58,9 +58,9 @@ def jd_screening_callbacks(app):
         trigger_id = trigger['prop_id'].split('.')[0] if trigger else None
         toast_message = []
         loading_output = None
-    
+
         print(f"trigger id: {trigger_id}")  # Debugging: log the trigger ID
-    
+
         # Handle Business Unit Dropdown Population
         if trigger_id and 'jd-screen-business-unit-dropdown' in trigger_id and bu_id:
             url = f'https://smarthire-e32r.onrender.com/businessunits/{bu_id}/jds'
@@ -72,43 +72,62 @@ def jd_screening_callbacks(app):
             except requests.exceptions.RequestException:
                 toast_message.append(dbc.Toast("Failed to load Business Units", header="Error", duration=4000, is_open=True))
                 return [], True, True, no_update, no_update, no_update, no_update, no_update, no_update, toast_message, no_update
-    
+
+        # Enable Job Description and Upload when JD is selected
         if trigger_id == 'jd-screen-jd-dropdown' and jd_id:
             return no_update, no_update, False, no_update, {'display': 'inline-block'}, {'display': 'inline-block'}, no_update, no_update, no_update, no_update, no_update
-    
+
+        # Reset the entire form, including Business Unit, JD, and uploaded files
         if trigger_id == 'jd-screen-reset-btn' and reset_clicks:
             toast_message.append(dbc.Toast("Form reset successfully", header="Info", duration=3000, is_open=True))
-            return [], True, True, [], {'display': 'none'}, {'display': 'none'}, "", [], [], toast_message, no_update
-    
+            return (
+                [],  # Clear BU options
+                True,  # Disable JD dropdown
+                True,  # Disable upload
+                [],  # Clear file list
+                {'display': 'none'},  # Hide submit button
+                {'display': 'none'},  # Hide reset button
+                "",  # Clear table
+                [],  # Clear filenames
+                [],  # Clear contents
+                toast_message,  # Show toast message
+                no_update,  # No change to spinner
+            )
+
         # Handle file uploads (triggered by jd-screen-upload-data)
         if trigger_id == 'jd-screen-upload-data' and filenames and contents:
             file_list = []
-    
+
             # Initialize current_file_list as an empty list if it's None (on first upload)
             if current_file_list is None or len(current_file_list) == 0:
                 print("Initializing current_file_list as an empty list")
                 current_file_list = []
-    
-            # Extract filenames from the current file list
-            existing_filenames = [f['props']['children'][0]['props']['children'] for f in current_file_list] if current_file_list else []
-    
-            # Print extracted filenames from current file list
-            print(f"Existing Filenames: {existing_filenames}")
-    
+
+            # Combine newly uploaded files and existing files for duplicate check
+            all_uploaded_filenames = [f['props']['children'][0]['props']['children'] for f in current_file_list] if current_file_list else []
+
+            # Print extracted filenames from current file list for debugging
+            print(f"Existing Filenames: {all_uploaded_filenames}")
+
+            # Track if new files are uploaded and if duplicates are found
+            duplicates_found = False
+            new_files_uploaded = False
+
             # Loop over the newly uploaded files and check for duplicates
             for filename, content in zip(filenames, contents):
                 print(f"Processing uploaded file: {filename}")
-    
-                if filename in existing_filenames:
-                    # Show a warning toast if the filename already exists (only on upload)
+
+                if filename in all_uploaded_filenames:
+                    # Show a warning toast if the filename already exists (duplicate detection)
                     print(f"Duplicate file detected: {filename}")
-                    toast_message.append(dbc.Toast(f"{filename} already exists in the list.", header="Warning", duration=3000, is_open=True))
+                    toast_message.append(dbc.Toast(f"File {filename} already exists.", header="Duplicate File", duration=3000, is_open=True))
+                    duplicates_found = True
                 else:
                     # If the file is not a duplicate, add it to the file list
                     content_type = content.split(',')[0]
                     content_string = content.split(',')[1]
                     href_value = f"{content_type};base64,{content_string}"
-    
+
                     # Append the new file to the file list
                     file_list.append(
                         html.Li([
@@ -118,19 +137,39 @@ def jd_screening_callbacks(app):
                         ])
                     )
                     print(f"Added file: {filename} to the list")
-    
-            # Return the updated file list along with the state updates
-            return no_update, no_update, False, current_file_list + file_list, no_update, no_update, no_update, filenames, contents, toast_message, no_update
-    
+                    all_uploaded_filenames.append(filename)  # Add this file to the overall list
+                    current_file_list.append(  # Append to current_file_list for future submissions
+                        html.Li([
+                            html.Span(filename),
+                            html.A(html.I(className="fas fa-download"), href=href_value, download=filename, className="ml-3 btn-icon"),
+                            html.Button(html.I(className="fas fa-trash"), id={'type': 'remove-file-btn', 'index': filename}, n_clicks=0, className="ml-3 btn-icon")
+                        ])
+                    )
+                    new_files_uploaded = True
+
+            # If new files are uploaded, update the file list and show the submit button
+            if new_files_uploaded:
+                return no_update, no_update, False, current_file_list, {'display': 'inline-block'}, no_update, no_update, filenames, contents, toast_message, no_update
+
+            # If duplicates are found and no new files, don't show the submit button
+            return no_update, no_update, False, current_file_list, no_update, no_update, no_update, filenames, contents, toast_message, no_update
+
         # Handle form submission (triggered by jd-screen-submit-btn)
-        if trigger_id == 'jd-screen-submit-btn' and submit_clicks and state_filenames and state_contents:
-            print(f"Submitting files: {state_filenames}")  # Debugging: log the files being submitted
+        if trigger_id == 'jd-screen-submit-btn' and submit_clicks and (current_file_list or filenames):
+            # Combine state_filenames with any previously uploaded files
+            combined_filenames = state_filenames if state_filenames else []
+            combined_contents = state_contents if state_contents else []
+
+            # Print filenames and contents for debugging
+            print(f"Submitting all files: {combined_filenames}") 
+
             url = f"https://smarthire-e32r.onrender.com/screenjd?jd_id={jd_id}&bu_id={bu_id}"
             loading_output = dbc.Spinner(size="md")
             try:
-                files = [('profiles', (filename, base64.b64decode(content.split(',')[1]))) for filename, content in zip(state_filenames, state_contents)]
+                # Submit all current files (both previously submitted and newly added)
+                files = [('profiles', (filename, base64.b64decode(content.split(',')[1]))) for filename, content in zip(combined_filenames, combined_contents)]
                 response = requests.post(url, files=files)
-    
+
                 if response.status_code == 200:
                     data = response.json()['data']
                     rows = []
@@ -144,14 +183,17 @@ def jd_screening_callbacks(app):
                                 dbc.Tooltip(tooltip_content, target=result['email'], placement='right')
                             ])
                         )
-    
+
                     table = dbc.Table([html.Thead(html.Tr([html.Th("Name"), html.Th("Email"), html.Th("Score")])), html.Tbody(rows)], bordered=True)
                     toast_message.append(dbc.Toast("Submission successful", header="Success", duration=3000, is_open=True))
-                    return no_update, no_update, False, [], {'display': 'none'}, {'display': 'inline-block'}, table, [], [], toast_message, None
+
+                    # Keep the files in the list and allow new files to be appended later
+                    return no_update, no_update, False, current_file_list, {'display': 'none'}, {'display': 'inline-block'}, table, [], [], toast_message, None
+
             except requests.exceptions.RequestException as e:
                 toast_message.append(dbc.Toast(f"Error: {str(e)}", header="Error", duration=4000, is_open=True))
                 return no_update, no_update, no_update, no_update, no_update, no_update, f"Error: {str(e)}", no_update, no_update, toast_message, None
-    
+
         # Handle file removal
         if trigger_id and trigger_id.startswith('{"index":'):
             try:
@@ -161,7 +203,7 @@ def jd_screening_callbacks(app):
                 remove_index = remove_trigger['index']
                 new_filenames = [f for f in state_filenames if f != remove_index]
                 new_contents = [c for f, c in zip(state_filenames, state_contents) if f != remove_index]
-    
+
                 file_list = [
                     html.Li([
                         html.Span(filename),
@@ -172,5 +214,5 @@ def jd_screening_callbacks(app):
                 return no_update, no_update, False, file_list, no_update, no_update, no_update, new_filenames, new_contents, no_update, no_update
             except json.JSONDecodeError:
                 return no_update, no_update, no_update, no_update, no_update, no_update, no_update, state_filenames, state_contents, no_update
-    
+
         return no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update
