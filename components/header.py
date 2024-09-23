@@ -29,7 +29,7 @@ def header():
                             dbc.NavLink("Home", href="/", className="nav-link"),
                             dbc.NavLink("JD Preparation", href="/jdpreparation", className="nav-link"),
                             dbc.NavLink("JD Screening", href="/screening", className="nav-link"),
-                            dbc.NavLink("Question Generation", href="/qfg", className="nav-link"),
+                            dbc.NavLink("Table", href="/jdtable", className="nav-link"),
                         ],
                         className="ml-auto",  
                         navbar=True
