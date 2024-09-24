@@ -4,7 +4,6 @@ from dash import dcc, html
 def jd_form():
     jd_form = html.Div(
         id="jd-creation-form-container",
-        style={"backgroundColor": "#f7f7f7", "padding": "50px", "minHeight": "100vh", "backgroundImage": "url('/assets/img/banner.webp')", "backgroundSize": "cover"},
         children=[
             dcc.Location(id="jd-creation-jdform-url", refresh=False),
             dbc.Container(
@@ -81,7 +80,7 @@ def jd_form():
                                                         id="jd-creation-loading-submit",
                                                         type="circle",
                                                         children=[
-                                                            dbc.Button("Submit", id="jd-creation-submit-btn", color="primary", className="custom-btn w-100")
+                                                            dbc.Button("Submit", id="jd-creation-submit-btn", className="custom-btn w-100")
                                                         ]
                                                     ),
                                                     width=12
@@ -97,8 +96,8 @@ def jd_form():
 
                                 # Save and Discard Buttons
                                 dbc.Row([
-                                    dbc.Col(dbc.Button("Save", id="jd-creation-save-btn", color="success", className="w-100", style={'display': 'none', 'backgroundColor': '#28a745', 'borderColor': '#28a745'}), width=6),
-                                    dbc.Col(dbc.Button("Discard", id="jd-creation-reset-btn", color="secondary", className="w-100", style={'display': 'none', 'backgroundColor': '#6c757d', 'borderColor': '#6c757d'}), width=6),
+                                    dbc.Col(dbc.Button("Save", id="jd-creation-save-btn", className="save-btn hide-button"), width=6),
+                                    dbc.Col(dbc.Button("Discard", id="jd-creation-reset-btn", className="reset-btn hide-button"), width=6),
                                 ], className="mt-4"),
 
                                 # Toast Notification for Save/Discard
@@ -108,11 +107,10 @@ def jd_form():
                                     is_open=False,
                                     dismissable=True,
                                     duration=4000,
-                                    style={"position": "fixed", "top": 10, "right": 10, "width": 350}
+                                    className="toast-message"
                                 )
                             ]),
-                            className="form-card",
-                            style={"boxShadow": "0 4px 8px rgba(0,0,0,0.1)", "border": "1px solid #ddd", "borderRadius": "10px"}
+                            className="form-card"
                         ),
                         width=6
                     ),
@@ -122,3 +120,5 @@ def jd_form():
         ]
     )
     return html.Div(jd_form, className="jd-forms")
+
+

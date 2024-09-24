@@ -1,38 +1,100 @@
 /* General Form Container */
-
-.jd-forms{
-
-
-#form-container {
-    background-color: #f5f6f7;
-    padding: 40px;
+.jd-forms {
     min-height: 100vh;
-    background-image: url("/assets/background-image.jpg"); /* Ensure you have the image in your assets folder */
+    justify-content: center;
+    align-items: center;
+    background-color: #e0e5ec;
     background-size: cover;
-    background-position: center;
+    background-image: url("/assets/img/form_cr.webp");
+    padding: 20px; /* Ensure space from edges */
+    box-sizing: border-box;
 }
 
-/* Card Style */
+/* Keyframes for Slide and Fade In Animation */
+@keyframes slideIn {
+    0% {
+        transform: scale(0.8) translateY(50px);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Card Style for Glassmorphism */
 .form-card {
-    background-color: white;
+    backdrop-filter: blur(10px) saturate(180%);
+    background-color: rgba(255, 255, 255, 0.45);
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: slideIn 0.7s ease-out forwards;
+    transform-origin: center;
+    box-sizing: border-box;
 }
 
-.form-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-}
-
-/* Title Styling */
 .form-title {
-    font-weight: bold;
-    font-size: 24px;
+    font-weight: 600;
+    font-size: 28px;
     color: #333;
     text-align: center;
     margin-bottom: 20px;
+}
+
+/* Adjusting the input and label layout */
+.custom-dropdown, input[type="text"] {
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 10px;
+    width: 100%;  /* Ensure inputs take full width */
+    transition: border-color 0.3s ease;
+    box-shadow: 4px 4px 12px rgba(163, 177, 198, 0.6), -4px -4px 12px rgba(255, 255, 255, 0.5);
+    background: #e0e5ec;
+    box-sizing: border-box;
+}
+
+.input-group-text {
+    font-size: 16px;
+    color: #333;
+}
+
+.input-group-addon {
+    background-color: #e0e5ec;
+    border-right: none;
+    border-radius: 6px;
+    box-shadow: 4px 4px 12px rgba(163, 177, 198, 0.6), -4px -4px 12px rgba(255, 255, 255, 0.5);
+}
+
+/* Submit Button (Neumorphic) */
+.custom-btn {
+    background-color: #a01441;
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 12px;
+    box-shadow: 4px 4px 12px rgba(163, 177, 198, 0.6), -4px -4px 12px rgba(255, 255, 255, 0.5);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Prevent Shrinking */
+.form-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+/* Responsiveness - Ensure width on mobile screens */
+@media (max-width: 768px) {
+    .form-card {
+        width: 90vw; /* Take most of the screen on smaller devices */
+    }
 }
 
 /* Label Style */
@@ -42,42 +104,9 @@
     color: #444;
 }
 
-/* Input and Dropdown Styling */
-.custom-dropdown, input[type="text"] {
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    padding: 10px;
-    transition: border-color 0.3s ease;
-}
-
 .custom-dropdown:focus, input[type="text"]:focus {
     border-color: #a01441;
-    box-shadow: 0 0 5px rgba(160, 20, 65, 0.3);
-}
-
-/* Input Group */
-.input-group-addon {
-    background-color: #f1f1f1;
-    border-right: none;
-    border-radius: 6px 0 0 6px;
-}
-
-.input-group-text {
-    font-size: 16px;
-    color: #333;
-}
-
-/* Submit Button */
-.custom-btn {
-    background-color: #a01441;
-    color: white;
-    font-weight: 600;
-    font-size: 16px;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 6px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    width: 100%;
+    box-shadow: inset 4px 4px 12px rgba(163, 177, 198, 0.6), inset -4px -4px 12px rgba(255, 255, 255, 0.5);
 }
 
 .custom-btn:hover {
@@ -86,29 +115,87 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* Response Section Styling */
-#response-section {
+/* Save and Discard Buttons (Neumorphic) */
+.save-btn, .reset-btn {
+    padding: 12px 20px;
+    border-radius: 12px;
     font-size: 16px;
-    margin-top: 20px;
-    text-align: center;
+    font-weight: 600;
+    box-shadow: 4px 4px 12px rgba(163, 177, 198, 0.6), -4px -4px 12px rgba(255, 255, 255, 0.5);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+    margin: 10px 0;
 }
 
-.generated-file-text {
-    font-size: 14px;
-    margin-bottom: 10px;
-    color: #333;
+.save-btn {
+    background-color: #007bff;
+    color: white;
 }
 
-/* View/Download Icons */
-#response-section .action-icon {
-    font-size: 28px;
-    margin: 0 10px;
-    transition: transform 0.3s ease;
+.save-btn:hover {
+    background-color: #0069d9;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.reset-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.reset-btn:hover {
+    background-color: #c82333;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Toast Notification (Glassmorphism) */
+.toast-message {
+    backdrop-filter: blur(10px) saturate(180%);
+    background-color: rgba(255, 255, 255, 0.45);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    width: 350px;
+}
+
+/* Hide and Show Button Classes */
+.hide-button {
+    display: none;
+}
+
+.show-button {
     display: inline-block;
 }
 
-#response-section .action-icon:hover {
-    transform: translateY(-2px);
+/* Response Section Styling */
+#jd-creation-response-section .generated-file-text {
+    font-size: 14px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.response-icons-wrapper {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    gap: 20px; 
+    margin-top: 10px; 
+}
+
+/* View/Download Icons */
+.response-icons-wrapper .action-icon {
+    font-size: 28px;
+    margin: 0 10px;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.response-icons-wrapper .action-icon:hover {
+    transform: scale(1.1);
 }
 
 .action-icon.text-info {
@@ -119,65 +206,39 @@
     color: #007bff;
 }
 
-/* Save and Discard Buttons */
-#save-btn, #reset-btn {
+#jd-creation-save-btn, #jd-creation-reset-btn {
+    width: 100%; 
     padding: 12px 20px;
-    border-radius: 6px;
+    border-radius: 12px;
     font-size: 16px;
     font-weight: 600;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    margin: 10px 0;
-}
-
-#save-btn {
-    background-color: #28a745;
-    color: white;
+    text-align: center; 
+    margin: 0; 
+    transition: all 0.3s ease;
     border: none;
 }
 
-#save-btn:hover {
-    background-color: #218838;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-}
-
-#reset-btn {
-    background-color: #6c757d;
+#jd-creation-save-btn {
+    background-color: #3498db;
     color: white;
-    border: none;
 }
 
-#reset-btn:hover {
-    background-color: #5a6268;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+#jd-creation-reset-btn {
+    background-color: #7f8c8d; 
+    color: white;
 }
 
-/* Spinner Below Submit Button */
-#loading-submit {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
+/* Hover Effects */
+#jd-creation-save-btn:hover {
+    background-color: #2980b9; 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); 
 }
 
-/* Form Focus Effects */
-.custom-dropdown:focus, input[type="text"]:focus {
-    outline: none;
-    border-color: #a01441;
-    box-shadow: 0 0 10px rgba(160, 20, 65, 0.4);
+#jd-creation-reset-btn:hover {
+    background-color: #95a5a6; 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); 
 }
 
-/* Hover Animations */
-#response-section a {
-    display: inline-block;
-    margin-right: 10px;
-    transition: transform 0.3s ease, color 0.3s ease;
-}
 
-#response-section a:hover {
-    transform: translateY(-2px);
-}
 
-/* Button Transition */
-button {
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-}
+
