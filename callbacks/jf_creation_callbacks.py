@@ -1,7 +1,12 @@
+import os
 import requests
 from dash.dependencies import Input, Output, State
 from dash import html, dcc, no_update, callback_context
 import dash_bootstrap_components as dbc
+from dotenv import load_dotenv
+
+load_dotenv()
+API_BASE_URL = os.getenv('API_BASE_URL')  
 
 def generate_jd(app):
     # Load Business Units (on page load)
@@ -10,7 +15,7 @@ def generate_jd(app):
         Input('jd-creation-submit-btn', 'n_clicks')
     )
     def load_business_units(n_clicks):
-        url = 'https://smarthire-e32r.onrender.com/businessunits'
+        url = f'{API_BASE_URL}/businessunits'  # Use the API_BASE_URL from env
         try:
             response = requests.get(url, timeout=500)
             print(response)
@@ -64,7 +69,7 @@ def generate_jd(app):
         # Handle Save Button Click (reset form and clear View/Download section)
         if trigger_id == 'jd-creation-save-btn' and save_clicks:
             file_name = f"{job_title}.docx"
-            url = f'https://smarthire-e32r.onrender.com/savejd?bu_id={bu_id}&jd_title={file_name}&is_save=true'
+            url = f'{API_BASE_URL}/savejd?bu_id={bu_id}&jd_title={file_name}&is_save=true'
             try:
                 response = requests.get(url)
                 if response.status_code == 200:
@@ -92,7 +97,7 @@ def generate_jd(app):
         # Handle Discard Button Click (reset form and clear View/Download section)
         if trigger_id == 'jd-creation-reset-btn' and reset_clicks:
             file_name = f"{job_title}.docx"
-            url = f'https://smarthire-e32r.onrender.com/savejd?bu_id={bu_id}&jd_title={file_name}&is_save=false'
+            url = f'{API_BASE_URL}/savejd?bu_id={bu_id}&jd_title={file_name}&is_save=false'
             try:
                 response = requests.get(url)
                 if response.status_code == 200:
@@ -141,7 +146,7 @@ def generate_jd(app):
             }
 
             try:
-                url = "https://smarthire-e32r.onrender.com/generatejd"
+                url = f'{API_BASE_URL}/generatejd'
                 response = requests.post(url, json=payload, timeout=30)
 
                 if response.status_code == 200:
@@ -151,13 +156,13 @@ def generate_jd(app):
                         html.Div([
                             html.A(
                                 html.I(className="fas fa-eye action-icon text-info"),  # Eye icon for view
-                                href=f"https://smarthire-e32r.onrender.com/download?f_name={file_name}&f_type=pdf&bu_id={bu_id}",
+                                href=f"{API_BASE_URL}/download?f_name={file_name}&f_type=pdf&bu_id={bu_id}",
                                 target="_blank",
                                 title="View as PDF"
                             ),
                             html.A(
                                 html.I(className="fas fa-download action-icon text-primary"),  # Download icon
-                                href=f"https://smarthire-e32r.onrender.com/download?f_name={file_name}&f_type=docx&bu_id={bu_id}",
+                                href=f"{API_BASE_URL}/download?f_name={file_name}&f_type=docx&bu_id={bu_id}",
                                 target="_blank",
                                 title="Download DOCX"
                             )
