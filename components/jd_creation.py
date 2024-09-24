@@ -3,10 +3,10 @@ from dash import dcc, html
 
 def jd_form():
     jd_form = html.Div(
-        id="form-container",
+        id="jd-creation-form-container",
         style={"backgroundColor": "#f7f7f7", "padding": "50px", "minHeight": "100vh", "backgroundImage": "url('/assets/img/banner.webp')", "backgroundSize": "cover"},
         children=[
-            dcc.Location(id="jdform-url", refresh=False),
+            dcc.Location(id="jd-creation-jdform-url", refresh=False),
             dbc.Container(
                 dbc.Row(
                     dbc.Col(
@@ -17,20 +17,21 @@ def jd_form():
 
                                 # Form section
                                 dcc.Loading(
-                                    id="loading-full-form",
+                                    id="jd-creation-loading-full-form",
                                     type="circle",
                                     children=[
                                         dbc.Form([
+
                                             # Business Unit Dropdown
                                             dbc.Row([
                                                 dbc.Col(dbc.Label("Business Unit", className="label-text"), width=4),
                                                 dbc.Col(
                                                     dcc.Loading(
-                                                        id="loading-business-unit",
+                                                        id="jd-creation-loading-business-unit",
                                                         type="default",
                                                         children=[
                                                             dcc.Dropdown(
-                                                                id='business-unit-dropdown',
+                                                                id='jd-creation-business-unit-dropdown',
                                                                 options=[],
                                                                 placeholder="Select a business unit",
                                                                 className="custom-dropdown"
@@ -46,7 +47,7 @@ def jd_form():
                                                 dbc.Col(
                                                     dbc.InputGroup([
                                                         dbc.InputGroupText(html.I(className="fas fa-briefcase"), className="input-group-addon"),
-                                                        dbc.Input(id="job-title-input", type="text", placeholder="Enter job title"),
+                                                        dbc.Input(id="jd-creation-job-title-input", type="text", placeholder="Enter job title"),
                                                     ]), width=8
                                                 ),
                                             ], className="mb-3"),
@@ -57,7 +58,7 @@ def jd_form():
                                                 dbc.Col(
                                                     dbc.InputGroup([
                                                         dbc.InputGroupText(html.I(className="fas fa-user-tie"), className="input-group-addon"),
-                                                        dbc.Input(id="experience-input", type="text", placeholder="Enter experience"),
+                                                        dbc.Input(id="jd-creation-experience-input", type="text", placeholder="Enter experience"),
                                                     ]), width=8
                                                 ),
                                             ], className="mb-3"),
@@ -68,7 +69,7 @@ def jd_form():
                                                 dbc.Col(
                                                     dbc.InputGroup([
                                                         dbc.InputGroupText(html.I(className="fas fa-tools"), className="input-group-addon"),
-                                                        dbc.Input(id="skills-input", type="text", placeholder="Enter required skills"),
+                                                        dbc.Input(id="jd-creation-skills-input", type="text", placeholder="Enter required skills"),
                                                     ]), width=8
                                                 ),
                                             ], className="mb-3"),
@@ -77,10 +78,10 @@ def jd_form():
                                             dbc.Row([
                                                 dbc.Col(
                                                     dcc.Loading(
-                                                        id="loading-submit",
+                                                        id="jd-creation-loading-submit",
                                                         type="circle",
                                                         children=[
-                                                            dbc.Button("Submit", id="submit-btn", color="primary", className="custom-btn w-100")
+                                                            dbc.Button("Submit", id="jd-creation-submit-btn", color="primary", className="custom-btn w-100")
                                                         ]
                                                     ),
                                                     width=12
@@ -92,17 +93,17 @@ def jd_form():
                                 ),
 
                                 # Response Section (includes View and Download)
-                                html.Div(id="response-section", className="mt-4"),
+                                html.Div(id="jd-creation-response-section", className="mt-4"),
 
                                 # Save and Discard Buttons
                                 dbc.Row([
-                                    dbc.Col(dbc.Button("Save", id="save-btn", color="success", className="w-100", style={'display': 'none', 'backgroundColor': '#28a745', 'borderColor': '#28a745'}), width=6),
-                                    dbc.Col(dbc.Button("Discard", id="reset-btn", color="secondary", className="w-100", style={'display': 'none', 'backgroundColor': '#6c757d', 'borderColor': '#6c757d'}), width=6),
+                                    dbc.Col(dbc.Button("Save", id="jd-creation-save-btn", color="success", className="w-100", style={'display': 'none', 'backgroundColor': '#28a745', 'borderColor': '#28a745'}), width=6),
+                                    dbc.Col(dbc.Button("Discard", id="jd-creation-reset-btn", color="secondary", className="w-100", style={'display': 'none', 'backgroundColor': '#6c757d', 'borderColor': '#6c757d'}), width=6),
                                 ], className="mt-4"),
 
                                 # Toast Notification for Save/Discard
                                 dbc.Toast(
-                                    id="toast-message",
+                                    id="jd-creation-toast-message",
                                     header="Notification",
                                     is_open=False,
                                     dismissable=True,

@@ -6,8 +6,8 @@ import dash_bootstrap_components as dbc
 def generate_jd(app):
     # Load Business Units (on page load)
     @app.callback(
-        Output('business-unit-dropdown', 'options'),
-        Input('submit-btn', 'n_clicks')
+        Output('jd-creation-business-unit-dropdown', 'options'),
+        Input('jd-creation-submit-btn', 'n_clicks')
     )
     def load_business_units(n_clicks):
         url = 'https://smarthire-e32r.onrender.com/businessunits'
@@ -25,31 +25,31 @@ def generate_jd(app):
     # Handle JD submission, save/discard actions, and resetting the form
     @app.callback(
         [
-            Output('response-section', 'children'),
-            Output('save-btn', 'style'),
-            Output('reset-btn', 'style'),
-            Output('toast-message', 'is_open'),
-            Output('toast-message', 'children'),
-            Output('toast-message', 'header'),
-            Output('business-unit-dropdown', 'disabled'),
-            Output('job-title-input', 'disabled'),
-            Output('experience-input', 'disabled'),
-            Output('skills-input', 'disabled'),
-            Output('business-unit-dropdown', 'value'),
-            Output('job-title-input', 'value'),
-            Output('experience-input', 'value'),
-            Output('skills-input', 'value'),
+            Output('jd-creation-response-section', 'children'),
+            Output('jd-creation-save-btn', 'style'),
+            Output('jd-creation-reset-btn', 'style'),
+            Output('jd-creation-toast-message', 'is_open'),
+            Output('jd-creation-toast-message', 'children'),
+            Output('jd-creation-toast-message', 'header'),
+            Output('jd-creation-business-unit-dropdown', 'disabled'),
+            Output('jd-creation-job-title-input', 'disabled'),
+            Output('jd-creation-experience-input', 'disabled'),
+            Output('jd-creation-skills-input', 'disabled'),
+            Output('jd-creation-business-unit-dropdown', 'value'),
+            Output('jd-creation-job-title-input', 'value'),
+            Output('jd-creation-experience-input', 'value'),
+            Output('jd-creation-skills-input', 'value'),
         ],
         [
-            Input('submit-btn', 'n_clicks'),
-            Input('save-btn', 'n_clicks'),
-            Input('reset-btn', 'n_clicks')
+            Input('jd-creation-submit-btn', 'n_clicks'),
+            Input('jd-creation-save-btn', 'n_clicks'),
+            Input('jd-creation-reset-btn', 'n_clicks')
         ],
         [
-            State('job-title-input', 'value'),
-            State('experience-input', 'value'),
-            State('skills-input', 'value'),
-            State('business-unit-dropdown', 'value')
+            State('jd-creation-job-title-input', 'value'),
+            State('jd-creation-experience-input', 'value'),
+            State('jd-creation-skills-input', 'value'),
+            State('jd-creation-business-unit-dropdown', 'value')
         ]
     )
     def handle_form_actions(submit_clicks, save_clicks, reset_clicks, job_title, experience, skills, bu_id):
@@ -62,7 +62,7 @@ def generate_jd(app):
         trigger_id = ctx.triggered[0]['prop_id'].split('.')[0]
 
         # Handle Save Button Click (reset form and clear View/Download section)
-        if trigger_id == 'save-btn' and save_clicks:
+        if trigger_id == 'jd-creation-save-btn' and save_clicks:
             file_name = f"{job_title}.docx"
             url = f'https://smarthire-e32r.onrender.com/savejd?bu_id={bu_id}&jd_title={file_name}&is_save=true'
             try:
@@ -90,7 +90,7 @@ def generate_jd(app):
                 )
 
         # Handle Discard Button Click (reset form and clear View/Download section)
-        if trigger_id == 'reset-btn' and reset_clicks:
+        if trigger_id == 'jd-creation-reset-btn' and reset_clicks:
             file_name = f"{job_title}.docx"
             url = f'https://smarthire-e32r.onrender.com/savejd?bu_id={bu_id}&jd_title={file_name}&is_save=false'
             try:
@@ -118,7 +118,7 @@ def generate_jd(app):
                 )
 
         # Handle JD Generation (Submit Button)
-        if trigger_id == 'submit-btn' and submit_clicks:
+        if trigger_id == 'jd-creation-submit-btn' and submit_clicks:
             if not job_title or not experience or not skills or not bu_id:
                 # Handle empty field errors
                 return (
