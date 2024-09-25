@@ -1,58 +1,285 @@
-.custom-dropdown {
-    border-radius: 5px;
-    padding: 5px;
-}
-
-.form-title {
-    text-align: center;
-    color: #4A4A4A;
-    font-weight: bold;
-}
-
+/* General Form Container */
 #form-container {
-    background-color: #f7f7f7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #e0e5ec;
+    background-size: cover;
+    background-image: url("/assets/img/form_cr.webp");
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
 }
 
-label {
-    font-weight: bold;
+/* Keyframes for Slide and Fade In Animation */
+@keyframes slideIn {
+    0% {
+        transform: scale(0.8) translateY(50px);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
 }
 
-.btn-icon {
-    background-color: transparent;
-    border: none;
-    padding: 0;
-    cursor: pointer;
+/* Card Style for Glassmorphism */
+#form-container .form-card {
+    width: 100%;
+    max-width: 600px;
+    backdrop-filter: blur(10px) saturate(180%);
+    background-color: rgba(255, 255, 255, 0.45);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: slideIn 0.7s ease-out forwards;
+    transform-origin: center;
+    box-sizing: border-box;
+}
+
+/* Form Title */
+#form-container .form-title {
+    font-weight: 600;
+    font-size: 28px;
+    color: #a01441;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Label Style */
+#form-container .label-text {
+    font-weight: 600;
+    font-size: 14px;
+    color: #444;
+    display: flex;
+    align-items: center; /* Vertically centers the label text */
+    height: 100%; /* Ensure the label is vertically centered */
+}
+
+/* Adjusting input and label layout */
+#form-container .custom-dropdown, 
+#form-container input[type="text"] {
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 10px;
+    width: 100%;
+    transition: border-color 0.3s ease;
+    box-shadow: 4px 4px 12px rgba(163, 177, 198, 0.6), -4px -4px 12px rgba(255, 255, 255, 0.5);
+    background: #e0e5ec;
+    box-sizing: border-box;
+}
+
+#form-container .custom-dropdown:focus, 
+#form-container input[type="text"]:focus {
+    border-color: #a01441;
+    box-shadow: inset 4px 4px 12px rgba(163, 177, 198, 0.6), inset -4px -4px 12px rgba(255, 255, 255, 0.5);
+}
+
+/* Upload Component */
+#form-container .dcc-upload {
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    border-width: 1px;
+    border-style: dashed;
+    border-color: #a01441;
+    border-radius: 12px;
+    text-align: center;
+    margin: 10px 0;
+    transition: border-color 0.3s ease;
+    box-shadow: 4px 4px 12px rgba(163, 177, 198, 0.6), -4px -4px 12px rgba(255, 255, 255, 0.5);
+    background: #e0e5ec;
+}
+
+#form-container .dcc-upload:hover {
+    border-color: #7f1034;
+}
+
+/* File List Styling */
+#form-container #jd-screen-file-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+#form-container #jd-screen-file-list li:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Slight lift on hover */
+}
+
+#form-container #jd-screen-file-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Ensures vertical alignment */
+    margin-bottom: 10px;
+    padding: 10px 15px;
+    background-color: rgba(255, 255, 255, 0.45); /* Glassmorphism background */
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle border */
+    box-shadow: 4px 4px 12px rgba(163, 177, 198, 0.6), -4px -4px 12px rgba(255, 255, 255, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#form-container .btn-icon {
+    display: inline-flex;
+    align-items: center; /* Vertical alignment for icons */
+    justify-content: center; /* Horizontal centering for icons */
+    color: #a01441;
     font-size: 18px;
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.3s ease;
+    background: none;
+    border: none;
 }
 
-.btn-icon:hover {
-    color: #007bff;
+#form-container .btn-icon:hover {
+    color: #7f1034;
+    transform: scale(1.1);
 }
 
-#save-btn, #reset-btn {
-    margin-top: 10px;
-}
-
-#screening-results {
+#form-container .table-responsive {
+    width: 100%;
+    overflow-x: auto;
     margin-top: 20px;
 }
 
-.toast-container {
+#form-container .table {
+    width: 100%;
+    margin-top: 20px;
+    background-color: rgba(255, 255, 255, 0.45); 
+    border-radius: 12px; 
+    border-collapse: collapse; 
+    box-shadow: 4px 4px 12px rgba(163, 177, 198, 0.6), -4px -4px 12px rgba(255, 255, 255, 0.5); 
+}
+
+#form-container .table th,
+#form-container .table td {
+    background-color: rgba(255, 255, 255, 0.45); 
+    padding: 10px 15px; 
+    text-align: left;
+    border: 1px solid rgba(0, 0, 0, 0.1); 
+    color: #333; 
+}
+
+#form-container .table th {
+    font-weight: 600;
+    color: #a01441; 
+}
+
+#form-container .table tr:last-child td {
+    border-bottom: none; 
+}
+
+#form-container .table tr {
+    box-shadow: 4px 4px 12px rgba(163, 177, 198, 0.6), -4px -4px 12px rgba(255, 255, 255, 0.5); 
+}
+
+#form-container .table tr:hover {
+    background-color: rgba(240, 240, 240, 0.75); 
+}
+
+/* Toast Messages */
+#form-container .toast-container {
     position: fixed;
-    top: 20px;
-    right: 20px;
+    top: 10px;
+    right: 10px;
     z-index: 9999;
 }
 
+/* Responsive */
 @media (max-width: 768px) {
-    #form-container {
-        padding: 15px;
-    }
-
-    .form-title {
-        font-size: 20px;
+    #form-container .form-card {
+        width: 90vw;
     }
 }
+
+
+#form-container .upload-container {
+    width: 100%;
+    padding: 15px; 
+    border-width: 1px;
+    border-style: dashed;
+    border-radius: 12px;
+    border-color: #a01441;
+    text-align: center;
+    margin: 10px 0;
+    background-color: rgba(255, 255, 255, 0.45);
+    transition: border-color 0.3s ease;
+    box-shadow: 4px 4px 12px rgba(163, 177, 198, 0.6), -4px -4px 12px rgba(255, 255, 255, 0.5);
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    flex-wrap: wrap; 
+    box-sizing: border-box; 
+}
+
+#form-container .upload-container:hover {
+    border-color: #7f1034;
+}
+
+
+#form-container .upload-link {
+    color: #a01441;
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: pointer;
+    display: inline-block;
+    transition: color 0.3s ease;
+}
+
+#form-container .upload-link:hover {
+    color: #7f1034;
+}
+
+
+@media (max-width: 768px) {
+    #form-container .upload-container {
+        padding: 10px; 
+    }
+
+    #form-container .upload-link {
+        font-size: 14px; 
+    }
+}
+
+/* Custom Submit Button */
+#form-container .custom-submit-btn {
+    background-color: #a01441;
+    color: white;
+    font-weight: bold;
+    border-radius: 12px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 4px 4px 12px rgba(163, 177, 198, 0.6), -4px -4px 12px rgba(255, 255, 255, 0.5);
+    border: none; 
+    outline: none; 
+}
+
+#form-container .custom-submit-btn:hover {
+    background-color: #7f1034;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Custom Reset Button */
+#form-container .custom-reset-btn {
+    background-color: #6c757d; /* Default secondary gray color */
+    color: white;
+    font-weight: bold;
+    border-radius: 12px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 4px 4px 12px rgba(163, 177, 198, 0.6), -4px -4px 12px rgba(255, 255, 255, 0.5);
+    border: none; 
+    outline: none; 
+}
+
+#form-container .custom-reset-btn:hover {
+    background-color: #5a6268;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+
+
+

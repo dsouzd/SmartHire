@@ -7,6 +7,7 @@ from callbacks.jd_table_callback import jd_table_callback
 from callbacks.jf_creation_callbacks import generate_jd
 from callbacks.js_screenig_callback import jd_screening_callbacks
 from callbacks.navigation_callbacks import display_page
+from components.footer import footer
 from components.header import header
 
 # Initialize the Dash app
@@ -24,7 +25,7 @@ app.layout = html.Div([
     dcc.Location(id='route-url', refresh=False),
     header(), 
     html.Div(id='page-content'),
-    # footer()
+    footer()
 ])
 
 header_callback(app)

@@ -46,7 +46,6 @@ def jdscreen():
                                     ),
                                 ], className="mb-3"),
 
-                                # File Upload Component
                                 dbc.Row([
                                     dbc.Col(
                                         dbc.Label("Upload Resumes", className="label-text"), width=4
@@ -56,25 +55,15 @@ def jdscreen():
                                             id='jd-screen-upload-data',
                                             children=html.Div([
                                                 'Drag and Drop or ',
-                                                html.A('Select Files')
+                                                html.A('Select Files', className="upload-link")  # Assign a class to the anchor tag
                                             ]),
-                                            style={
-                                                'width': '100%',
-                                                'height': '60px',
-                                                'lineHeight': '60px',
-                                                'borderWidth': '1px',
-                                                'borderStyle': 'dashed',
-                                                'borderRadius': '5px',
-                                                'textAlign': 'center',
-                                                'margin': '10px 0'
-                                            },
+                                            className="upload-container",  # Assign a class to the container
                                             multiple=True,
                                             disabled=True
                                         ), width=8
                                     ),
                                 ], className="mb-3"),
 
-                                # File list (View and Remove)
                                 dbc.Row([
                                     dbc.Col(
                                         html.Ul(id="jd-screen-file-list", style={'listStyleType': 'none', 'paddingLeft': '0'}), width=12
@@ -83,8 +72,8 @@ def jdscreen():
 
                                 # Submit and Reset Buttons
                                 dbc.Row([
-                                    dbc.Col(dbc.Button("Submit", id="jd-screen-submit-btn", color="success", className="w-100", style={'display': 'none'})),
-                                    dbc.Col(dbc.Button("Reset", id="jd-screen-reset-btn", color="secondary", className="w-100", style={'display': 'none'})),
+                                    dbc.Col(dbc.Button("Submit", id="jd-screen-submit-btn", className="w-100 custom-submit-btn", style={'display': 'none'})),
+                                    dbc.Col(dbc.Button("Reset", id="jd-screen-reset-btn", className="w-100 custom-reset-btn", style={'display': 'none'})),
                                 ], className="mt-4"),
 
                                 # Spinner to indicate loading (shown during API calls)

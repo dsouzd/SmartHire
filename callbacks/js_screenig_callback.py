@@ -188,11 +188,12 @@ def jd_screening_callbacks(app):
                             ])
                         )
 
-                    table = dbc.Table([html.Thead(html.Tr([html.Th("Name"), html.Th("Email"), html.Th("Score")])), html.Tbody(rows)], bordered=True)
+                    table = dbc.Table([html.Thead(html.Tr([html.Th("Name"), html.Th("Email"), html.Th("Score")])), html.Tbody(rows)], bordered=True, className="table")
+                    table_responsive = html.Div(table, className="table-responsive")
                     toast_message.append(dbc.Toast("Submission successful", header="Success", duration=3000, is_open=True))
 
                     # Keep the files in the list and allow new files to be appended later
-                    return no_update, no_update, False, current_file_list, {'display': 'none'}, {'display': 'inline-block'}, table, [], [], toast_message, None, no_update, no_update
+                    return no_update, no_update, False, current_file_list, {'display': 'none'}, {'display': 'inline-block'}, table_responsive, [], [], toast_message, None, no_update, no_update
 
             except requests.exceptions.RequestException as e:
                 toast_message.append(dbc.Toast(f"Error: {str(e)}", header="Error", duration=4000, is_open=True))
