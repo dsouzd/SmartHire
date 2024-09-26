@@ -86,7 +86,7 @@ def jdscreen():
                                         dbc.Col(
                                             dcc.Loading(
                                                 id="jd-screen-loading-spinner",
-                                                type="circle",
+                                                type="default",
                                                 children=[
                                                     html.Div(id="jd-screen-loading-placeholder")
                                                 ],

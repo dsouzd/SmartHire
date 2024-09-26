@@ -13,7 +13,7 @@ def jd_table():
                     html.H3('Select Business Unit', className='text-center mt-3'),
                     dcc.Loading(
                         id="loading-bu-dropdown",
-                        type="circle",
+                        type="default",
                         children=dcc.Dropdown(
                             id='jd-table-bu-dropdown',
                             placeholder="Select a Business Unit",
