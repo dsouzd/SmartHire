@@ -4,9 +4,11 @@ from components.hero_banner import hero_banner
 from components.jd_creation import jd_form
 from components.jd_screening import jdscreen
 from components.jd_table import jd_table
+from components.carousel import carousel
 
 def home_page():
     return html.Div([
+        #carousel(),
         hero_banner(),
         hero_text(),
     ])
