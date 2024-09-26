@@ -80,16 +80,21 @@ def jdscreen():
                                     dbc.Row([
                                         dbc.Col(dbc.Button("Submit", id="jd-screen-submit-btn", className="w-100 custom-submit-btn", style={'display': 'none'})),
                                         dbc.Col(dbc.Button("Reset", id="jd-screen-reset-btn", className="w-100 custom-reset-btn", style={'display': 'none'})),
-                                    ], className="mt-4"),
-
-                                    # Spinner to indicate loading (shown during API calls)
-                                    dcc.Loading(
-                                        id="jd-screen-loading-spinner",
-                                        type="circle",
-                                        fullscreen=False,
-                                        children=html.Div(id="jd-screen-loading-placeholder")
-                                    ),
-
+                                    ], className="mt-4"),     
+                                                              
+                                    dbc.Row([
+                                        dbc.Col(
+                                            dcc.Loading(
+                                                id="jd-screen-loading-spinner",
+                                                type="circle",
+                                                children=[
+                                                    html.Div(id="jd-screen-loading-placeholder")
+                                                ],
+                                            ),
+                                            className="mt-4",
+                                            width=12
+                                        )
+                                    ]),
                                     # Table to display screening results
                                     html.Div(id="jd-screen-screening-results", className="mt-4")
                                 ]),

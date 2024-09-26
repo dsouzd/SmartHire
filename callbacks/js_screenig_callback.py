@@ -131,18 +131,22 @@ def jd_screening_callbacks(app):
                     # Append the new file to the file list
                     file_list.append(
                         html.Li([
-                            html.Span(filename),
-                            html.A(html.I(className="fas fa-download"), href=href_value, download=filename, className="ml-3 btn-icon"),
-                            html.Button(html.I(className="fas fa-trash"), id={'type': 'remove-file-btn', 'index': filename}, n_clicks=0, className="ml-3 btn-icon")
-                        ])
+                            html.Span(filename, className="file-name mr-auto"), 
+                            html.Div([
+                                html.A(html.I(className="fas fa-download"), href=href_value, download=filename, className="ml-2 btn-icon"),
+                                html.Button(html.I(className="fas fa-trash"), id={'type': 'remove-file-btn', 'index': filename}, n_clicks=0, className="ml-2 btn-icon")
+                            ], className="icon-container d-flex")
+                        ], className="file-item")
                     )
                     all_uploaded_filenames.append(filename)  # Add this file to the overall list
                     current_file_list.append(  # Append to current_file_list for future submissions
                         html.Li([
-                            html.Span(filename),
-                            html.A(html.I(className="fas fa-download"), href=href_value, download=filename, className="ml-3 btn-icon"),
-                            html.Button(html.I(className="fas fa-trash"), id={'type': 'remove-file-btn', 'index': filename}, n_clicks=0, className="ml-3 btn-icon")
-                        ])
+                            html.Span(filename, className="file-name mr-auto"), 
+                            html.Div([
+                                html.A(html.I(className="fas fa-download"), href=href_value, download=filename, className="ml-2 btn-icon"),
+                                html.Button(html.I(className="fas fa-trash"), id={'type': 'remove-file-btn', 'index': filename}, n_clicks=0, className="ml-2 btn-icon")
+                            ], className="icon-container d-flex")
+                        ], className="file-item")
                     )
                     new_files_uploaded = True
 
@@ -207,10 +211,12 @@ def jd_screening_callbacks(app):
 
                 file_list = [
                     html.Li([
-                        html.Span(filename),
-                        html.A(html.I(className="fas fa-download"), href=f"data:{content.split(',')[0]};base64,{content.split(',')[1]}", download=filename, className="ml-3 btn-icon"),
-                        html.Button(html.I(className="fas fa-trash"), id={'type': 'remove-file-btn', 'index': filename}, n_clicks=0, className="ml-3 btn-icon")
-                    ]) for filename, content in zip(new_filenames, new_contents)
+                        html.Span(filename, className="file-name mr-auto"), 
+                            html.Div([
+                            html.A(html.I(className="fas fa-download"), href=f"data:{content.split(',')[0]};base64,{content.split(',')[1]}", download=filename, className="ml-2 btn-icon"),
+                            html.Button(html.I(className="fas fa-trash"), id={'type': 'remove-file-btn', 'index': filename}, n_clicks=0, className="ml-2 btn-icon")
+                        ], className="icon-container d-flex")
+                    ], className="file-item") for filename, content in zip(new_filenames, new_contents)
                 ]
                 return no_update, no_update, False, file_list, no_update, no_update, no_update, new_filenames, new_contents, no_update, no_update, no_update, no_update
             except json.JSONDecodeError:
