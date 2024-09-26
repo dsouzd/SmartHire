@@ -86,7 +86,7 @@ def jd_form():
                                             dbc.Col(
                                                 dcc.Loading(
                                                     id="jd-creation-loading-submit",
-                                                    type="default",
+                                                    type="circle",
                                                     children=[
                                                         dbc.Button("Submit", id="jd-creation-submit-btn", className="custom-btn w-100")
                                                     ]
@@ -100,7 +100,7 @@ def jd_form():
                                             dbc.Col(
                                                 dcc.Loading(
                                                     id="jd-creation-loading-full-form",
-                                                    type="default",
+                                                    type="circle",
                                                     children=[
                                                         html.Div(id="jd-creation-response-section", className="mt-4")
                                                     ],

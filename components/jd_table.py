@@ -13,7 +13,7 @@ def jd_table():
                     html.H3('Select Business Unit', className='text-center mt-3'),
                     dcc.Loading(
                         id="loading-bu-dropdown",
-                        type="default",
+                        type="circle",
                         children=dcc.Dropdown(
                             id='jd-table-bu-dropdown',
                             placeholder="Select a Business Unit",
@@ -29,7 +29,7 @@ def jd_table():
                     html.H4('Job Descriptions', className='text-center mt-5'),
                     dcc.Loading(
                         id="loading-jd-table",
-                        type="default",
+                        type="circle",
                         children=dash_table.DataTable(
                             id='jd-table',
                             columns=[

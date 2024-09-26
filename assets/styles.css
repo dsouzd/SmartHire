@@ -10,3 +10,7 @@ body {
 .dash-default-spinner * {
     background-color: #a01441 !important;
   }
+
+.dash-sk-circle .dash-sk-child:before{
+    background-color: #a01441 !important;
+}
