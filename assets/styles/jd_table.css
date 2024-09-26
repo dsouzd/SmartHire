@@ -75,18 +75,18 @@
     background-color: rgba(240, 240, 240, 0.75);
 }
 
-/* Font Awesome Icons for Next/Previous buttons */
+/* Center the pagination buttons */
 #jd-table-container .pagination-btn {
     font-size: 18px;
-    margin: 5px;
+    margin: 5px 10px;  /* Increased spacing for better layout */
     background-color: #a01441;
     color: white;
     font-weight: bold;
-    border-radius: 12px;
+    border-radius: 50%;  /* Circular button */
     border: none;
     transition: background-color 0.3s ease, transform 0.3s ease;
     box-shadow: 4px 4px 12px rgba(163, 177, 198, 0.6), -4px -4px 12px rgba(255, 255, 255, 0.5);
-    padding: 8px;
+    padding: 8px 16px;
 }
 
 #jd-table-container .pagination-btn:hover {
@@ -94,6 +94,14 @@
     transform: translateY(-3px);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
+
+#jd-table-container .pagination-btn-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
 
 #jd-table-container #jd-table-page-number {
     font-size: 16px;

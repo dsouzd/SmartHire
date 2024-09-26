@@ -32,12 +32,12 @@ def jd_table():
                 ],
             ),
             html.Div(
+                className="pagination-btn-wrapper",  # Added wrapper for better alignment
                 children=[
                     dbc.Button(html.I(className="fas fa-chevron-left"), id="jd-table-previous-page", className="pagination-btn", n_clicks=0),
                     html.Span(id='jd-table-page-number', style={'margin': '10px'}),
                     dbc.Button(html.I(className="fas fa-chevron-right"), id="jd-table-next-page", className="pagination-btn", n_clicks=0)
-                ], 
-                style={'text-align': 'center', 'margin-top': '20px'}
+                ]
             )
         ]
     )
