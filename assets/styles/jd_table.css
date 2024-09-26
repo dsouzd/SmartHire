@@ -14,12 +14,17 @@
 }
 
 #jd-table-container .table-wrapper {
-    width: 90%; /* Reduced width for the entire container */
-    max-width: 700px;
-    background-color: rgba(255, 255, 255, 0.45); /* Glassmorphism */
+    width: 100%;
+    max-width: 1000px;
+    backdrop-filter: blur(10px) saturate(180%);
+    background-color: rgba(255, 255, 255, 0.45);
     border-radius: 12px;
     padding: 20px;
-    box-shadow: 4px 4px 12px rgba(163, 177, 198, 0.6), -4px -4px 12px rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: slideIn 0.7s ease-out forwards;
+    transform-origin: center;
     box-sizing: border-box;
 }
 
