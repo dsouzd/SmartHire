@@ -78,7 +78,7 @@ def jd_table_callback(app):
                     html.Td(jd['jd_id']),
                     html.Td(jd['title']),
                     html.Td(date_posted),
-                    html.Td(html.A("Download", href=download_link, target="_blank"))
+                    html.Td(html.A(html.I(className="fas fa-download download-btn"), href=download_link, target="_blank"))
                 ]))
 
             # Handle pagination display and page number
