@@ -16,7 +16,7 @@ def generate_jd(app):
     def load_business_units(n_clicks):
         url = f'{API_BASE_URL}/businessunits'
         try:
-            response = requests.get(url, timeout=500)
+            response = requests.get(url, timeout=300)
             if response.status_code == 200:
                 business_units = response.json()['data']
                 return [{'label': unit['name'], 'value': unit['id']} for unit in business_units]
@@ -144,20 +144,34 @@ def generate_jd(app):
                     response_content = html.Div([
                         html.Ul([
                             html.Li([
-                                html.Span(f"{file_name}.docx"),  
-                                html.A(
-                                    html.I(className="fas fa-eye ml-3 btn-icon"),
-                                    href=f"{API_BASE_URL}/download?f_name={file_name}&f_type=pdf&bu_id={bu_id}",
-                                    target="_blank",
-                                    title="View as PDF"
-                                ),
-                                html.A(
-                                    html.I(className="fas fa-download ml-3 btn-icon"), 
-                                    href=f"{API_BASE_URL}/download?f_name={file_name}&f_type=docx&bu_id={bu_id}",
-                                    target="_blank",
-                                    title="Download DOCX"
-                                )
-                            ], className="generated-file-item")  
+                                dbc.Row([
+                                    dbc.Col(
+                                        html.Div([
+                                        
+                                            # File name on the left
+                                            html.Span(f"{file_name}.docx", className="file-name"),  
+
+                                            # Icons on the right
+                                            html.Div([
+                                                html.A(
+                                                    html.I(className="fas fa-eye btn-icon"),  # PDF view icon
+                                                    href=f"{API_BASE_URL}/download?f_name={file_name}&f_type=pdf&bu_id={bu_id}",
+                                                    target="_blank",
+                                                    title="View as PDF",
+                                                    className="mr-2"  # Add spacing between icons
+                                                ),
+                                                html.A(
+                                                    html.I(className="fas fa-download btn-icon"),  # DOCX download icon
+                                                    href=f"{API_BASE_URL}/download?f_name={file_name}&f_type=docx&bu_id={bu_id}",
+                                                    target="_blank",
+                                                    title="Download DOCX"
+                                                )
+                                            ], className="icon-wrapper ml-auto")  # Icons container pushed to the right
+
+                                        ], className="d-flex align-items-center justify-content-between")  # Flex container to separate name and icons
+                                    )
+                                ])
+                            ], className="generated-file-item")
                         ], className="generated-file-list")
                     ])
                     return (

@@ -75,7 +75,7 @@ def jd_screening_callbacks(app):
                     jd_options = [{'label': jd['title'], 'value': jd['jd_id']} for jd in response.json()['data']]
                     return jd_options, False, True, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update
             except requests.exceptions.RequestException:
-                toast_message.append(dbc.Toast("Failed to load Business Units", header="Error", duration=4000, is_open=True))
+                toast_message.append(dbc.Toast("Failed to load JDS", header="Error", duration=4000, is_open=True))
                 return [], True, True, no_update, no_update, no_update, no_update, no_update, no_update, toast_message, no_update, no_update, no_update 
 
         # Enable Job Description and Upload when JD is selected
@@ -159,7 +159,6 @@ def jd_screening_callbacks(app):
             combined_filenames = state_filenames if state_filenames else []
             combined_contents = state_contents if state_contents else []
             url = f"{API_BASE_URL}/screenjd?jd_id={jd_id}&bu_id={bu_id}"
-            loading_output = dbc.Spinner(size="md")
             try:
                 # Submit all current files (both previously submitted and newly added)
                 files = [('profiles', (filename, base64.b64decode(content.split(',')[1]))) for filename, content in zip(combined_filenames, combined_contents)]
