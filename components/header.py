@@ -26,7 +26,7 @@ def header():
                 dbc.Collapse(
                     dbc.Nav(
                         [
-                            dbc.NavLink("Home", href="/", className="nav-link"),
+                            dbc.NavLink("Statistics", href="/", className="nav-link"),
                             dbc.NavLink("Job Description Generator", href="/jdpreparation", className="nav-link"),
                             dbc.NavLink("Profile Screening", href="/screening", className="nav-link"),
                             dbc.NavLink("Archive", href="/jdtable", className="nav-link"),
