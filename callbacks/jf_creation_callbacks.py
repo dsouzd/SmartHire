@@ -142,21 +142,23 @@ def generate_jd(app):
                 if response.status_code == 200:
                     file_name = response.json().get('file_name')
                     response_content = html.Div([
-                        html.P(f"Generated File: {file_name}.docx", className="generated-file-text"),
-                        html.Div([
-                            html.A(
-                                html.I(className="fas fa-eye action-icon text-info"),
-                                href=f"{API_BASE_URL}/download?f_name={file_name}&f_type=pdf&bu_id={bu_id}",
-                                target="_blank",
-                                title="View as PDF"
-                            ),
-                            html.A(
-                                html.I(className="fas fa-download action-icon text-primary"),
-                                href=f"{API_BASE_URL}/download?f_name={file_name}&f_type=docx&bu_id={bu_id}",
-                                target="_blank",
-                                title="Download DOCX"
-                            )
-                        ], className='response-icons-wrapper')
+                        html.Ul([
+                            html.Li([
+                                html.Span(f"{file_name}.docx"),  
+                                html.A(
+                                    html.I(className="fas fa-eye ml-3 btn-icon"),
+                                    href=f"{API_BASE_URL}/download?f_name={file_name}&f_type=pdf&bu_id={bu_id}",
+                                    target="_blank",
+                                    title="View as PDF"
+                                ),
+                                html.A(
+                                    html.I(className="fas fa-download ml-3 btn-icon"), 
+                                    href=f"{API_BASE_URL}/download?f_name={file_name}&f_type=docx&bu_id={bu_id}",
+                                    target="_blank",
+                                    title="Download DOCX"
+                                )
+                            ], className="generated-file-item")  
+                        ], className="generated-file-list")
                     ])
                     return (
                         response_content,
