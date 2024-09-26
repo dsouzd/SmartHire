@@ -13,15 +13,15 @@ def header_callback(app):
         ctx = callback_context
         if ctx.triggered and ctx.triggered[0]["prop_id"] == "navbar-toggler.n_clicks":
             icon = (
-                html.I(className="fas fa-times fa-lg", style={"color": "#a01441"})
+                html.I(className="fas fa-times fa-lg", style={"color": "#ffffff"})
                 if not is_open
-                else html.I(className="fas fa-bars fa-lg", style={"color": "#a01441"})
+                else html.I(className="fas fa-bars fa-lg", style={"color": "#ffffff"})
             )
             return not is_open, icon
         if pathname:
             return False, html.I(
-                className="fas fa-bars fa-lg", style={"color": "#a01441"}
+                className="fas fa-bars fa-lg", style={"color": "#ffffff"}
             )
         return is_open, html.I(
-            className="fas fa-bars fa-lg", style={"color": "#a01441"}
+            className="fas fa-bars fa-lg", style={"color": "#ffffff"}
         )

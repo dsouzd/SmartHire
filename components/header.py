@@ -2,7 +2,6 @@ import dash
 from dash import dcc, html
 import dash_bootstrap_components as dbc
 
-
 def header():
     header = dbc.Navbar(
         dbc.Container(
@@ -13,7 +12,7 @@ def header():
                         dbc.Col(
                             html.A(
                                 html.Img(
-                                    src="/assets/img/logo_msg_global_RGB.svg",
+                                    src="/assets/img/msg_logo.svg",
                                     height="50px",
                                 ),
                                 href="/",
@@ -29,7 +28,7 @@ def header():
                     className="navbar-toggler-custom",
                     children=[
                         html.I(
-                            className="fas fa-bars fa-lg", style={"color": "#a01441"}
+                            className="fas fa-bars fa-lg", style={"color": "#ffffff"}  # White icon for better visibility
                         )
                     ],
                 ),
