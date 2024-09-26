@@ -27,9 +27,10 @@ def header():
                     dbc.Nav(
                         [
                             dbc.NavLink("Home", href="/", className="nav-link"),
-                            dbc.NavLink("JD Preparation", href="/jdpreparation", className="nav-link"),
-                            dbc.NavLink("JD Screening", href="/screening", className="nav-link"),
-                            dbc.NavLink("Table", href="/jdtable", className="nav-link"),
+                            dbc.NavLink("Create Job Description", href="/jdpreparation", className="nav-link"),
+                            dbc.NavLink("Resume Screening", href="/screening", className="nav-link"),
+                            dbc.NavLink("Job Description Archive", href="/jdtable", className="nav-link"),
+
                         ],
                         className="ml-auto",  
                         navbar=True
