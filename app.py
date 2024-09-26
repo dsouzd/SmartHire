@@ -11,22 +11,27 @@ from components.footer import footer
 from components.header import header
 
 # Initialize the Dash app
-app = dash.Dash(__name__, 
-                external_stylesheets=[dbc.themes.BOOTSTRAP, 
-                                      "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css",
-                                      "https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
-                                      ], 
-                suppress_callback_exceptions=True)
+app = dash.Dash(
+    __name__,
+    external_stylesheets=[
+        dbc.themes.BOOTSTRAP,
+        "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css",
+        "https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap",
+    ],
+    suppress_callback_exceptions=True,
+)
 # Define the app layout
 
-app.title = 'Smart Hire' 
+app.title = "Smart Hire"
 
-app.layout = html.Div([
-    dcc.Location(id='route-url', refresh=False),
-    header(), 
-    html.Div(id='page-content'),
-    footer()
-])
+app.layout = html.Div(
+    [
+        dcc.Location(id="route-url", refresh=False),
+        header(),
+        html.Div(id="page-content"),
+        footer(),
+    ]
+)
 
 header_callback(app)
 generate_jd(app)
@@ -35,5 +40,5 @@ jd_screening_callbacks(app)
 jd_table_callback(app)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run_server(debug=False, host="0.0.0.0", port=8080)
