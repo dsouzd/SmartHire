@@ -1,14 +1,15 @@
 /* General Form Container */
 #jd-creation-form-container {
-    min-height: 100vh;
+    min-height: 90vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #e0e5ec;
+    background-color: hwb(215 88% 7%);
     background-size: cover;
-    background-image: url("/assets/img/form_cr.webp");
-    padding: 20px; /* Ensure space from edges */
+    background-image: url("/assets/img/banner.webp");
+    padding: 20px; 
     box-sizing: border-box;
+    position: relative;
 }
 
 /* Keyframes for Slide and Fade In Animation */

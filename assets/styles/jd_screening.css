@@ -1,13 +1,13 @@
 /* General Form Container */
 #form-container {
-    min-height: 100vh;
+    min-height: 90vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     background-color: #e0e5ec;
     background-size: cover;
-    background-image: url("/assets/img/form_cr.webp");
+    background-image: url("/assets/img/hero_banner_res.webp");
     padding: 20px;
     box-sizing: border-box;
 }

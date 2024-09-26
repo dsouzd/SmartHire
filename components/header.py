@@ -36,7 +36,6 @@ def header():
                 dbc.Collapse(
                     dbc.Nav(
                         [
-                            dbc.NavLink("Statistics", href="/", className="nav-link"),
                             dbc.NavLink(
                                 "Job Description Generator",
                                 href="/jdpreparation",
@@ -50,6 +49,7 @@ def header():
                             dbc.NavLink(
                                 "Archive", href="/jdtable", className="nav-link"
                             ),
+                            dbc.NavLink("Statistics", href="/", className="nav-link"),
                         ],
                         className="ml-auto",
                         navbar=True,
