@@ -338,6 +338,15 @@
     gap: 10px; 
 }
 
+#form-container .file-name {
+    font-weight: 400;
+    font-size: 14px;
+    color: #444;
+    display: flex;
+    align-items: center; 
+    height: 100%; 
+}
+
 
 
 

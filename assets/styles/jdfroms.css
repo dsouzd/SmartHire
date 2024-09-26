@@ -135,7 +135,6 @@
 }
 
 
-/* Hide and Show Button Classes */
 #jd-creation-form-container .hide-button {
     display: none;
 }
@@ -144,7 +143,7 @@
     display: inline-block;
 }
 
-/* Toast Notification (Glassmorphism) */
+
 #jd-creation-form-container .toast-message {
     backdrop-filter: blur(10px) saturate(180%);
     background-color: rgba(255, 255, 255, 0.45);
@@ -157,12 +156,7 @@
     width: 350px;
 }
 
-#jd-creation-form-container .generated-file-list {
-    list-style-type: none;
-    padding-left: 0;
-}
-
-#jd-creation-form-container .generated-file-list li {
+#jd-creation-form-container .generated-file-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -175,23 +169,26 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-#jd-creation-form-container .generated-file-list li:hover {
+#jd-creation-form-container .generated-file-item:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
-
 
 #jd-creation-form-container .icon-wrapper {
     display: flex;
     gap: 10px; 
 }
 
-
 #jd-creation-form-container .file-name {
     flex-grow: 1;
     margin-right: auto;
+    font-weight: 600;
+    font-size: 14px;
+    color: #444;
+    display: flex;
+    align-items: center; 
+    height: 100%; 
 }
-
 
 #jd-creation-form-container .btn-icon {
     color: #a01441;  
@@ -206,5 +203,6 @@
     color: #7f1034;
     transform: scale(1.1);  
 }
+
 
 

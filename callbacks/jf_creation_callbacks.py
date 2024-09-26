@@ -142,37 +142,24 @@ def generate_jd(app):
                 if response.status_code == 200:
                     file_name = response.json().get('file_name')
                     response_content = html.Div([
-                        html.Ul([
-                            html.Li([
-                                dbc.Row([
-                                    dbc.Col(
-                                        html.Div([
-                                        
-                                            # File name on the left
-                                            html.Span(f"{file_name}.docx", className="file-name"),  
-
-                                            # Icons on the right
-                                            html.Div([
-                                                html.A(
-                                                    html.I(className="fas fa-eye btn-icon"),  # PDF view icon
-                                                    href=f"{API_BASE_URL}/download?f_name={file_name}&f_type=pdf&bu_id={bu_id}",
-                                                    target="_blank",
-                                                    title="View as PDF",
-                                                    className="mr-2"  # Add spacing between icons
-                                                ),
-                                                html.A(
-                                                    html.I(className="fas fa-download btn-icon"),  # DOCX download icon
-                                                    href=f"{API_BASE_URL}/download?f_name={file_name}&f_type=docx&bu_id={bu_id}",
-                                                    target="_blank",
-                                                    title="Download DOCX"
-                                                )
-                                            ], className="icon-wrapper ml-auto")  # Icons container pushed to the right
-
-                                        ], className="d-flex align-items-center justify-content-between")  # Flex container to separate name and icons
-                                    )
-                                ])
-                            ], className="generated-file-item")
-                        ], className="generated-file-list")
+                        html.Div([
+                            html.Span(f"{file_name}.docx", className="file-name"),  
+                            html.Div([
+                                html.A(
+                                    html.I(className="fas fa-eye btn-icon"), 
+                                    href=f"{API_BASE_URL}/download?f_name={file_name}&f_type=pdf&bu_id={bu_id}",
+                                    target="_blank",
+                                    title="View as PDF",
+                                    className="mr-2"
+                                ),
+                                html.A(
+                                    html.I(className="fas fa-download btn-icon"), 
+                                    href=f"{API_BASE_URL}/download?f_name={file_name}&f_type=docx&bu_id={bu_id}",
+                                    target="_blank",
+                                    title="Download DOCX"
+                                )
+                            ], className="icon-wrapper") 
+                        ], className="d-flex align-items-center justify-content-between generated-file-item")  
                     ])
                     return (
                         response_content,

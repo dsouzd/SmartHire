@@ -180,7 +180,7 @@ def jd_screening_callbacks(app):
                                 html.Td(result['email']),
                                 html.Td(result['score'], id=score_id),
                                 dbc.Popover(
-                                    [html.P("Reason for Score", className="custom-popover-header"), tooltip_content],
+                                    [html.P("Score Breakdown", className="custom-popover-header"), tooltip_content],
                                     target=score_id,
                                     body=True,
                                     trigger="hover",  
