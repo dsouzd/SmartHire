@@ -298,18 +298,18 @@
 .custom-popover-header {
     font-weight: 700;
     font-size: 20px;
-    color: #2e2e2e;
     background: none;
     padding: 5px 0;
     text-align: center;
-    text-transform: uppercase;
+    text-transform: capitalize;
     letter-spacing: 1px;
     margin-bottom: 10px;
     border-bottom: 2px solid rgba(46, 46, 46, 0.2); 
+    color: #a01441;
 }
 
 .custom-popover-body {
-    color: #4a4a4a;
+    color: #444;
     font-size: 15px;
     line-height: 1.6;
     font-family: 'Roboto', sans-serif;
