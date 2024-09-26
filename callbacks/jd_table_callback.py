@@ -5,7 +5,7 @@ import dash_bootstrap_components as dbc
 import requests
 from datetime import datetime
 
-ROWS_PER_PAGE = 10  # Define 10 rows per page
+ROWS_PER_PAGE = 10  
 
 def jd_table_callback(app):
 
@@ -26,19 +26,21 @@ def jd_table_callback(app):
     )
     def jd_table_update(bu_id, prev_clicks, next_clicks, current_page):
         try:
+            # Fetch business units
             response_bu = requests.get('https://smarthire-e32r.onrender.com/businessunits')
             response_bu.raise_for_status()
             business_units = response_bu.json().get('data', [])
             dropdown_options = [{'label': bu['name'], 'value': bu['id']} for bu in business_units]
         except requests.exceptions.RequestException:
-            # Hide the pagination buttons and page number when there's an error
+            # Return an error if business units cannot be loaded
             return [], [], "", 1, True, "Business Unit loading failed.", {'display': 'none'}, {'display': 'none'}, {'display': 'none'}
 
-        # If no BU is selected, return empty table and hide pagination
+        # If no business unit is selected
         if bu_id is None:
             return dropdown_options, html.Tr([html.Td("Please select a Business Unit")]), "", 1, False, "", {'display': 'none'}, {'display': 'none'}, {'display': 'none'}
 
         try:
+            # Fetch job descriptions for the selected business unit
             url = f'https://smarthire-e32r.onrender.com/businessunits/{bu_id}/jds'
             response_jds = requests.get(url, timeout=10)
             response_jds.raise_for_status()
@@ -47,6 +49,11 @@ def jd_table_callback(app):
 
             total_jds = len(jds)
             total_pages = (total_jds // ROWS_PER_PAGE) + (1 if total_jds % ROWS_PER_PAGE > 0 else 0)
+
+            # Check if no documents are available
+            if total_jds == 0:
+                # Return a message indicating no documents are available
+                return dropdown_options, html.Tr([html.Td("No documents are available for the selected business unit.")]), "", 1, False, "", {'display': 'none'}, {'display': 'none'}, {'display': 'none'}
 
             # Handle page number based on button clicks
             ctx = dash.callback_context
@@ -92,5 +99,5 @@ def jd_table_callback(app):
             return dropdown_options, [html.Thead(html.Tr(headers)), html.Tbody(rows)], html.Span(page_number_display), current_page, False, "", prev_button_style, next_button_style, page_number_style
 
         except requests.exceptions.RequestException as e:
-            # Hide pagination buttons and page number in case of data load error
+            # Return an error message if job descriptions cannot be loaded
             return html.Tr([html.Td("Error loading data")]), "", current_page, True, "Data failed to Load.", {'display': 'none'}, {'display': 'none'}, {'display': 'none'}
