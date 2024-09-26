@@ -168,18 +168,18 @@ def jd_screening_callbacks(app):
                     data = response.json()['data']
                     rows = []
                     for index, result in enumerate(data):
-                        email_id = f"email-{index}"
+                        score_id = f"email-{index}"
                         tooltip_content = html.P(result['details'], style={"white-space": "pre-line"})
                         rows.append(
                             html.Tr([
                                 html.Td(result['name']),
-                                html.Td(result['email'], id=email_id),
-                                html.Td(result['score']),
+                                html.Td(result['email']),
+                                html.Td(result['score'], id=score_id),
                                 dbc.Popover(
                                     [html.P("Reason for Score", className="custom-popover-header"), tooltip_content],
-                                    target=email_id,
+                                    target=score_id,
                                     body=True,
-                                    trigger="click",  
+                                    trigger="hover",  
                                     placement="right",
                                     className="custom-popover"
                                 )
