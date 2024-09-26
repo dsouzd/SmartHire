@@ -9,10 +9,9 @@ def jd_table():
             dcc.Store(id='jd-table-current-page', data=1),  # Store the current page number
             dbc.Toast(
                 id="jd-table-toast",
-                header="Error",
+                header="Notification",
                 is_open=False,
                 dismissable=True,
-                icon="danger",
                 duration=4000,
                 style={"position": "fixed", "top": 10, "right": 10, "width": 350}
             ),
