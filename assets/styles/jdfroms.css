@@ -62,6 +62,15 @@
     color: #333;
 }
 
+#jd-creation-form-container .label-text {
+    font-weight: 600;
+    font-size: 14px;
+    color: #444;
+    display: flex;
+    align-items: center; 
+    height: 100%; 
+}
+
 #jd-creation-form-container .input-group-addon {
     background-color: #e0e5ec;
     border-right: none;
