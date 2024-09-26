@@ -1,85 +1,25 @@
-/* General Styling for the JD Table */
-
-/* Wrapper for the table container */
-.jd-table-wrapper {
-    max-width: 80%;
-    margin: 0 auto;
+/* Prefix all styles with #jd-table-container to scope them */
+#jd-table-container #jd-table-business-unit-dropdown {
+    font-size: 16px;
+    padding: 8px;
 }
 
-/* Dash Table Styling */
-.dash-table-container .dash-spreadsheet-container {
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.dash-table-container .dash-spreadsheet-inner {
-    box-shadow: 0 4px 12px rgba(160, 20, 65, 0.2); /* Shadow with a transparent touch of the theme color */
-}
-
-.dash-table-container .dash-spreadsheet {
-    background-color: #f9e5ec;  /* Lightest shade of your theme color */
-    border-collapse: collapse;
-}
-
-/* Table Header Styling */
-.dash-table-container .dash-header {
-    font-family: 'Roboto', sans-serif;
-    background-color: #a01441;  /* Your main theme color */
-    color: white;
-    text-transform: uppercase;
-    font-size: 14px;
-    font-weight: bold;
-    letter-spacing: 0.1em;
+#jd-table-container #jd-table {
+    margin-top: 20px;
     text-align: center;
 }
 
-/* Table Cell Styling */
-.dash-table-container .dash-cell {
-    font-family: 'Lato', sans-serif;
-    background-color: #ffffff;
-    color: #a01441; /* Your theme color for text */
-    border: 1px solid #d991a8;  /* A lighter border using a shade of the theme color */
-    transition: background-color 0.3s ease;
+#jd-table-container #jd-table th,
+#jd-table-container #jd-table td {
     padding: 10px;
 }
 
-/* Hover Effect on Table Cells */
-.dash-table-container .dash-cell:hover {
-    background-color: #f9e5ec; /* A light shade for hover effect */
+#jd-table-container #jd-table-previous-page,
+#jd-table-container #jd-table-next-page {
+    font-size: 14px;
+    margin: 5px;
 }
 
-/* Alternating row colors for better readability */
-.dash-table-container .dash-row-odd .dash-cell {
-    background-color: #fdf0f5; /* Very light shade of the theme color */
+#jd-table-container #jd-table-page-number {
+    font-size: 16px;
 }
-
-.dash-table-container .dash-row-even .dash-cell {
-    background-color: #ffffff;
-}
-
-/* Loading spinner styling for dropdown and table */
-.dcc-loading > div {
-    color: #a01441;  /* Theme color for the spinner */
-}
-
-.dcc-loading > div > div {
-    border-color: #a01441 #f9e5ec #f9e5ec;  /* Custom color for loading spinner */
-}
-
-/* Additional styling for container elements */
-h3, h4 {
-    color: #a01441;
-}
-
-.dash-table-container .dash-cell .fa-download {
-    cursor: pointer;
-    transition: transform 0.3s ease;
-    font-size: 16px;  /* Set the icon size */
-    color: #a01441;  /* Use the theme color */
-}
-
-.dash-table-container .dash-cell .fa-download:hover {
-    transform: scale(1.1);  /* Slightly enlarge the icon on hover */
-    color: #d991a8;  /* A lighter shade for hover effect */
-}
-
