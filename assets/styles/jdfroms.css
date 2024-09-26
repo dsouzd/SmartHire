@@ -1,6 +1,7 @@
 /* General Form Container */
-.jd-forms {
+#jd-creation-form-container {
     min-height: 100vh;
+    display: flex;
     justify-content: center;
     align-items: center;
     background-color: #e0e5ec;
@@ -23,7 +24,7 @@
 }
 
 /* Card Style for Glassmorphism */
-.form-card {
+#jd-creation-form-container .form-card {
     backdrop-filter: blur(10px) saturate(180%);
     background-color: rgba(255, 255, 255, 0.45);
     border-radius: 12px;
@@ -36,119 +37,106 @@
     box-sizing: border-box;
 }
 
-.form-title {
+#jd-creation-form-container .form-title {
     font-weight: 600;
     font-size: 28px;
-    color: #333;
+    color: #a01441; /* Sync title color with previous component */
     text-align: center;
     margin-bottom: 20px;
 }
 
-/* Adjusting the input and label layout */
-.custom-dropdown, input[type="text"] {
+/* Input Fields and Dropdowns */
+#jd-creation-form-container .custom-dropdown, input[type="text"] {
     border: 1px solid #ddd;
     border-radius: 12px;
     padding: 10px;
-    width: 100%;  /* Ensure inputs take full width */
+    width: 100%;
     transition: border-color 0.3s ease;
     box-shadow: 4px 4px 12px rgba(163, 177, 198, 0.6), -4px -4px 12px rgba(255, 255, 255, 0.5);
     background: #e0e5ec;
     box-sizing: border-box;
 }
 
-.input-group-text {
+#jd-creation-form-container .input-group-text {
     font-size: 16px;
     color: #333;
 }
 
-.input-group-addon {
+#jd-creation-form-container .input-group-addon {
     background-color: #e0e5ec;
     border-right: none;
     border-radius: 6px;
     box-shadow: 4px 4px 12px rgba(163, 177, 198, 0.6), -4px -4px 12px rgba(255, 255, 255, 0.5);
 }
 
-/* Submit Button (Neumorphic) */
-.custom-btn {
-    background-color: #a01441;
-    color: white;
-    font-weight: 600;
-    font-size: 16px;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 12px;
-    box-shadow: 4px 4px 12px rgba(163, 177, 198, 0.6), -4px -4px 12px rgba(255, 255, 255, 0.5);
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-/* Prevent Shrinking */
-.form-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
-}
-
-/* Responsiveness - Ensure width on mobile screens */
-@media (max-width: 768px) {
-    .form-card {
-        width: 90vw; /* Take most of the screen on smaller devices */
-    }
-}
-
-/* Label Style */
-.label-text {
-    font-weight: 600;
-    font-size: 14px;
-    color: #444;
-}
-
-.custom-dropdown:focus, input[type="text"]:focus {
+#jd-creation-form-container .custom-dropdown:focus, 
+#jd-creation-form-container input[type="text"]:focus {
     border-color: #a01441;
     box-shadow: inset 4px 4px 12px rgba(163, 177, 198, 0.6), inset -4px -4px 12px rgba(255, 255, 255, 0.5);
 }
 
-.custom-btn:hover {
-    background-color: #7f1034;
-    transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+/* Icon Color Updates */
+#jd-creation-form-container .fas {
+    color: #a01441; /* Update all icons to use the consistent color */
 }
 
-/* Save and Discard Buttons (Neumorphic) */
-.save-btn, .reset-btn {
-    padding: 12px 20px;
+/* Buttons (Submit, Save, and Discard) */
+#jd-creation-form-container .custom-btn,
+#jd-creation-form-container .save-btn {
+    background-color: #a01441;
+    color: white;
+    font-weight: bold;
     border-radius: 12px;
-    font-size: 16px;
-    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.3s ease;
     box-shadow: 4px 4px 12px rgba(163, 177, 198, 0.6), -4px -4px 12px rgba(255, 255, 255, 0.5);
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    border: none; 
+    outline: none; 
+    padding: 12px 20px;
+    font-size: 16px;
     width: 100%;
     margin: 10px 0;
 }
 
-.save-btn {
-    background-color: #007bff;
+#jd-creation-form-container .custom-btn:hover,
+#jd-creation-form-container .save-btn:hover {
+    background-color: #7f1034;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+#jd-creation-form-container .reset-btn {
+    background-color: #6c757d;  
     color: white;
+    font-weight: bold;
+    border-radius: 12px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 4px 4px 12px rgba(163, 177, 198, 0.6), -4px -4px 12px rgba(255, 255, 255, 0.5);
+    border: none;
+    outline: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    width: 100%;
+    margin: 10px 0;
 }
 
-.save-btn:hover {
-    background-color: #0069d9;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+#jd-creation-form-container .reset-btn:hover {
+    background-color: #5a6268;  
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
-.reset-btn {
-    background-color: #dc3545;
-    color: white;
+
+/* Hide and Show Button Classes */
+#jd-creation-form-container .hide-button {
+    display: none;
 }
 
-.reset-btn:hover {
-    background-color: #c82333;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+#jd-creation-form-container .show-button {
+    display: inline-block;
 }
 
 /* Toast Notification (Glassmorphism) */
-.toast-message {
+#jd-creation-form-container .toast-message {
     backdrop-filter: blur(10px) saturate(180%);
     background-color: rgba(255, 255, 255, 0.45);
     border-radius: 12px;
@@ -160,85 +148,38 @@
     width: 350px;
 }
 
-/* Hide and Show Button Classes */
-.hide-button {
-    display: none;
-}
-
-.show-button {
-    display: inline-block;
-}
-
 /* Response Section Styling */
-#jd-creation-response-section .generated-file-text {
+#jd-creation-form-container .generated-file-text {
     font-size: 14px;
     color: #333;
     text-align: center;
     margin-bottom: 10px;
 }
 
-.response-icons-wrapper {
+#jd-creation-form-container .response-icons-wrapper {
     display: flex;
-    justify-content: center; 
-    align-items: center; 
-    gap: 20px; 
-    margin-top: 10px; 
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 10px;
 }
 
-/* View/Download Icons */
-.response-icons-wrapper .action-icon {
+#jd-creation-form-container .response-icons-wrapper .action-icon {
     font-size: 28px;
     margin: 0 10px;
     transition: transform 0.3s ease;
     cursor: pointer;
     display: inline-block;
+    color: #a01441; /* Sync icon color */
 }
 
-.response-icons-wrapper .action-icon:hover {
+#jd-creation-form-container .response-icons-wrapper .action-icon:hover {
     transform: scale(1.1);
 }
 
-.action-icon.text-info {
-    color: #17a2b8;
+/* Responsiveness */
+@media (max-width: 768px) {
+    #jd-creation-form-container .form-card {
+        width: 90vw; /* Take most of the screen on smaller devices */
+    }
 }
-
-.action-icon.text-primary {
-    color: #007bff;
-}
-
-#jd-creation-save-btn, #jd-creation-reset-btn {
-    width: 100%; 
-    padding: 12px 20px;
-    border-radius: 12px;
-    font-size: 16px;
-    font-weight: 600;
-    text-align: center; 
-    margin: 0; 
-    transition: all 0.3s ease;
-    border: none;
-}
-
-#jd-creation-save-btn {
-    background-color: #3498db;
-    color: white;
-}
-
-#jd-creation-reset-btn {
-    background-color: #7f8c8d; 
-    color: white;
-}
-
-/* Hover Effects */
-#jd-creation-save-btn:hover {
-    background-color: #2980b9; 
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); 
-}
-
-#jd-creation-reset-btn:hover {
-    background-color: #95a5a6; 
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); 
-}
-
-
-
-

@@ -160,7 +160,8 @@ def generate_jd(app):
                     ])
                     return (
                         response_content,
-                        'show-button', 'show-button',
+                        'save-btn show-button',  
+                        'reset-btn show-button',
                         True, "Job description generated successfully!", "Success",
                         False, False, False, False,
                         no_update, no_update, no_update, no_update
