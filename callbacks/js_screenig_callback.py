@@ -1,9 +1,14 @@
 import base64
+import os
 import requests
 from dash.dependencies import Input, Output, State, ALL
 from dash import html, no_update, callback_context, dcc
 import dash_bootstrap_components as dbc
 import json
+from dotenv import load_dotenv
+
+load_dotenv()
+API_BASE_URL = os.getenv('API_BASE_URL')  
 
 def jd_screening_callbacks(app):
 
@@ -12,7 +17,7 @@ def jd_screening_callbacks(app):
         Input('jdscreen-url', 'pathname')
     )
     def load_business_units(pathname):
-        url = 'https://smarthire-e32r.onrender.com/businessunits'
+        url = f'{API_BASE_URL}/businessunits'
         try:
             response = requests.get(url, timeout=300)
             if response.status_code == 200:
@@ -61,11 +66,9 @@ def jd_screening_callbacks(app):
         toast_message = []
         loading_output = None
 
-        print(f"trigger id: {trigger_id}")  # Debugging: log the trigger ID
-
         # Handle Business Unit Dropdown Population
         if trigger_id and 'jd-screen-business-unit-dropdown' in trigger_id and bu_id:
-            url = f'https://smarthire-e32r.onrender.com/businessunits/{bu_id}/jds'
+            url = f'{API_BASE_URL}/businessunits/{bu_id}/jds'
             try:
                 response = requests.get(url)
                 if response.status_code == 200:
@@ -104,14 +107,10 @@ def jd_screening_callbacks(app):
 
             # Initialize current_file_list as an empty list if it's None (on first upload)
             if current_file_list is None or len(current_file_list) == 0:
-                print("Initializing current_file_list as an empty list")
                 current_file_list = []
 
             # Combine newly uploaded files and existing files for duplicate check
             all_uploaded_filenames = [f['props']['children'][0]['props']['children'] for f in current_file_list] if current_file_list else []
-
-            # Print extracted filenames from current file list for debugging
-            print(f"Existing Filenames: {all_uploaded_filenames}")
 
             # Track if new files are uploaded and if duplicates are found
             duplicates_found = False
@@ -119,11 +118,8 @@ def jd_screening_callbacks(app):
 
             # Loop over the newly uploaded files and check for duplicates
             for filename, content in zip(filenames, contents):
-                print(f"Processing uploaded file: {filename}")
-
                 if filename in all_uploaded_filenames:
                     # Show a warning toast if the filename already exists (duplicate detection)
-                    print(f"Duplicate file detected: {filename}")
                     toast_message.append(dbc.Toast(f"File {filename} already exists.", header="Duplicate File", duration=3000, is_open=True))
                     duplicates_found = True
                 else:
@@ -140,7 +136,6 @@ def jd_screening_callbacks(app):
                             html.Button(html.I(className="fas fa-trash"), id={'type': 'remove-file-btn', 'index': filename}, n_clicks=0, className="ml-3 btn-icon")
                         ])
                     )
-                    print(f"Added file: {filename} to the list")
                     all_uploaded_filenames.append(filename)  # Add this file to the overall list
                     current_file_list.append(  # Append to current_file_list for future submissions
                         html.Li([
@@ -163,11 +158,7 @@ def jd_screening_callbacks(app):
             # Combine state_filenames with any previously uploaded files
             combined_filenames = state_filenames if state_filenames else []
             combined_contents = state_contents if state_contents else []
-
-            # Print filenames and contents for debugging
-            print(f"Submitting all files: {combined_filenames}") 
-
-            url = f"https://smarthire-e32r.onrender.com/screenjd?jd_id={jd_id}&bu_id={bu_id}"
+            url = f"{API_BASE_URL}/screenjd?jd_id={jd_id}&bu_id={bu_id}"
             loading_output = dbc.Spinner(size="md")
             try:
                 # Submit all current files (both previously submitted and newly added)
@@ -191,8 +182,6 @@ def jd_screening_callbacks(app):
                     table = dbc.Table([html.Thead(html.Tr([html.Th("Name"), html.Th("Email"), html.Th("Score")])), html.Tbody(rows)], bordered=True, className="table")
                     table_responsive = html.Div(table, className="table-responsive")
                     toast_message.append(dbc.Toast("Submission successful", header="Success", duration=3000, is_open=True))
-
-                    # Keep the files in the list and allow new files to be appended later
                     return no_update, no_update, False, current_file_list, {'display': 'none'}, {'display': 'inline-block'}, table_responsive, [], [], toast_message, None, no_update, no_update
 
             except requests.exceptions.RequestException as e:

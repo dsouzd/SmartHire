@@ -1,7 +1,12 @@
+import os
 import requests
 from dash import Input, Output, State
 import dash
 from dash import html
+from dotenv import load_dotenv
+
+load_dotenv()
+API_BASE_URL = os.getenv('API_BASE_URL')  
 
 def jd_table_callback(app):
 
@@ -14,13 +19,13 @@ def jd_table_callback(app):
     def update_business_unit_dropdown(_):
         try:
             # Disable the dropdown while loading
-            response = requests.get('https://smarthire-e32r.onrender.com/businessunits')
+            response = requests.get('{API_BASE_URL}/businessunits')
             if response.status_code == 200:
                 data = response.json()['data']
                 options = [{'label': bu['name'], 'value': bu['id']} for bu in data]
-                return options, False  # Enable dropdown after data loads
+                return options, False  
         except requests.RequestException:
-            return [], False  # Return empty options in case of failure
+            return [], False 
 
     # Callback to populate the JD Table when a Business Unit is selected
     @app.callback(
@@ -34,7 +39,7 @@ def jd_table_callback(app):
         
         # Show loading spinner while fetching JD data
         try:
-            response = requests.get(f'https://smarthire-e32r.onrender.com/businessunits/{bu_id}/jds')
+            response = requests.get(f'{API_BASE_URL}/businessunits/{bu_id}/jds')
             if response.status_code == 200:
                 data = response.json()['data']
                 return [
@@ -43,7 +48,7 @@ def jd_table_callback(app):
                         "title": jd['title'], 
                         "job_posted": jd['job_posted'],
                         # Return HTML anchor tag for the download link
-                        "download": f'<a href="https://smarthire-e32r.onrender.com/download?f_name={jd["title"].replace(".docx", "")}&f_type=docx&bu_id={jd["bu_id"]}" target="_blank">Download</a>'
+                        "download": f'<a href="{API_BASE_URL}/download?f_name={jd["title"].replace(".docx", "")}&f_type=docx&bu_id={jd["bu_id"]}" target="_blank">Download</a>'
                     }
                     for jd in data
                 ]
