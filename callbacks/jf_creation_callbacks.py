@@ -245,7 +245,7 @@ def generate_jd(app):
                                         [
                                             html.A(
                                                 html.I(className="fas fa-eye btn-icon"),
-                                                href=f"{API_BASE_URL}/download?f_name={file_name}&f_type=docx&bu_id={bu_id}",
+                                                href=f"{API_BASE_URL}/download?f_name={file_name}&f_type=pdf&bu_id={bu_id}",
                                                 target="_blank",
                                                 title="View",
                                                 className="mr-2",
