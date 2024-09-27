@@ -18,7 +18,7 @@ def jdscreen():
                                 dbc.CardBody(
                                     [
                                         html.H2(
-                                            "JD Screening Form", className="form-title"
+                                            "Profile Screening Form", className="form-title"
                                         ),
                                         html.Br(),
                                         # Business Unit Dropdown
