@@ -2,8 +2,9 @@ import base64
 import os
 import requests
 from dash.dependencies import Input, Output, State, ALL
-from dash import html, no_update, callback_context, dcc
+from dash import html, no_update, callback_context
 import dash_bootstrap_components as dbc
+import dash_core_components as dcc
 import json
 from dotenv import load_dotenv
 
@@ -340,7 +341,7 @@ def jd_screening_callbacks(app):
                     rows = []
                     for index, result in enumerate(data):
                         score_id = f"email-{index}"
-                        tooltip_content = html.P(
+                        tooltip_content = dcc.Markdown(
                             result["details"], style={"white-space": "pre-line"}
                         )
                         rows.append(
