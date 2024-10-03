@@ -1,11 +1,11 @@
 import base64
-import os
-import requests
-from dash.dependencies import Input, Output, State, ALL
-from dash import html, no_update, callback_context
-import dash_bootstrap_components as dbc
-import dash_core_components as dcc
 import json
+import os
+
+import dash_bootstrap_components as dbc
+import requests
+from dash import callback_context, dcc, html, no_update
+from dash.dependencies import ALL, Input, Output, State
 from dotenv import load_dotenv
 
 load_dotenv()
