@@ -1,67 +1,170 @@
+import dash_bootstrap_components as dbc
 from dash import dcc, html
 
-def layout():
+
+def jdscreen():
     return html.Div(
-        className="main-container",
+        id="form-container",
+        style={"backgroundColor": "#f7f7f7", "padding": "50px", "minHeight": "100vh"},
         children=[
-            dcc.Store(id="uploaded-files-store"),  # Store to hold uploaded files
-            html.Div(
-                className="form-container",
+            dcc.Location(id="jdscreen-url", refresh=False),
+            dbc.Container(
                 children=[
-                    html.Div(
-                        id="bu-container",  # Wrapper for BU dropdown
-                        className="dropdown-container",
-                        children=[
-                            dcc.Dropdown(
-                                id="bu-dropdown",
-                                placeholder="Loading Business Units...",
-                                clearable=False,
-                                className="dropdown-style"
-                            ),
-                        ],
-                    ),
-                    html.Div(
-                        id="jd-container",  # Wrapper for JD dropdown
-                        className="dropdown-container",
-                        children=[
-                            dcc.Dropdown(
-                                id="jd-dropdown",
-                                placeholder="Select Job Description",
-                                clearable=False,
-                                className="dropdown-style"
-                            ),
-                        ],
-                        style={"display": "none"},  # Initially hidden
-                    ),
-                    html.Div(
-                        id="file-upload-container",
-                        className="file-upload-container",
-                        children=[
-                            dcc.Upload(
-                                id="upload-data",
-                                children=html.Div(
-                                    ["Drag and Drop or ", html.A("Select Files")],
+                    html.Div(id="toast-container", className="toast-container"),
+                    # Form starts here
+                    dbc.Row(
+                        dbc.Col(
+                            dbc.Card(
+                                dbc.CardBody(
+                                    [
+                                        html.H2(
+                                            "Profile Screening Form", className="form-title"
+                                        ),
+                                        html.Br(),
+                                        # Business Unit Dropdown
+                                        dbc.Row(
+                                            [
+                                                dbc.Col(
+                                                    dbc.Label(
+                                                        "Business Unit",
+                                                        className="label-text",
+                                                    ),
+                                                    width=4,
+                                                ),
+                                                dbc.Col(
+                                                    dcc.Dropdown(
+                                                        id="jd-screen-business-unit-dropdown",
+                                                        options=[],
+                                                        placeholder="Select a business unit",
+                                                        className="custom-dropdown",
+                                                    ),
+                                                    width=8,
+                                                ),
+                                            ],
+                                            className="mb-3",
+                                        ),
+                                        # JD Dropdown (disabled until BU selected)
+                                        dbc.Row(
+                                            [
+                                                dbc.Col(
+                                                    dbc.Label(
+                                                        "Job Descriptions",
+                                                        className="label-text",
+                                                    ),
+                                                    width=4,
+                                                ),
+                                                dbc.Col(
+                                                    dcc.Dropdown(
+                                                        id="jd-screen-jd-dropdown",
+                                                        options=[],
+                                                        placeholder="Select a job description",
+                                                        className="custom-dropdown",
+                                                        disabled=True,
+                                                    ),
+                                                    width=8,
+                                                ),
+                                            ],
+                                            className="mb-3",
+                                        ),
+                                        # Upload Resumes Section
+                                        dbc.Row(
+                                            [
+                                                dbc.Col(
+                                                    dbc.Label(
+                                                        "Upload Resumes",
+                                                        className="label-text",
+                                                    ),
+                                                    width=4,
+                                                ),
+                                                dbc.Col(
+                                                    dcc.Upload(
+                                                        id="jd-screen-upload-data",
+                                                        children=html.Div(
+                                                            [
+                                                                "Drag and Drop or ",
+                                                                html.A(
+                                                                    "Select Files",
+                                                                    className="upload-link",
+                                                                ),
+                                                            ]
+                                                        ),
+                                                        className="upload-container",
+                                                        multiple=True,
+                                                        disabled=True,
+                                                    ),
+                                                    width=8,
+                                                ),
+                                            ],
+                                            className="mb-3",
+                                        ),
+                                        # File List Section
+                                        dbc.Row(
+                                            [
+                                                dbc.Col(
+                                                    html.Ul(
+                                                        id="jd-screen-file-list",
+                                                        style={
+                                                            "listStyleType": "none",
+                                                            "paddingLeft": "0",
+                                                        },
+                                                    ),
+                                                    width=12,
+                                                )
+                                            ]
+                                        ),
+                                        # Submit and Reset Buttons
+                                        dbc.Row(
+                                            [
+                                                dbc.Col(
+                                                    dbc.Button(
+                                                        "Submit",
+                                                        id="jd-screen-submit-btn",
+                                                        className="w-100 custom-submit-btn",
+                                                        style={"display": "none"},
+                                                    )
+                                                ),
+                                                dbc.Col(
+                                                    dbc.Button(
+                                                        "Reset",
+                                                        id="jd-screen-reset-btn",
+                                                        className="w-100 custom-reset-btn",
+                                                        style={"display": "none"},
+                                                    )
+                                                ),
+                                            ],
+                                            className="mt-4",
+                                        ),
+                                        dbc.Row(
+                                            [
+                                                dbc.Col(
+                                                    dcc.Loading(
+                                                        id="jd-screen-loading-spinner",
+                                                        type="circle",
+                                                        children=[
+                                                            html.Div(
+                                                                id="jd-screen-loading-placeholder"
+                                                            )
+                                                        ],
+                                                    ),
+                                                    className="mt-4",
+                                                    width=12,
+                                                )
+                                            ]
+                                        ),
+                                        # Table to display screening results
+                                        html.Div(
+                                            id="jd-screen-screening-results",
+                                            className="mt-4",
+                                        ),
+                                    ]
                                 ),
-                                multiple=True,
-                                className="upload-box"
+                                className="form-card",
                             ),
-                            html.Div(id="upload-loading", className="loading-animation", style={"display": "none"}),  # Spinner for loading animation
-                            html.Div(id="file-list", className="file-list-container"),  # Uploaded files will be shown here
-                        ],
-                        style={"display": "none"},  # Initially hidden
+                            width=6,
+                        ),
+                        justify="center",
                     ),
-                    html.Div(
-                        id="submit-container",
-                        className="submit-container",
-                        children=[
-                            html.Button("Submit", id="submit-button", className="submit-button"),
-                            html.Button("Reset", id="reset-button", className="reset-button"),
-                        ],
-                        style={"display": "none"},  # Initially hidden, shown when file is uploaded
-                    ),
-                    html.Div(id="loading-animation"),  # Animation during submit process
-                    html.Div(id="output-table"),  # Table with results
-                ],
+                ]
             ),
         ],
     )

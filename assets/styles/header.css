@@ -1,12 +1,11 @@
 .header {
   .header-navbar {
-    background-color: white;
-    border-bottom: 4px solid #a01441;
+    background-color: #a01441 !important; 
     padding: 10px 0;
   }
 
   .nav-link {
-    color: #4d4d4d !important;
+    color: #ffffff !important;  /* Ensure text color is white */
     font-weight: 500;
     margin-left: 20px;
     text-transform: capitalize;
@@ -16,7 +15,7 @@
   }
 
   .nav-link:hover {
-    color: #a01436 !important;
+    color: #ffcccc !important;  /* Lighter hover color */
   }
 
   .nav-link::after {
@@ -26,7 +25,7 @@
     left: 0;
     width: 0;
     height: 2px;
-    background-color: #a01436;
+    background-color: #ffffff;  /* White underline on hover */
     transition: width 0.3s ease;
   }
 
@@ -35,7 +34,7 @@
   }
 
   .navbar-toggler {
-    border-color: #4d4d4d;
+    border-color: #ffffff;  /* White toggle button border */
   }
 
   @media (min-width: 768px) {
@@ -47,7 +46,7 @@
 
   @media (max-width: 767px) {
     .navbar-collapse {
-      background-color: white;
+      background-color: #a01441 !important;  /* Mobile background matches header */
       top: 60px;
       width: 100%;
       left: 0;
@@ -60,12 +59,12 @@
       width: 100%;
       display: block;
     }
+
     .navbar-toggler-custom {
-        border: none; 
-        background: none; 
-        outline: none; 
-        box-shadow: none;  
+      border: none; 
+      background: none; 
+      outline: none; 
+      box-shadow: none;  
     }
-    
   }
 }

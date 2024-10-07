@@ -1,162 +1,522 @@
 import base64
-import io
+import json
+import os
+
+import dash_bootstrap_components as dbc
 import requests
-from dash import html, dcc
-from dash.dependencies import Input, Output, State, ALL
-import dash
+from dash import callback_context, dcc, html, no_update
+from dash.dependencies import ALL, Input, Output, State
+from dotenv import load_dotenv
 
-def register_callbacks(app):
-    # Callback to fetch and display Business Units
+load_dotenv()
+API_BASE_URL = os.getenv("API_BASE_URL")
+
+
+def jd_screening_callbacks(app):
+
     @app.callback(
-        Output('bu-dropdown', 'options'),
-        Input('bu-dropdown', 'value')
+        Output("jd-screen-business-unit-dropdown", "options"),
+        Input("jdscreen-url", "pathname"),
     )
-    def fetch_business_units(_):
-        response = requests.get("https://smarthire-e32r.onrender.com/businessunits")
-        bu_data = response.json()['data']
-        
-        if bu_data:
-            return [{"label": bu["name"], "value": bu["id"]} for bu in bu_data]
-        else:
-            return [{"label": "No Business Units Available", "value": ""}]
-    
-    # Callback to fetch and display Job Descriptions for the selected BU
+    def load_business_units(pathname):
+        url = f"{API_BASE_URL}/businessunits"
+        try:
+            response = requests.get(url, timeout=300)
+            if response.status_code == 200:
+                business_units = response.json()["data"]
+                return [
+                    {"label": unit["name"], "value": unit["id"]}
+                    for unit in business_units
+                ]
+            return []
+        except requests.exceptions.RequestException as e:
+            print(f"Error fetching business units: {e}")
+            return []
+
     @app.callback(
-        [Output('jd-dropdown', 'options'), Output('jd-container', 'style')],
-        Input('bu-dropdown', 'value')
+        [
+            Output("jd-screen-jd-dropdown", "options"),
+            Output("jd-screen-jd-dropdown", "disabled"),
+            Output("jd-screen-upload-data", "disabled"),
+            Output("jd-screen-file-list", "children"),
+            Output("jd-screen-submit-btn", "style"),
+            Output("jd-screen-reset-btn", "style"),
+            Output("jd-screen-screening-results", "children"),
+            Output("jd-screen-upload-data", "filename"),
+            Output("jd-screen-upload-data", "contents"),
+            Output("toast-container", "children"),  # Toast for feedback
+            Output("jd-screen-loading-spinner", "children"),  # For loader
+            Output(
+                "jd-screen-business-unit-dropdown", "value"
+            ),  # Added Business Unit Dropdown Reset
+            Output(
+                "jd-screen-jd-dropdown", "value"
+            ),  # Added Job Description Dropdown Reset
+        ],
+        [
+            Input("jd-screen-business-unit-dropdown", "value"),
+            Input("jd-screen-jd-dropdown", "value"),
+            Input("jd-screen-upload-data", "filename"),
+            Input("jd-screen-upload-data", "contents"),
+            Input("jd-screen-submit-btn", "n_clicks"),
+            Input("jd-screen-reset-btn", "n_clicks"),
+            Input({"type": "remove-file-btn", "index": ALL}, "n_clicks"),
+        ],
+        [
+            State("jd-screen-upload-data", "filename"),
+            State("jd-screen-upload-data", "contents"),
+            State("jd-screen-file-list", "children"),  # Keep track of current file list
+        ],
     )
-    def fetch_job_descriptions(bu_id):
-        if bu_id:
-            response = requests.get(f"http://smarthire-e32r.onrender.com/businessunits/{bu_id}/jds")
-            jd_data = response.json()['data']
+    def handle_actions(
+        bu_id,
+        jd_id,
+        filenames,
+        contents,
+        submit_clicks,
+        reset_clicks,
+        remove_clicks,
+        state_filenames,
+        state_contents,
+        current_file_list,
+    ):
+        ctx = callback_context
+        trigger = ctx.triggered[0] if ctx.triggered else None
+        trigger_id = trigger["prop_id"].split(".")[0] if trigger else None
+        toast_message = []
+        loading_output = None
 
-            if jd_data:
-                return [{"label": jd["title"], "value": jd["jd_id"]} for jd in jd_data], {"display": "block"}
-            else:
-                return [{"label": "No Job Descriptions for this BU", "value": "", "disabled": True}], {"display": "block"}
-        return [], {"display": "none"}
+        # Handle Business Unit Dropdown Population
+        if trigger_id and "jd-screen-business-unit-dropdown" in trigger_id and bu_id:
+            url = f"{API_BASE_URL}/businessunits/{bu_id}/jds"
+            try:
+                response = requests.get(url)
+                if response.status_code == 200:
+                    jd_options = [
+                        {"label": jd["title"], "value": jd["jd_id"]}
+                        for jd in response.json()["data"]
+                    ]
+                    return (
+                        jd_options,
+                        False,
+                        True,
+                        no_update,
+                        no_update,
+                        no_update,
+                        no_update,
+                        no_update,
+                        no_update,
+                        no_update,
+                        no_update,
+                        no_update,
+                        no_update,
+                    )
+            except requests.exceptions.RequestException:
+                toast_message.append(
+                    dbc.Toast(
+                        "Failed to load JDS",
+                        header="Error",
+                        duration=4000,
+                        is_open=True,
+                    )
+                )
+                return (
+                    [],
+                    True,
+                    True,
+                    no_update,
+                    no_update,
+                    no_update,
+                    no_update,
+                    no_update,
+                    no_update,
+                    toast_message,
+                    no_update,
+                    no_update,
+                    no_update,
+                )
 
-    # Callback for handling file uploads, file removal, and updating the display
-    @app.callback(
-        [Output("file-list", "children"), Output("file-upload-container", "style"), Output("submit-container", "style"), Output("uploaded-files-store", "data"), Output("upload-loading", "style")],
-        [Input("upload-data", "contents"), State("upload-data", "filename"), State("upload-data", "last_modified"),
-         Input({'type': 'remove-file', 'index': ALL}, 'n_clicks')],
-        [State("uploaded-files-store", "data")]
-    )
-    def handle_files(contents, filenames, last_modified, n_clicks, current_uploaded_files):
-        print("handle_files callback triggered")
-        print(f"Contents: {contents}")
-        print(f"Filenames: {filenames}")
-
-        if current_uploaded_files is None:
-            current_uploaded_files = []  # Initialize empty if the store is empty
-
-        loading_style = {"display": "none"}  # Default loading style is hidden
-
-        ctx = dash.callback_context  # Access dash callback context
-        if contents is not None:
-            # Handle file uploads
-            print("Received contents:")
-            print(contents)
-            print("Filenames:")
-            print(filenames)
-
-            # Encode the binary file as a Base64 string before storing in dcc.Store
-            for content, filename in zip(contents, filenames):
-                content_type, content_string = content.split(',')
-
-                # Store Base64 content instead of binary data
-                current_uploaded_files.append({
-                    'filename': filename,
-                    'content': content_string  # Store Base64 string
-                })
-
-            loading_style = {"display": "none"}  # Hide the loading spinner after upload
-        elif ctx.triggered and 'remove-file' in ctx.triggered[0]['prop_id']:
-            # Handle file removal
-            button_id = ctx.triggered[0]['prop_id'].split('.')[0]
-            remove_index = eval(button_id)['index']
-            if n_clicks[remove_index]:
-                current_uploaded_files.pop(remove_index)
-
-        # Generate the file list with "X" buttons for removal
-        file_list = [
-            html.Div([
-                html.Span(file['filename']),
-                html.Button('X', id={'type': 'remove-file', 'index': i}, n_clicks=0)
-            ], className='file-item')
-            for i, file in enumerate(current_uploaded_files)
-        ]
-        
-        # Debugging: Check what files are stored after upload
-        print("Updated stored files in dcc.Store:")
-        print(current_uploaded_files)
-
-        # Return the updated file list and update the store with the new files
-        return file_list, {"display": "block"}, {"display": "block"}, current_uploaded_files, loading_style
-
-    # Callback for handling form submission
-    @app.callback(
-        [Output("loading-animation", "children"), Output("output-table", "children")],
-        Input("submit-button", "n_clicks"),
-        State("jd-dropdown", "value"),
-        State("bu-dropdown", "value"),
-        State("uploaded-files-store", "data")  # Read uploaded files from the store
-    )
-    def submit_data(n_clicks, jd_id, bu_id, uploaded_files):
-        if n_clicks and jd_id and bu_id:
-            loading_animation = html.Div(className="spinner")  # Show spinner during processing
-
-            # Check if uploaded_files has any content
-            if not uploaded_files:
-                error_message = "No files uploaded. Please upload files before submitting."
-                return loading_animation, html.Div(error_message, className="error-message")
-
-            # Prepare the files for the API request
-            files_payload = [
-                # Decode Base64 back into bytes when sending to the API
-                ('profiles', (file['filename'], io.BytesIO(base64.b64decode(file['content']))))
-                for file in uploaded_files
-            ]
-
-            # Debugging: Output the filenames and payload structure before sending
-            print(f"Sending files: {[file['filename'] for file in uploaded_files]}")
-            print(f"Payload: {files_payload}")
-
-            # Send the request with files
-            response = requests.post(
-                f"http://smarthire-e32r.onrender.com/screenjd?jd_id={jd_id}&bu_id={bu_id}",
-                files=files_payload
+        # Enable Job Description and Upload when JD is selected
+        if trigger_id == "jd-screen-jd-dropdown" and jd_id:
+            return (
+                no_update,
+                no_update,
+                False,
+                no_update,
+                {"display": "inline-block"},
+                {"display": "inline-block"},
+                no_update,
+                no_update,
+                no_update,
+                no_update,
+                no_update,
+                no_update,
+                no_update,
             )
 
-            # Debugging: Output the server response for debugging purposes
-            print(f"Response Status: {response.status_code}")
-            print(f"Response Content: {response.text}")
-
-            # Check if the response contains the 'data' key
-            if response.status_code == 200 and 'data' in response.json():
-                candidates = response.json()['data']
-
-                # Build results table
-                table = html.Table(
-                    [
-                        html.Tr([html.Th("Candidate Name"), html.Th("Score"), html.Th("Details")]),
-                        *[
-                            html.Tr([
-                                html.Td(candidate["name"]),
-                                html.Td(candidate["score"]),
-                                html.Td(html.Span([
-                                    "Hover for details",  # The visible text
-                                    html.Span(candidate["details"], className="tooltip-text")  # The tooltip content
-                                ], className="tooltip"))
-                            ]) for candidate in candidates
-                        ]
-                    ],
+        # Reset the entire form, including Business Unit, JD, and uploaded files
+        if trigger_id == "jd-screen-reset-btn" and reset_clicks:
+            toast_message.append(
+                dbc.Toast(
+                    "Form reset successfully",
+                    header="Info",
+                    duration=3000,
+                    is_open=True,
                 )
-                return loading_animation, table
-            else:
-                # Gracefully handle the error when 'data' is missing
-                error_message = f"Error: {response.status_code} - {response.reason}. No data returned from the server."
-                return loading_animation, html.Div(error_message, className="error-message")
+            )
+            return (
+                [],  # Clear BU options
+                True,  # Disable JD dropdown
+                True,  # Disable upload
+                [],  # Clear file list
+                {"display": "none"},  # Hide submit button
+                {"display": "none"},  # Hide reset button
+                "",  # Clear table
+                [],  # Clear filenames
+                [],  # Clear contents
+                toast_message,  # Show toast message
+                no_update,  # No change to spinner
+                None,
+                None,
+            )
 
-        return None, None
+        # Handle file uploads (triggered by jd-screen-upload-data)
+        if trigger_id == "jd-screen-upload-data" and filenames and contents:
+            file_list = []
+
+            # Initialize current_file_list as an empty list if it's None (on first upload)
+            if current_file_list is None or len(current_file_list) == 0:
+                current_file_list = []
+
+            # Combine newly uploaded files and existing files for duplicate check
+            all_uploaded_filenames = (
+                [
+                    f["props"]["children"][0]["props"]["children"]
+                    for f in current_file_list
+                ]
+                if current_file_list
+                else []
+            )
+
+            # Track if new files are uploaded and if duplicates are found
+            duplicates_found = False
+            new_files_uploaded = False
+
+            # Loop over the newly uploaded files and check for duplicates
+            for filename, content in zip(filenames, contents):
+                if filename in all_uploaded_filenames:
+                    # Show a warning toast if the filename already exists (duplicate detection)
+                    toast_message.append(
+                        dbc.Toast(
+                            f"File {filename} already exists.",
+                            header="Duplicate File",
+                            duration=3000,
+                            is_open=True,
+                        )
+                    )
+                    duplicates_found = True
+                else:
+                    # If the file is not a duplicate, add it to the file list
+                    content_type = content.split(",")[0]
+                    content_string = content.split(",")[1]
+                    href_value = f"{content_type};base64,{content_string}"
+
+                    # Append the new file to the file list
+                    file_list.append(
+                        html.Li(
+                            [
+                                html.Span(filename, className="file-name mr-auto"),
+                                html.Div(
+                                    [
+                                        html.A(
+                                            html.I(className="fas fa-download"),
+                                            href=href_value,
+                                            download=filename,
+                                            className="ml-2 btn-icon",
+                                        ),
+                                        html.Button(
+                                            html.I(className="fas fa-trash"),
+                                            id={
+                                                "type": "remove-file-btn",
+                                                "index": filename,
+                                            },
+                                            n_clicks=0,
+                                            className="ml-2 btn-icon",
+                                        ),
+                                    ],
+                                    className="icon-container d-flex",
+                                ),
+                            ],
+                            className="file-item",
+                        )
+                    )
+                    all_uploaded_filenames.append(
+                        filename
+                    )  # Add this file to the overall list
+                    current_file_list.append(  # Append to current_file_list for future submissions
+                        html.Li(
+                            [
+                                html.Span(filename, className="file-name mr-auto"),
+                                html.Div(
+                                    [
+                                        html.A(
+                                            html.I(className="fas fa-download"),
+                                            href=href_value,
+                                            download=filename,
+                                            className="ml-2 btn-icon",
+                                        ),
+                                        html.Button(
+                                            html.I(className="fas fa-trash"),
+                                            id={
+                                                "type": "remove-file-btn",
+                                                "index": filename,
+                                            },
+                                            n_clicks=0,
+                                            className="ml-2 btn-icon",
+                                        ),
+                                    ],
+                                    className="icon-container d-flex",
+                                ),
+                            ],
+                            className="file-item",
+                        )
+                    )
+                    new_files_uploaded = True
+
+            # If new files are uploaded, update the file list and show the submit button
+            if new_files_uploaded:
+                return (
+                    no_update,
+                    no_update,
+                    False,
+                    current_file_list,
+                    {"display": "inline-block"},
+                    no_update,
+                    no_update,
+                    filenames,
+                    contents,
+                    toast_message,
+                    no_update,
+                    no_update,
+                    no_update,
+                )
+
+            # If duplicates are found and no new files, don't show the submit button
+            return (
+                no_update,
+                no_update,
+                False,
+                current_file_list,
+                no_update,
+                no_update,
+                no_update,
+                filenames,
+                contents,
+                toast_message,
+                no_update,
+                no_update,
+                no_update,
+            )
+
+        # Handle form submission (triggered by jd-screen-submit-btn)
+        if (
+            trigger_id == "jd-screen-submit-btn"
+            and submit_clicks
+            and (current_file_list or filenames)
+        ):
+            # Combine state_filenames with any previously uploaded files
+            combined_filenames = state_filenames if state_filenames else []
+            combined_contents = state_contents if state_contents else []
+            url = f"{API_BASE_URL}/screenjd?jd_id={jd_id}&bu_id={bu_id}"
+            try:
+                # Submit all current files (both previously submitted and newly added)
+                files = [
+                    ("profiles", (filename, base64.b64decode(content.split(",")[1])))
+                    for filename, content in zip(combined_filenames, combined_contents)
+                ]
+                response = requests.post(url, files=files)
+
+                if response.status_code == 200:
+                    data = response.json()["data"]
+                    rows = []
+                    for index, result in enumerate(data):
+                        score_id = f"email-{index}"
+                        tooltip_content = dcc.Markdown(
+                            result["details"], style={"white-space": "pre-line"}
+                        )
+                        rows.append(
+                            html.Tr(
+                                [
+                                    html.Td(result["name"]),
+                                    html.Td(result["email"]),
+                                    html.Td(result["score"], id=score_id),
+                                    dbc.Popover(
+                                        [
+                                            html.P(
+                                                "Score Breakdown",
+                                                className="custom-popover-header",
+                                            ),
+                                            tooltip_content,
+                                        ],
+                                        target=score_id,
+                                        body=True,
+                                        trigger="hover",
+                                        placement="right",
+                                        className="custom-popover",
+                                    ),
+                                ]
+                            )
+                        )
+
+                    table = dbc.Table(
+                        [
+                            html.Thead(
+                                html.Tr(
+                                    [
+                                        html.Th("Name"),
+                                        html.Th("Email"),
+                                        html.Th("Score"),
+                                    ]
+                                )
+                            ),
+                            html.Tbody(rows),
+                        ],
+                        bordered=True,
+                        className="table",
+                    )
+                    table_responsive = html.Div(table, className="table-responsive")
+                    toast_message.append(
+                        dbc.Toast(
+                            "Submission successful",
+                            header="Success",
+                            duration=3000,
+                            is_open=True,
+                        )
+                    )
+                    return (
+                        no_update,
+                        no_update,
+                        False,
+                        current_file_list,
+                        {"display": "none"},
+                        {"display": "inline-block"},
+                        table_responsive,
+                        [],
+                        [],
+                        toast_message,
+                        None,
+                        no_update,
+                        no_update,
+                    )
+
+            except requests.exceptions.RequestException as e:
+                toast_message.append(
+                    dbc.Toast(
+                        f"Error: {str(e)}", header="Error", duration=4000, is_open=True
+                    )
+                )
+                return (
+                    no_update,
+                    no_update,
+                    no_update,
+                    no_update,
+                    no_update,
+                    no_update,
+                    f"Error: {str(e)}",
+                    no_update,
+                    no_update,
+                    toast_message,
+                    None,
+                    no_update,
+                    no_update,
+                )
+
+        # Handle file removal
+        if trigger_id and trigger_id.startswith('{"index":'):
+            try:
+                trigger_temp = trigger["prop_id"]
+                trigger_json = trigger_temp.rsplit(".n_clicks", 1)[0]
+                remove_trigger = json.loads(trigger_json)
+                remove_index = remove_trigger["index"]
+                new_filenames = [f for f in state_filenames if f != remove_index]
+                new_contents = [
+                    c
+                    for f, c in zip(state_filenames, state_contents)
+                    if f != remove_index
+                ]
+
+                file_list = [
+                    html.Li(
+                        [
+                            html.Span(filename, className="file-name mr-auto"),
+                            html.Div(
+                                [
+                                    html.A(
+                                        html.I(className="fas fa-download"),
+                                        href=f"data:{content.split(',')[0]};base64,{content.split(',')[1]}",
+                                        download=filename,
+                                        className="ml-2 btn-icon",
+                                    ),
+                                    html.Button(
+                                        html.I(className="fas fa-trash"),
+                                        id={
+                                            "type": "remove-file-btn",
+                                            "index": filename,
+                                        },
+                                        n_clicks=0,
+                                        className="ml-2 btn-icon",
+                                    ),
+                                ],
+                                className="icon-container d-flex",
+                            ),
+                        ],
+                        className="file-item",
+                    )
+                    for filename, content in zip(new_filenames, new_contents)
+                ]
+                return (
+                    no_update,
+                    no_update,
+                    False,
+                    file_list,
+                    no_update,
+                    no_update,
+                    no_update,
+                    new_filenames,
+                    new_contents,
+                    no_update,
+                    no_update,
+                    no_update,
+                    no_update,
+                )
+            except json.JSONDecodeError:
+                return (
+                    no_update,
+                    no_update,
+                    no_update,
+                    no_update,
+                    no_update,
+                    no_update,
+                    no_update,
+                    state_filenames,
+                    state_contents,
+                    no_update,
+                    no_update,
+                    no_update,
+                )
+
+        return (
+            no_update,
+            no_update,
+            no_update,
+            no_update,
+            no_update,
+            no_update,
+            no_update,
+            no_update,
+            no_update,
+            no_update,
+            no_update,
+            no_update,
+            no_update,
+        )
