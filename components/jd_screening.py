@@ -156,6 +156,8 @@ def jdscreen():
                                             id="jd-screen-screening-results",
                                             className="mt-4",
                                         ),
+                                        html.Div(id="select-candidate-btn-container"),  # Container for the dynamic button
+                                        html.Div(id="select-candidate-clicks", style={"display": "none"}),  # Hidden div for click storage
                                     ]
                                 ),
                                 className="form-card",
