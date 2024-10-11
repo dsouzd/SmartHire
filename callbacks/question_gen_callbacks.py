@@ -33,7 +33,6 @@ def questions_screen_callbacks(app):
         Input("questions-business-unit-dropdown", "value"),
     )
     def load_jds(business_unit_id):
-        print(f"Business Unit ID selected: {business_unit_id}")
         if not business_unit_id:
             return [], True
         url = f"{API_BASE_URL}/businessunits/{business_unit_id}/jds"
@@ -56,7 +55,7 @@ def questions_screen_callbacks(app):
             Output("questions-submit-btn", "disabled"),
             Output("questions-reset-btn", "disabled"),
             Output("questions-invite-btn", "style"),
-            Output("loading-output", "children"),
+            Output("loading-output", "children"),  # Manage loading spinner state
         ],
         [
             Input("questions-submit-btn", "n_clicks"),
@@ -72,28 +71,21 @@ def questions_screen_callbacks(app):
         ctx = callback_context
         triggered_id = ctx.triggered[0]["prop_id"].split(".")[0]
     
-        print(f"Triggered ID: {triggered_id}")
-        print(f"Business Unit ID: {business_unit_id}, Job Description ID: {jd_id}")
-    
         invite_style = {"display": "none"}
         invite_disabled = True
         loading_message = None  # Initialize loading message
     
         if triggered_id == "questions-reset-btn":
-            print("Reset button clicked.")
             return [], None, None, True, no_update, True, True, invite_style, no_update
     
         if triggered_id == "questions-submit-btn":
-            print("Submit button clicked.")
             if business_unit_id and jd_id:
-                print("Business unit and Job Description selected. Making API call.")
                 url = f"{API_BASE_URL}/screenedcandidates?jd_id={jd_id}&bu_id={business_unit_id}"
                 try:
                     response = requests.get(url, timeout=30)
                     if response.status_code == 200:
                         candidates = response.json()["data"]
                         if not candidates:
-                            print("No candidates found.")
                             return ["No candidates screened for this Job Description and Business Unit."], no_update, business_unit_id, invite_disabled, no_update, True, True, invite_style, no_update
                         rows = []
                         for candidate in candidates:
@@ -110,21 +102,16 @@ def questions_screen_callbacks(app):
                             ]))
                         table = dbc.Table([html.Thead(html.Tr([html.Th("Select"), html.Th("Name"), html.Th("Email"), html.Th("Phone"), html.Th("Status")])), html.Tbody(rows)], bordered=True)
                         invite_style = {"display": "block"}
-                        print("Candidates loaded successfully.")
                         return [table], no_update, business_unit_id, False, no_update, False, False, invite_style, no_update
                 except requests.exceptions.RequestException as e:
-                    print(f"Error fetching candidates: {e}")
                     return [], no_update, business_unit_id, invite_disabled, no_update, True, True, invite_style, no_update
     
         if triggered_id == "questions-invite-btn":
-            print("Invite button clicked.")
             selected_candidates = [candidate_id["index"] for value, candidate_id in zip(selected_values, candidate_ids) if value]
-            print(f"Selected Candidates: {selected_candidates}")
         
             if not selected_candidates:
                 invite_style = {"display": "block"}
                 toast_message = dbc.Toast("Please select at least one candidate.", header="Warning", duration=3000, is_open=True)
-                print("No candidates selected. Showing warning toast.")
                 return no_update, no_update, business_unit_id, False, toast_message, False, False, invite_style, no_update
         
             body = {
@@ -134,34 +121,24 @@ def questions_screen_callbacks(app):
             }
             url = f"{API_BASE_URL}/sendpreliminaryquestions"
         
-            # Disable buttons when API call is made
-            invite_disabled = True
-            submit_disabled = True
-            reset_disabled = True
-            loading_message = dcc.Loading(type="circle")    
-            print("Disabling buttons for API call.")
-        
+            # Show loading spinner
+            loading_message = dcc.Loading(type="circle", fullscreen=True)  # Display spinner
+
             try:
                 response = requests.post(url, json=body, timeout=30)
                 if response.status_code == 200:
-                    print("Invite sent successfully.")
                     return [], None, None, True, dbc.Toast("Invite sent successfully!", header="Success", duration=3000, is_open=True), False, False, invite_style, no_update
                 else:
-                    invite_disabled = False  # Re-enable the invite button on error
+                    invite_disabled = False
                     invite_style = {"display": "block"}
-                    print("Failed to send invite.")
                     return no_update, no_update, business_unit_id, invite_disabled, dbc.Toast("Error sending invite! Please try again.", header="Error", duration=3000, is_open=True), False, False, invite_style, no_update
         
             except requests.exceptions.RequestException as e:
-                invite_disabled = False  # Re-enable the invite button on exception
+                invite_disabled = False
                 invite_style = {"display": "block"}
-                print(f"Request failed: {str(e)}")
                 return no_update, no_update, business_unit_id, invite_disabled, dbc.Toast(f"Request failed: {str(e)}. Please try again.", header="Error", duration=3000, is_open=True), False, False, invite_style, no_update
 
-        # Check and set submit and reset button states
         submit_disabled = not (business_unit_id and jd_id)
         reset_disabled = not (business_unit_id and jd_id)
 
-        # Debug print for button states
-        print(f"Submit Disabled: {submit_disabled}, Reset Disabled: {reset_disabled}, Invite Disabled: {invite_disabled}")
         return no_update, no_update, business_unit_id, invite_disabled, no_update, submit_disabled, reset_disabled, invite_style, loading_message

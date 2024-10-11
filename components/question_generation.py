@@ -95,8 +95,9 @@ def questions_screen():
                                             className="mt-4",
                                         ),
                                         dcc.Loading(
-                                            id="loading",
+                                            id="loading-overlay",
                                             type="circle",
+                                            fullscreen=True, 
                                             children=[html.Div(id="loading-output")]
                                         ),
                                     ]
