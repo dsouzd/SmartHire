@@ -81,7 +81,24 @@ def questions_screen():
                                             id="questions-results",
                                             className="mt-4",
                                         ),
-                                        html.Div(id="invite-btn-container"),  # Container for dynamic invite button
+                                        dbc.Row(
+                                            dbc.Col(
+                                                dbc.Button(
+                                                    "Invite",
+                                                    id="questions-invite-btn",
+                                                    className="w-100 custom-invite-btn",
+                                                    style={"display": "none"},
+                                                ),
+                                                width=6,
+                                            ),
+                                            justify="center",
+                                            className="mt-4",
+                                        ),
+                                        dcc.Loading(
+                                            id="loading",
+                                            type="circle",
+                                            children=[html.Div(id="loading-output")]
+                                        ),
                                     ]
                                 ),
                                 className="form-card",

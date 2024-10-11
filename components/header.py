@@ -45,10 +45,10 @@ def header():
                                 href="/screening",
                                 className="nav-link",
                             ),
+                            dbc.NavLink("Preliminary Questions", href="/preliminaryquestions", className="nav-link"),
                             dbc.NavLink(
                                 "Archive", href="/jdtable", className="nav-link"
                             ),
-                            dbc.NavLink("Preliminary Questions", href="/preliminaryquestions", className="nav-link"),
                         ],
                         className="ml-auto",
                         navbar=True,
