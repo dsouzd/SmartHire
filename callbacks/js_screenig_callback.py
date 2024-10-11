@@ -30,7 +30,6 @@ def jd_screening_callbacks(app):
             print(f"Error fetching business units: {e}")
             return []
 
-    # Callback to capture select-candidate-btn clicks into the hidden div
     @app.callback(
         Output("select-candidate-clicks", "children"),  # Hidden div to store n_clicks
         Input("select-candidate-btn", "n_clicks"),
@@ -104,8 +103,11 @@ def jd_screening_callbacks(app):
                 if response.status_code == 200:
                     jd_options = [{"label": jd["title"], "value": jd["jd_id"]} for jd in response.json()["data"]]
                     return jd_options, False, True, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, select_button
-            except requests.exceptions.RequestException:
-                toast_message.append(dbc.Toast("Failed to load JDS", header="Error", duration=4000, is_open=True))
+                else:
+                    toast_message.append(dbc.Toast("Failed to load JDs", header="Error", duration=4000, is_open=True))
+                    return [], True, True, no_update, no_update, no_update, no_update, no_update, no_update, toast_message, no_update, no_update, no_update, select_button
+            except requests.exceptions.RequestException as e:
+                toast_message.append(dbc.Toast(f"Error: {e}", header="Error", duration=4000, is_open=True))
                 return [], True, True, no_update, no_update, no_update, no_update, no_update, no_update, toast_message, no_update, no_update, no_update, select_button
 
         # Enable Job Description and Upload when JD is selected
@@ -146,18 +148,26 @@ def jd_screening_callbacks(app):
                         score_id = f"email-{index}"
                         tooltip_content = dcc.Markdown("\n".join(result["details"]), style={"white-space": "pre-line"})
                         rows.append(html.Tr([html.Td(dcc.Checklist(id={"type": "candidate-select-checkbox", "index": result["id"]}, options=[{"label": "", "value": "selected"}], value=[], className="candidate-checkbox")), html.Td(result["name"]), html.Td(result["email"]), html.Td(result["score"], id=score_id), dbc.Popover([html.P("Score Breakdown", className="custom-popover-header"), tooltip_content], target=score_id, body=True, trigger="hover", placement="right", className="custom-popover")]))
+
                     table = dbc.Table([html.Thead(html.Tr([html.Th("Select"), html.Th("Name"), html.Th("Email"), html.Th("Score")])), html.Tbody(rows)], bordered=True, className="table")
                     select_button = dbc.Button("Select Candidate", id="select-candidate-btn", className="mt-3 w-100 custom-submit-btn", n_clicks=0)
                     table_responsive = html.Div([table], className="table-responsive")
                     toast_message.append(dbc.Toast("Submission successful", header="Success", duration=3000, is_open=True))
                     return no_update, no_update, False, current_file_list, {"display": "none"}, {"display": "inline-block"}, table_responsive, [], [], toast_message, no_update, no_update, no_update, select_button
+                else:
+                    toast_message.append(dbc.Toast("Failed to process submission", header="Error", duration=4000, is_open=True))
+                    return no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, toast_message, no_update, no_update, no_update, select_button
             except requests.exceptions.RequestException as e:
-                toast_message.append(dbc.Toast(f"Error: {str(e)}", header="Error", duration=4000, is_open=True))
-                return no_update, no_update, no_update, no_update, no_update, no_update, f"Error: {str(e)}", no_update, no_update, toast_message, no_update, no_update, no_update, no_update
+                toast_message.append(dbc.Toast(f"Error: {e}", header="Error", duration=4000, is_open=True))
+                return no_update, no_update, no_update, no_update, no_update, no_update, f"Error: {e}", no_update, no_update, toast_message, no_update, no_update, no_update, select_button
 
-        # Handle Select Candidate Button click using the hidden div value
         if select_clicks and int(select_clicks) > 0:
             selected_candidates = [{"id": candidate_id["index"], "status": len(value) > 0} for value, candidate_id in zip(state_values, state_ids)]
+
+            if not any(candidate["status"] for candidate in selected_candidates):
+                toast_message.append(dbc.Toast("Please check at least one candidate before selecting.", header="Warning", duration=4000, is_open=True))
+                return no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, toast_message, no_update, no_update, no_update, no_update
+
             api_body = {"jd_id": jd_id, "bu_id": bu_id, "candidates": selected_candidates}
             select_api_url = f"{API_BASE_URL}/selectcandidates"
             try:
@@ -166,10 +176,11 @@ def jd_screening_callbacks(app):
                     toast_message.append(dbc.Toast("Candidates selected successfully", header="Success", duration=3000, is_open=True))
                     return [], True, True, [], {"display": "none"}, {"display": "none"}, "", [], [], toast_message, no_update, None, None, select_button
                 else:
-                    toast_message.append(dbc.Toast("Error selecting candidates", header="Error", duration=3000, is_open=True))
-                    return no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, toast_message, no_update, no_update, no_update, select_button
+                    toast_message.append(dbc.Toast("Error selecting candidates. Please try again.", header="Error", duration=3000, is_open=True))
+                    return no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, toast_message, no_update, no_update, no_update, no_update
             except requests.exceptions.RequestException as e:
-                toast_message.append(dbc.Toast(f"Error: {str(e)}", header="Error", duration=4000, is_open=True))
-                return no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, toast_message, no_update, no_update, no_update, select_button
+                toast_message.append(dbc.Toast(f"Error: {str(e)}. Please try again.", header="Error", duration=4000, is_open=True))
+                return no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, toast_message, no_update, no_update, no_update, no_update
+
 
         return no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, select_button

@@ -142,7 +142,8 @@ def jdscreen():
                                                         type="circle",
                                                         children=[
                                                             html.Div(
-                                                                id="jd-screen-loading-placeholder"
+                                                                id="jd-screen-loading-placeholder",
+                                                                style={"display": "none"}
                                                             )
                                                         ],
                                                     ),
@@ -151,10 +152,9 @@ def jdscreen():
                                                 )
                                             ]
                                         ),
-                                        # Table to display screening results
                                         html.Div(
                                             id="jd-screen-screening-results",
-                                            className="mt-4",
+                                            className="",
                                         ),
                                         html.Div(id="select-candidate-btn-container"),  # Container for the dynamic button
                                         html.Div(id="select-candidate-clicks", style={"display": "none"}),  # Hidden div for click storage
