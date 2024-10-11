@@ -84,12 +84,14 @@ def generate_jd(app):
         trigger_id = ctx.triggered[0]["prop_id"].split(".")[0]
 
         if trigger_id == "jd-creation-save-btn" and save_clicks:
-            file_name = f"{job_title}.docx"
+            file_name = f"{job_title}"
             url = (
-                f"{API_BASE_URL}/savejd?bu_id={bu_id}&jd_title={file_name}&is_save=true"
+                f"{API_BASE_URL}/savejd?jd_title={file_name}&f_type=docx&bu_id={bu_id}&is_save=true"
             )
             try:
+                print(url)
                 response = requests.get(url)
+                print(response)
                 if response.status_code == 200:
                     return (
                         "",
@@ -110,8 +112,8 @@ def generate_jd(app):
                 else:
                     return (
                         no_update,
-                        "hide-button",
-                        "hide-button",
+                        "save-btn show-button",  
+                        "reset-btn show-button",
                         True,
                         "Failed to save the job description.",
                         "Error",
@@ -127,8 +129,8 @@ def generate_jd(app):
             except requests.exceptions.RequestException as e:
                 return (
                     no_update,
-                    "hide-button",
-                    "hide-button",
+                    "save-btn show-button",  
+                    "reset-btn show-button",
                     True,
                     f"Error: {str(e)}",
                     "Request Failed",
@@ -143,8 +145,8 @@ def generate_jd(app):
                 )
 
         if trigger_id == "jd-creation-reset-btn" and reset_clicks:
-            file_name = f"{job_title}.docx"
-            url = f"{API_BASE_URL}/savejd?bu_id={bu_id}&jd_title={file_name}&is_save=false"
+            file_name = f"{job_title}"
+            url = f"{API_BASE_URL}/savejd?jd_title={file_name}&f_type=docx&bu_id={bu_id}&is_save=false"
             try:
                 response = requests.get(url)
                 if response.status_code == 200:
@@ -167,8 +169,8 @@ def generate_jd(app):
                 else:
                     return (
                         no_update,
-                        "hide-button",
-                        "hide-button",
+                        "save-btn show-button",  
+                        "reset-btn show-button",
                         True,
                         "Failed to discard the job description.",
                         "Error",
@@ -184,8 +186,8 @@ def generate_jd(app):
             except requests.exceptions.RequestException as e:
                 return (
                     no_update,
-                    "hide-button",
-                    "hide-button",
+                    "save-btn show-button",  
+                    "reset-btn show-button",
                     True,
                     f"Error: {str(e)}",
                     "Request Failed",

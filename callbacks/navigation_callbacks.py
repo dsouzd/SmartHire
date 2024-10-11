@@ -1,4 +1,5 @@
 from dash import Output, Input
+from components.question_generation import questions_screen
 from pages.pages import home_page, jd_creation_page, jd_screning_page, jd_table_page
 
 
@@ -11,5 +12,7 @@ def display_page(app):
             return jd_screning_page()
         elif pathname == "/jdtable":
             return jd_table_page()
+        elif pathname == "/preliminaryquestions":
+            return questions_screen()
         else:
             return home_page()

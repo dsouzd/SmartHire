@@ -159,7 +159,7 @@ def jd_screening_callbacks(app):
         if select_clicks and int(select_clicks) > 0:
             selected_candidates = [{"id": candidate_id["index"], "status": len(value) > 0} for value, candidate_id in zip(state_values, state_ids)]
             api_body = {"jd_id": jd_id, "bu_id": bu_id, "candidates": selected_candidates}
-            select_api_url = "https://smarthire-e32r.onrender.com/selectcandidates"
+            select_api_url = f"{API_BASE_URL}/selectcandidates"
             try:
                 select_response = requests.post(select_api_url, json=api_body)
                 if select_response.status_code == 200:

@@ -36,7 +36,6 @@ def jd_table_callback(app):
     )
     def jd_table_update(bu_id, prev_clicks, next_clicks, current_page):
         try:
-            # Fetch business units
             response_bu = requests.get(f"{API_BASE_URL}/businessunits")
             response_bu.raise_for_status()
             business_units = response_bu.json().get("data", [])
@@ -44,7 +43,6 @@ def jd_table_callback(app):
                 {"label": bu["name"], "value": bu["id"]} for bu in business_units
             ]
         except requests.exceptions.RequestException:
-            # Return an error if business units cannot be loaded
             return (
                 [],
                 [],
@@ -56,8 +54,6 @@ def jd_table_callback(app):
                 {"display": "none"},
                 {"display": "none"},
             )
-
-        # If no business unit is selected
         if bu_id is None:
             return (
                 dropdown_options,
@@ -72,7 +68,6 @@ def jd_table_callback(app):
             )
 
         try:
-            # Fetch job descriptions for the selected business unit
             url = f"{API_BASE_URL}/businessunits/{bu_id}/jds"
             response_jds = requests.get(url, timeout=10)
             response_jds.raise_for_status()
@@ -83,10 +78,7 @@ def jd_table_callback(app):
             total_pages = (total_jds // ROWS_PER_PAGE) + (
                 1 if total_jds % ROWS_PER_PAGE > 0 else 0
             )
-
-            # Check if no documents are available
             if total_jds == 0:
-                # Return a message indicating no documents are available
                 return (
                     dropdown_options,
                     html.Tr(
@@ -104,8 +96,6 @@ def jd_table_callback(app):
                     {"display": "none"},
                     {"display": "none"},
                 )
-
-            # Handle page number based on button clicks
             ctx = dash.callback_context
             if ctx.triggered:
                 button_id = ctx.triggered[0]["prop_id"].split(".")[0]
@@ -126,8 +116,9 @@ def jd_table_callback(app):
 
             rows = []
             for jd in paginated_jds:
+                file_name = jd["title"]
                 download_link = (
-                    f"{API_BASE_URL}/specificjd?jd_id={jd['jd_id']}&bu_id={jd['bu_id']}"
+                    f"{API_BASE_URL}/download?f_name={file_name}&f_type=pdf&bu_id={bu_id}"
                 )
                 date_posted = datetime.strptime(
                     jd["job_posted"].split(".")[0], "%Y-%m-%dT%H:%M:%S"
@@ -148,8 +139,6 @@ def jd_table_callback(app):
                         ]
                     )
                 )
-
-            # Control visibility of the pagination buttons and page number
             prev_button_style = {"display": "none"} if current_page == 1 else {}
             next_button_style = (
                 {"display": "none"} if current_page == total_pages else {}
@@ -157,8 +146,6 @@ def jd_table_callback(app):
             page_number_style = (
                 {"display": "none"} if total_jds <= ROWS_PER_PAGE else {}
             )
-
-            # Hide pagination controls when the total number of JDs is <= ROWS_PER_PAGE
             if total_jds <= ROWS_PER_PAGE:
                 prev_button_style = {"display": "none"}
                 next_button_style = {"display": "none"}
@@ -179,7 +166,6 @@ def jd_table_callback(app):
             )
 
         except requests.exceptions.RequestException as e:
-            # Return an error message if job descriptions cannot be loaded
             return (
                 html.Tr([html.Td("Error loading data")]),
                 "",
