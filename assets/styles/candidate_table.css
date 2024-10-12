@@ -1,0 +1,25 @@
+.table-wrapper {
+    margin-top: 20px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.table-wrapper .table th {
+    background-color: #343a40;
+    color: white;
+}
+
+.docs-message {
+    margin: 20px 0;
+    font-size: 16px;
+    color: #6c757d;
+}
