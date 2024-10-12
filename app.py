@@ -24,6 +24,7 @@ app = dash.Dash(
 # Define the app layout
 
 app.title = "Smart Hire"
+app._favicon = "favico.ico"
 
 app.layout = html.Div(
     [
