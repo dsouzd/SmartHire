@@ -57,7 +57,10 @@ def jd_table_callback(app):
         if bu_id is None:
             return (
                 dropdown_options,
-                html.Tr([html.Td("Please select a Business Unit")]),
+                html.Div(
+                    "Please select a Business Unit",
+                    className='docs-message'  
+                ),
                 "",
                 1,
                 False,
@@ -81,12 +84,9 @@ def jd_table_callback(app):
             if total_jds == 0:
                 return (
                     dropdown_options,
-                    html.Tr(
-                        [
-                            html.Td(
-                                "No documents are available for the selected business unit."
-                            )
-                        ]
+                    html.Div(
+                        "No documents are available for the selected business unit.",
+                        className='docs-message'  
                     ),
                     "",
                     1,

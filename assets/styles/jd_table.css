@@ -50,8 +50,14 @@
     border-collapse: collapse;
     border-radius: 12px;
     margin-bottom: 20px;
-    box-shadow: 4px 4px 12px rgba(163, 177, 198, 0.6), -4px -4px 12px rgba(255, 255, 255, 0.5);
     background-color: rgba(255, 255, 255, 0.45);
+}
+
+#jd-table-container #jd-table .docs-message {
+    text-align: center;    
+    margin: 20px;       
+    font-size: 16px;      
+    color: #333; 
 }
 
 #jd-table-container #jd-table th,
