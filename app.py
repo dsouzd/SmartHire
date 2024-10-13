@@ -2,13 +2,14 @@ import dash
 from dash import dcc, html
 import dash_bootstrap_components as dbc
 
-from callbacks.candidate_table import candidate_table_callback
+from callbacks.candidate_table_callback import candidate_table_callback
 from callbacks.components_callbacks import header_callback
 from callbacks.jd_table_callback import jd_table_callback
 from callbacks.jf_creation_callbacks import generate_jd
 from callbacks.js_screenig_callback import jd_screening_callbacks
 from callbacks.navigation_callbacks import display_page
 from callbacks.question_gen_callbacks import questions_screen_callbacks
+from callbacks.statistics_callback import register_callbacks
 from components.footer import footer
 from components.header import header
 
@@ -43,6 +44,7 @@ jd_screening_callbacks(app)
 jd_table_callback(app)
 questions_screen_callbacks(app)
 candidate_table_callback(app)
+register_callbacks(app)
 
 
 if __name__ == "__main__":
