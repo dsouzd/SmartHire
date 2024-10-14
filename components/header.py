@@ -53,7 +53,7 @@ def header():
                             dbc.DropdownMenu(
                                 children=[
                                     dbc.DropdownMenuItem("Statistics", href="/statistics"),
-                                    dbc.DropdownMenuItem("Archive", href="/archive"),
+                                    dbc.DropdownMenuItem("JD Library", href="/archive"),
                                     dbc.DropdownMenuItem("Candidate Details", href="/candidate-details"),
                                 ],
                                 nav=True,
