@@ -3,9 +3,9 @@ from dash import html, dcc
 
 def candidate_table():
     return html.Div(
-        id="candidate-table-container",  
+        id="candidate-table-container",
         children=[
-            dcc.Store(id='candidate-table-current-page', data=1),  
+            dcc.Store(id='candidate-table-current-page', data=1),
             html.Div(
                 id="candidate-table-toast",
                 children="",
@@ -27,7 +27,7 @@ def candidate_table():
                     dcc.Dropdown(
                         id='candidate-table-status-dropdown',
                         placeholder="Filter by Status",
-                        style={'width': '100%'},
+                        style={'width': '50%'},  
                     ),
                     html.Div(
                         id='candidate-table',
@@ -35,15 +35,25 @@ def candidate_table():
                             html.Table(children=[]),  
                         ]
                     ),
-                    html.Div(id='candidate-table-page-number', style={'textAlign': 'center'}),
-                    html.Div(
-                        [
-                            html.Button("Previous", id='candidate-table-previous-page', n_clicks=0, className="pagination-btn"),
-                            html.Button("Next", id='candidate-table-next-page', n_clicks=0, className="pagination-btn"),
-                        ],
-                        className="pagination-btn-wrapper",
+                ],
+            ),
+            html.Div(
+                className="pagination-btn-wrapper",
+                children=[
+                    html.Button(
+                        html.I(className="fas fa-chevron-left"),
+                        id="candidate-table-previous-page",
+                        className="pagination-btn",
+                        n_clicks=0,
+                    ),
+                    html.Span(id='candidate-table-page-number'),
+                    html.Button(
+                        html.I(className="fas fa-chevron-right"),
+                        id="candidate-table-next-page",
+                        className="pagination-btn",
+                        n_clicks=0,
                     ),
                 ]
-            )
+            ),
         ]
     )

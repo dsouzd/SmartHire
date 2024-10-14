@@ -5,8 +5,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #e0e5ec; /* Same as jd-screen */
-    background-image: url("/assets/img/hero_banner_res.webp"); /* Added same background image as jd-screen */
+    background-color: #e0e5ec;
+    background-image: url("/assets/img/hero_banner_res.webp");
     background-size: cover;
     padding: 20px;
     box-sizing: border-box;
@@ -29,39 +29,56 @@
 }
 
 #candidate-table-container #candidate-table-business-unit-dropdown,
-#candidate-table-container #candidate-table-job-dropdown,
-#candidate-table-container #candidate-table-status-dropdown {
+#candidate-table-container #candidate-table-job-dropdown {
     font-size: 16px;
     padding: 8px;
     border: 1px solid #ddd;
     border-radius: 12px;
     background: #e0e5ec;
     width: 100%;
-    box-shadow: 4px 4px 12px rgba(163, 177, 198, 0.6), -4px -4px 12px rgba(255, 255, 255, 0.5);
+    box-shadow: 4px 4px 12px rgba(163, 177, 198, 0.6),
+                -4px -4px 12px rgba(255, 255, 255, 0.5);
     transition: border-color 0.3s ease;
     margin-bottom: 15px;
 }
 
 #candidate-table-container #candidate-table-business-unit-dropdown:focus,
-#candidate-table-container #candidate-table-job-dropdown:focus,
-#candidate-table-container #candidate-table-status-dropdown:focus {
+#candidate-table-container #candidate-table-job-dropdown:focus {
     border-color: #a01441;
-    box-shadow: inset 4px 4px 12px rgba(163, 177, 198, 0.6), inset -4px -4px 12px rgba(255, 255, 255, 0.5);
+    box-shadow: inset 4px 4px 12px rgba(163, 177, 198, 0.6),
+                inset -4px -4px 12px rgba(255, 255, 255, 0.5);
 }
 
+/* Styling for the status filter dropdown */
+#candidate-table-container #candidate-table-status-dropdown {
+    font-size: 14px;
+    padding: 6px;
+    border: 1px solid #a01441;
+    border-radius: 8px;
+    background: #fff;
+    width: 50%;
+    box-shadow: none;
+    transition: border-color 0.3s ease;
+    margin-bottom: 15px;
+}
+
+#candidate-table-container #candidate-table-status-dropdown:focus {
+    border-color: #7f1034;
+}
+
+/* Table styles */
 #candidate-table-container #candidate-table {
     width: 100%;
     border-collapse: collapse;
     border-radius: 12px;
     margin-bottom: 20px;
-    background-color: rgba(255, 255, 255, 0.45);
 }
 
 #candidate-table-container #candidate-table .docs-message {
-    text-align: center;    
-    margin: 20px;       
-    font-size: 16px;      
-    color: #333; 
+    text-align: center;
+    margin: 20px;
+    font-size: 16px;
+    color: #333;
 }
 
 #candidate-table-container #candidate-table th,
@@ -83,24 +100,26 @@
 }
 
 #candidate-table-container #candidate-table tr {
-    box-shadow: 4px 4px 12px rgba(163, 177, 198, 0.6), -4px -4px 12px rgba(255, 255, 255, 0.5);
+    box-shadow: 4px 4px 12px rgba(163, 177, 198, 0.6),
+                -4px -4px 12px rgba(255, 255, 255, 0.5);
 }
 
 #candidate-table-container #candidate-table tr:hover {
     background-color: rgba(240, 240, 240, 0.75);
 }
 
-/* Center the pagination buttons */
+/* Pagination buttons */
 #candidate-table-container .pagination-btn {
     font-size: 18px;
-    margin: 5px 10px;  /* Increased spacing for better layout */
+    margin: 5px 10px;
     background-color: #a01441;
     color: white;
     font-weight: bold;
-    border-radius: 50%;  /* Circular button */
+    border-radius: 50%;
     border: none;
     transition: background-color 0.3s ease, transform 0.3s ease;
-    box-shadow: 4px 4px 12px rgba(163, 177, 198, 0.6), -4px -4px 12px rgba(255, 255, 255, 0.5);
+    box-shadow: 4px 4px 12px rgba(163, 177, 198, 0.6),
+                -4px -4px 12px rgba(255, 255, 255, 0.5);
     padding: 8px 16px;
 }
 
@@ -123,7 +142,7 @@
     font-weight: bold;
 }
 
-/* Font Awesome Icon for Download Button */
+/* Download button */
 #candidate-table-container .download-btn {
     color: #a01441;
     font-size: 18px;

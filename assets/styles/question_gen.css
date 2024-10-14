@@ -121,6 +121,10 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+#questions-form-container #questions-results{
+    overflow: auto;
+}
+
 #questions-form-container .btn-icon {
     display: inline-flex;
     align-items: center; /* Vertical alignment for icons */

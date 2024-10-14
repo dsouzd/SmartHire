@@ -22,7 +22,7 @@ def candidate_table_callback(app):
             Output("candidate-table", "children"),
             Output("candidate-table-page-number", "children"),
             Output("candidate-table-current-page", "data"),
-            Output("candidate-table-toast", "is_open"),
+            Output("candidate-table-toast", "style"),  # Changed to 'style' for visibility
             Output("candidate-table-toast", "children"),
             Output("candidate-table-previous-page", "style"),
             Output("candidate-table-next-page", "style"),
@@ -38,6 +38,10 @@ def candidate_table_callback(app):
         [State("candidate-table-current-page", "data")],
     )
     def candidate_table_update(bu_id, jd_id, status_filter, prev_clicks, next_clicks, current_page):
+        # Initialize toast style and message
+        toast_style = {'display': 'none'}
+        toast_message = ''
+        
         try:
             # Fetch Business Units
             response_bu = requests.get(f"{API_BASE_URL}/businessunits")
@@ -47,6 +51,19 @@ def candidate_table_callback(app):
                 {"label": bu["name"], "value": bu["id"]} for bu in business_units
             ]
         except requests.exceptions.RequestException:
+            toast_style = {
+                'display': 'block',
+                'position': 'fixed',
+                'top': 10,
+                'right': 10,
+                'width': 350,
+                'background-color': '#fff',
+                'padding': '10px',
+                'border': '1px solid #ccc',
+                'border-radius': '5px',
+                'zIndex': 1000
+            }
+            toast_message = "Business Unit loading failed."
             return (
                 [],  # Business Units options
                 [],  # Job Description options
@@ -54,8 +71,8 @@ def candidate_table_callback(app):
                 [],  # Candidate table children
                 "",  # Page number display
                 1,  # Current page
-                True,  # Toast open
-                "Business Unit loading failed.",  # Toast message
+                toast_style,
+                toast_message,
                 {"display": "none"},  # Previous page button style
                 {"display": "none"},  # Next page button style
                 {"display": "none"},  # Page number style
@@ -69,7 +86,7 @@ def candidate_table_callback(app):
                 [],  # No candidates yet
                 "", 
                 1,
-                False,
+                {'display': 'none'},  # Toast style
                 "",
                 {"display": "none"},
                 {"display": "none"},
@@ -86,6 +103,19 @@ def candidate_table_callback(app):
                 {"label": jd["title"], "value": jd["jd_id"]} for jd in jds
             ]
         except requests.exceptions.RequestException:
+            toast_style = {
+                'display': 'block',
+                'position': 'fixed',
+                'top': 10,
+                'right': 10,
+                'width': 350,
+                'background-color': '#fff',
+                'padding': '10px',
+                'border': '1px solid #ccc',
+                'border-radius': '5px',
+                'zIndex': 1000
+            }
+            toast_message = "Job Descriptions loading failed."
             return (
                 dropdown_options_bu,
                 [],  # No job options if fetching fails
@@ -93,8 +123,8 @@ def candidate_table_callback(app):
                 [],
                 "", 
                 1,
-                False,
-                "",
+                toast_style,
+                toast_message,
                 {"display": "none"},
                 {"display": "none"},
                 {"display": "none"},
@@ -116,7 +146,7 @@ def candidate_table_callback(app):
                 [],  # No candidates yet
                 "",
                 1,
-                False,
+                {'display': 'none'},  # Toast style
                 "",
                 {"display": "none"},
                 {"display": "none"},
@@ -147,7 +177,7 @@ def candidate_table_callback(app):
                     html.Div("No candidates available for the selected Job Description.", className='docs-message'),
                     "",
                     1,
-                    False,
+                    {'display': 'none'},  # Toast style
                     "",
                     {"display": "none"},
                     {"display": "none"},
@@ -180,7 +210,10 @@ def candidate_table_callback(app):
 
             rows = []
             for candidate in paginated_candidates:
-                date_updated = datetime.strptime(candidate["last_update_date"].split(".")[0], "%Y-%m-%dT%H:%M:%S").strftime("%d-%m-%Y")
+                date_updated = datetime.strptime(
+                    candidate["last_update_date"].split(".")[0],
+                    "%Y-%m-%dT%H:%M:%S"
+                ).strftime("%d-%m-%Y")
                 rows.append(
                     html.Tr(
                         [
@@ -206,9 +239,9 @@ def candidate_table_callback(app):
                 dropdown_options_jd,
                 status_options,
                 [html.Thead(html.Tr(headers)), html.Tbody(rows)],
-                page_number_display,
+                html.Span(page_number_display),  # Wrapped in html.Span for consistency
                 current_page,
-                False,
+                {'display': 'none'},  # Toast style
                 "",
                 prev_button_style,
                 next_button_style,
@@ -216,6 +249,19 @@ def candidate_table_callback(app):
             )
 
         except requests.exceptions.RequestException:
+            toast_style = {
+                'display': 'block',
+                'position': 'fixed',
+                'top': 10,
+                'right': 10,
+                'width': 350,
+                'background-color': '#fff',
+                'padding': '10px',
+                'border': '1px solid #ccc',
+                'border-radius': '5px',
+                'zIndex': 1000
+            }
+            toast_message = "Candidates data failed to Load."
             return (
                 dropdown_options_bu,
                 dropdown_options_jd,
@@ -223,8 +269,8 @@ def candidate_table_callback(app):
                 html.Div("Error loading candidates data", className='docs-message'),
                 "",
                 1,
-                True,
-                "Candidates data failed to Load.",
+                toast_style,
+                toast_message,
                 {"display": "none"},
                 {"display": "none"},
                 {"display": "none"},
