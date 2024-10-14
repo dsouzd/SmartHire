@@ -1,25 +1,139 @@
-.table-wrapper {
-    margin-top: 20px;
+/* Prefix all styles with #candidate-table-container to scope them */
+#candidate-table-container {
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #e0e5ec; /* Same as jd-screen */
+    background-image: url("/assets/img/hero_banner_res.webp"); /* Added same background image as jd-screen */
+    background-size: cover;
+    padding: 20px;
+    box-sizing: border-box;
+    backdrop-filter: blur(10px);
 }
 
-.table {
+#candidate-table-container .table-wrapper {
+    width: 100%;
+    max-width: 1000px;
+    backdrop-filter: blur(10px) saturate(180%);
+    background-color: rgba(255, 255, 255, 0.45);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: slideIn 0.7s ease-out forwards;
+    transform-origin: center;
+    box-sizing: border-box;
+}
+
+#candidate-table-container #candidate-table-business-unit-dropdown,
+#candidate-table-container #candidate-table-job-dropdown,
+#candidate-table-container #candidate-table-status-dropdown {
+    font-size: 16px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    background: #e0e5ec;
+    width: 100%;
+    box-shadow: 4px 4px 12px rgba(163, 177, 198, 0.6), -4px -4px 12px rgba(255, 255, 255, 0.5);
+    transition: border-color 0.3s ease;
+    margin-bottom: 15px;
+}
+
+#candidate-table-container #candidate-table-business-unit-dropdown:focus,
+#candidate-table-container #candidate-table-job-dropdown:focus,
+#candidate-table-container #candidate-table-status-dropdown:focus {
+    border-color: #a01441;
+    box-shadow: inset 4px 4px 12px rgba(163, 177, 198, 0.6), inset -4px -4px 12px rgba(255, 255, 255, 0.5);
+}
+
+#candidate-table-container #candidate-table {
     width: 100%;
     border-collapse: collapse;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    background-color: rgba(255, 255, 255, 0.45);
 }
 
-.table th, .table td {
-    border: 1px solid #ddd;
-    padding: 8px;
+#candidate-table-container #candidate-table .docs-message {
+    text-align: center;    
+    margin: 20px;       
+    font-size: 16px;      
+    color: #333; 
+}
+
+#candidate-table-container #candidate-table th,
+#candidate-table-container #candidate-table td {
+    padding: 10px 15px;
+    background-color: rgba(255, 255, 255, 0.45);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: #333;
     text-align: left;
 }
 
-.table-wrapper .table th {
-    background-color: #343a40;
-    color: white;
+#candidate-table-container #candidate-table th {
+    font-weight: 600;
+    color: #a01441;
 }
 
-.docs-message {
-    margin: 20px 0;
+#candidate-table-container #candidate-table tr:last-child td {
+    border-bottom: none;
+}
+
+#candidate-table-container #candidate-table tr {
+    box-shadow: 4px 4px 12px rgba(163, 177, 198, 0.6), -4px -4px 12px rgba(255, 255, 255, 0.5);
+}
+
+#candidate-table-container #candidate-table tr:hover {
+    background-color: rgba(240, 240, 240, 0.75);
+}
+
+/* Center the pagination buttons */
+#candidate-table-container .pagination-btn {
+    font-size: 18px;
+    margin: 5px 10px;  /* Increased spacing for better layout */
+    background-color: #a01441;
+    color: white;
+    font-weight: bold;
+    border-radius: 50%;  /* Circular button */
+    border: none;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 4px 4px 12px rgba(163, 177, 198, 0.6), -4px -4px 12px rgba(255, 255, 255, 0.5);
+    padding: 8px 16px;
+}
+
+#candidate-table-container .pagination-btn:hover {
+    background-color: #7f1034;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+#candidate-table-container .pagination-btn-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+#candidate-table-container #candidate-table-page-number {
     font-size: 16px;
-    color: #6c757d;
+    margin: 10px;
+    font-weight: bold;
+}
+
+/* Font Awesome Icon for Download Button */
+#candidate-table-container .download-btn {
+    color: #a01441;
+    font-size: 18px;
+    transition: color 0.3s ease, transform 0.3s ease;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+#candidate-table-container .download-btn:hover {
+    color: #7f1034;
+    transform: scale(1.1);
 }
