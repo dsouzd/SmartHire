@@ -28,7 +28,7 @@ def header():
                     className="navbar-toggler-custom",
                     children=[
                         html.I(
-                            className="fas fa-bars fa-lg", style={"color": "#ffffff"}  # White icon for better visibility
+                            className="fas fa-bars fa-lg", style={"color": "#ffffff"}
                         )
                     ],
                 ),
@@ -45,9 +45,21 @@ def header():
                                 href="/screening",
                                 className="nav-link",
                             ),
-                            dbc.NavLink("Preliminary Questions", href="/preliminaryquestions", className="nav-link"),
                             dbc.NavLink(
-                                "Archive", href="/jdtable", className="nav-link"
+                                "Preliminary Questions", 
+                                href="/preliminaryquestions", 
+                                className="nav-link"
+                            ),
+                            dbc.DropdownMenu(
+                                children=[
+                                    dbc.DropdownMenuItem("Statistics", href="/statistics"),
+                                    dbc.DropdownMenuItem("Archive", href="/archive"),
+                                    dbc.DropdownMenuItem("Candidate Details", href="/candidate-details"),
+                                ],
+                                nav=True,
+                                in_navbar=True,
+                                label="Job Management",
+                                
                             ),
                         ],
                         className="ml-auto",
