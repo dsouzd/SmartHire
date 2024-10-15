@@ -134,6 +134,9 @@ def candidate_table_callback(app):
         status_options = [
             {"label": "All", "value": ""},
             {"label": "Screening: Rejected", "value": "Screening: Rejected"},
+            {"label": "Screening: Selected", "value": "Screening: Selected"},
+            {"label": "Applied", "value": "Applied"},
+            {"label": "Screened", "value": "Screened"},
             {"label": "Preliminary: Attended", "value": "Preliminary: Attended"},
             {"label": "Preliminary: Invite Sent", "value": "Preliminary: Invite Sent"},
         ]

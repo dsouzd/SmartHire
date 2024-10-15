@@ -1,7 +1,11 @@
 import dash
 from dash import html, Input, Output, State, callback_context
 import requests
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
+API_BASE_URL = os.getenv("API_BASE_URL")
 
 def header_callback(app):
     @app.callback(

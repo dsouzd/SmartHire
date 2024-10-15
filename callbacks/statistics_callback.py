@@ -3,6 +3,11 @@ from dash.dependencies import Input, Output
 import requests
 import plotly.graph_objs as go
 from dash import dcc, html
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+API_BASE_URL = os.getenv("API_BASE_URL")
 
 def register_callbacks(app):
     # Update KPIs on page load
@@ -14,7 +19,7 @@ def register_callbacks(app):
     )
     def update_kpis(_):
         try:
-            response = requests.get('https://smarthire-hvsy.onrender.com/analytics/kpis')
+            response = requests.get(f'{API_BASE_URL}/analytics/kpis')
             response.raise_for_status()
             data = response.json()['data']
             return data['total_open_positions'], data['total_candidates_sourced'], f"{data['offer_acceptance_rate']}%"
@@ -29,7 +34,7 @@ def register_callbacks(app):
     )
     def update_job_options(_):
         try:
-            response = requests.get('https://smarthire-hvsy.onrender.com/api/jobs')
+            response = requests.get(f'{API_BASE_URL}/api/jobs')
             response.raise_for_status()
             data = response.json()['data']['jobs']
             return [{'label': job['job_title'], 'value': job['job_id']} for job in data]
@@ -46,7 +51,7 @@ def register_callbacks(app):
         if not job_id:
             return {}
         try:
-            response = requests.get(f'https://smarthire-hvsy.onrender.com/analytics/jobs/{job_id}')
+            response = requests.get(f'{API_BASE_URL}/analytics/jobs/{job_id}')
             response.raise_for_status()
             data = response.json()['data']
             pipeline_labels = list(data['pipeline_health'].keys())
@@ -69,7 +74,7 @@ def register_callbacks(app):
     )
     def update_sourcing_analytics(_):
         try:
-            response = requests.get('https://smarthire-hvsy.onrender.com/analytics/sourcing')
+            response = requests.get(f'{API_BASE_URL}/analytics/sourcing')
             response.raise_for_status()
             data = response.json()['data']
             info = response.json()['info']
@@ -113,7 +118,7 @@ def register_callbacks(app):
     )
     def update_screening_analytics(_):
         try:
-            response = requests.get('https://smarthire-hvsy.onrender.com/analytics/screeninginterview')
+            response = requests.get(f'{API_BASE_URL}/analytics/screeninginterview')
             response.raise_for_status()
             data = response.json()['data']
             screening_labels = ['Passed Screening', 'Passed Interview']
@@ -133,7 +138,7 @@ def register_callbacks(app):
     )
     def update_diversity_analytics(_):
         try:
-            response = requests.get('https://smarthire-hvsy.onrender.com/analytics/diversity')
+            response = requests.get(f'{API_BASE_URL}/analytics/diversity')
             response.raise_for_status()
             data = response.json()['data']
             gender_labels = list(data['gender_diversity'].keys())
@@ -156,7 +161,7 @@ def register_callbacks(app):
     )
     def update_compliance_analytics(_):
         try:
-            response = requests.get('https://smarthire-hvsy.onrender.com/analytics/compliance')
+            response = requests.get(f'{API_BASE_URL}/analytics/compliance')
             response.raise_for_status()
             data = response.json()['data']
             info = response.json()['info']
@@ -176,7 +181,7 @@ def register_callbacks(app):
     )
     def update_efficiency_analytics(_):
         try:
-            response = requests.get('https://smarthire-hvsy.onrender.com/analytics/efficiency')
+            response = requests.get(f'{API_BASE_URL}/analytics/efficiency')
             response.raise_for_status()
             data = response.json()['data']
             recruiter_labels = list(data['recruiter_performance'].keys())
@@ -207,7 +212,7 @@ def register_callbacks(app):
     )
     def update_experience_analytics(_):
         try:
-            response = requests.get('https://smarthire-hvsy.onrender.com/analytics/candidateexperience')
+            response = requests.get(f'{API_BASE_URL}/analytics/candidateexperience')
             response.raise_for_status()
             data = response.json()['data']
             average_nps = f"{data['average_nps']}"
@@ -232,7 +237,7 @@ def register_callbacks(app):
     )
     def update_offers_analytics(_):
         try:
-            response = requests.get('https://smarthire-hvsy.onrender.com/analytics/offers')
+            response = requests.get(f'{API_BASE_URL}/analytics/offers')
             response.raise_for_status()
             data = response.json()['data']
             offer_hire_ratio = data['offer_to_hire_ratio']

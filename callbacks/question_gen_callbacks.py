@@ -125,7 +125,7 @@ def questions_screen_callbacks(app):
             loading_message = dcc.Loading(type="circle", fullscreen=True)  # Display spinner
 
             try:
-                response = requests.post(url, json=body, timeout=30)
+                response = requests.post(url, json=body, timeout=300)
                 if response.status_code == 200:
                     return [], None, None, True, dbc.Toast("Invite sent successfully!", header="Success", duration=3000, is_open=True), False, False, invite_style, no_update
                 else:

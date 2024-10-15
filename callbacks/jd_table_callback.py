@@ -116,9 +116,9 @@ def jd_table_callback(app):
 
             rows = []
             for jd in paginated_jds:
-                file_name = jd["title"]
+                jd_id = jd["jd_id"]
                 download_link = (
-                    f"{API_BASE_URL}/download?f_name={file_name}&f_type=pdf&bu_id={bu_id}"
+                    f"{API_BASE_URL}/specificjd?jd_id={jd_id}&bu_id={bu_id}"
                 )
                 date_posted = datetime.strptime(
                     jd["job_posted"].split(".")[0], "%Y-%m-%dT%H:%M:%S"
