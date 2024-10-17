@@ -12,7 +12,6 @@ def footer():
                                 "MSG Global© 2024",
                                 className="text-center mb-0",
                                 style={
-                                    "color": "#ffffff",  # White text for contrast
                                     "fontWeight": "bold",
                                     "fontSize": "18px"
                                 }
@@ -21,7 +20,7 @@ def footer():
                                 "All Rights Reserved",
                                 className="text-center mb-0",
                                 style={
-                                    "color": "#f0f0f0",  # Slightly lighter gray for secondary text
+                                    "color": "#f0f0f0", 
                                     "fontSize": "14px"
                                 }
                             ),
@@ -31,26 +30,31 @@ def footer():
                     ),
                     dbc.Col(
                         [
-                            # Social media icons
                             html.Div(
                                 [
                                     html.A(
                                         html.I(className="fab fa-facebook-f"),
                                         href="https://www.facebook.com",
-                                        className="text-white mx-2"
+                                        className="text-white mx-2",
+                                        target="_blank", 
+                                        **{'aria-label': 'Facebook'} 
                                     ),
                                     html.A(
                                         html.I(className="fab fa-twitter"),
                                         href="https://www.twitter.com",
-                                        className="text-white mx-2"
+                                        className="text-white mx-2",
+                                        target="_blank",
+                                        **{'aria-label': 'Twitter'}
                                     ),
                                     html.A(
                                         html.I(className="fab fa-linkedin-in"),
                                         href="https://www.linkedin.com",
-                                        className="text-white mx-2"
+                                        className="text-white mx-2",
+                                        target="_blank",
+                                        **{'aria-label': 'LinkedIn'}
                                     ),
                                 ],
-                                className="d-flex justify-content-center",
+                                className="d-flex justify-content-center social-icons"
                             )
                         ],
                         width=6,
@@ -63,10 +67,11 @@ def footer():
         fluid=True,
         className="footer",
         style={
-            "backgroundColor": "#a01441",  # Primary color as background
-            "color": "#ffffff",  # White text for readability
+            "backgroundColor": "#a01441", 
+            "color": "#ffffff",  
             "paddingTop": "20px",
             "paddingBottom": "20px",
-            "borderTop": "5px solid #ffffff",  # White top border
+            "position": "relative", 
+            "zIndex": "1000", 
         }
     )

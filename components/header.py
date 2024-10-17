@@ -12,7 +12,7 @@ def header():
                         dbc.Col(
                             html.A(
                                 html.Img(
-                                    src="/assets/img/msg_logo.svg",
+                                    src="/assets/img/new_msg_logo.svg",
                                     height="50px",
                                 ),
                                 href="/",
@@ -59,7 +59,7 @@ def header():
                                 nav=True,
                                 in_navbar=True,
                                 label="Job Management",
-                                
+                                className="dropdown-toggle",
                             ),
                         ],
                         className="ml-auto",

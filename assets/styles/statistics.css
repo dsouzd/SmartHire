@@ -5,7 +5,7 @@
     color: white;
     padding: 20px;
     height: 100vh;
-    position: absolute;
+    position: fixed;
     left: 0;
     overflow-y: auto; 
 }
@@ -33,20 +33,36 @@
 .statistics-sidebar ul li a {
     color: #ecf0f1;
     text-decoration: none;
-    font-size: 16px;
+    font-size: 15px; 
+    font-weight: 500; 
     display: block;
-    padding: 5px;
+    padding: 8px 10px;
     border-left: 3px solid transparent;
+    position: relative; 
     transition: all 0.3s ease;
+    text-transform: capitalize;
 }
 
 .statistics-sidebar ul li a:hover {
-    border-left: 3px solid #ecf0f1;
-    padding-left: 5px;
-    background: rgba(255, 255, 255, 0.1);
+    padding-left: 10px;
+    color: #ffcccc !important;
 }
 
-/* Main Content Styles */
+.statistics-sidebar ul li a::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #ffffff;  
+    transition: width 0.3s ease;
+}
+
+.statistics-sidebar ul li a:hover::after {
+    width: 100%;
+}
+
 .statistics-main-content {
     flex: 1;
     padding: 20px;
@@ -116,10 +132,9 @@ canvas {
     }
 }
 
-/* Styling for the task completion table */
 .statistics-table-container {
     max-width: 100%;
-    overflow-x: auto;  /* Horizontal scrolling for smaller screens */
+    overflow-x: auto; 
     margin-top: 20px;
 }
 
