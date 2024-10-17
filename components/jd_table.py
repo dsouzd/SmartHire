@@ -4,9 +4,9 @@ import dash_bootstrap_components as dbc
 
 def jd_table():
     return html.Div(
-        id="jd-table-container",  # Unique ID for the table container
+        id="jd-table-container", 
         children=[
-            dcc.Store(id='jd-table-current-page', data=1),  # Store the current page number
+            dcc.Store(id='jd-table-current-page', data=1),  
             dbc.Toast(
                 id="jd-table-toast",
                 header="Notification",
@@ -27,17 +27,17 @@ def jd_table():
                         id="jd-table-loading",
                         type="default",
                         children=dbc.Table(id='jd-table', bordered=True, hover=True, responsive=True)
+                    ),
+                    html.Div(
+                        className="pagination-btn-wrapper",
+                        style={'text-align': 'center', 'margin-top': '10px'},  # Centered and add spacing
+                        children=[
+                            dbc.Button(html.I(className="fas fa-chevron-left"), id="jd-table-previous-page", className="pagination-btn", n_clicks=0),
+                            html.Span(id='jd-table-page-number', style={'margin': '10px'}),
+                            dbc.Button(html.I(className="fas fa-chevron-right"), id="jd-table-next-page", className="pagination-btn", n_clicks=0)
+                        ]
                     )
                 ],
             ),
-            html.Div(
-                className="pagination-btn-wrapper",  # Added wrapper for better alignment
-                children=[
-                    dbc.Button(html.I(className="fas fa-chevron-left"), id="jd-table-previous-page", className="pagination-btn", n_clicks=0),
-                    html.Span(id='jd-table-page-number', style={'margin': '10px'}),
-                    dbc.Button(html.I(className="fas fa-chevron-right"), id="jd-table-next-page", className="pagination-btn", n_clicks=0)
-                ]
-            )
         ]
     )
-
