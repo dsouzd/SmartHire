@@ -4,7 +4,6 @@ import dash_bootstrap_components as dbc
 def questions_screen():
     return html.Div(
         id="questions-form-container",
-        style={"backgroundColor": "#f7f7f7", "padding": "50px", "minHeight": "100vh"},
         children=[
             dcc.Location(id="questions-url", refresh=False),
             dbc.Container(
@@ -97,7 +96,7 @@ def questions_screen():
                                         dcc.Loading(
                                             id="loading-overlay",
                                             type="circle",
-                                            fullscreen=True, 
+                                            fullscreen=False, 
                                             children=[html.Div(id="loading-output")]
                                         ),
                                     ]
