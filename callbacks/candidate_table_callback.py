@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 load_dotenv()
 API_BASE_URL = os.getenv("API_BASE_URL")
 
-ROWS_PER_PAGE = 10
+ROWS_PER_PAGE = 5
 
 def candidate_table_callback(app):
 

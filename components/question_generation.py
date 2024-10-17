@@ -104,7 +104,7 @@ def questions_screen():
                                 ),
                                 className="form-card",
                             ),
-                            width=6,
+                            width=8,
                         ),
                         justify="center",
                     ),

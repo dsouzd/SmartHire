@@ -25,8 +25,8 @@
 
 /* Card Style for Glassmorphism */
 #questions-form-container .form-card {
-    width: 100%;
-    max-width: 600px;
+    width: auto;
+    min-width: 100%;
     backdrop-filter: blur(10px) saturate(180%);
     background-color: rgba(255, 255, 255, 0.45);
     border-radius: 12px;
@@ -121,10 +121,6 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-#questions-form-container #questions-results{
-    overflow: auto;
-}
-
 #questions-form-container .btn-icon {
     display: inline-flex;
     align-items: center; /* Vertical alignment for icons */
@@ -144,7 +140,6 @@
 
 #questions-form-container .table-responsive {
     width: 100%;
-    overflow-x: auto;
     margin-top: 20px;
 }
 
@@ -301,4 +296,11 @@
     box-shadow: 0px 12px 40px rgba(0, 0, 0, 0.15), 0px -12px 40px rgba(255, 255, 255, 0.2);
     transform: scale(1.02);
     transition: all 0.3s ease-in-out;
+}
+
+#questions-form-container .table-wrapper {
+    display: block;
+    max-width: 100%;
+    overflow-x: hidden;
+    transition: max-width 0.5s ease;
 }
