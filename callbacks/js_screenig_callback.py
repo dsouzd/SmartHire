@@ -146,7 +146,7 @@ def jd_screening_callbacks(app):
                     rows = []
                     for index, result in enumerate(data):
                         score_id = f"email-{index}"
-                        tooltip_content = dcc.Markdown("\n".join(result["details"]), style={"white-space": "pre-line"})
+                        tooltip_content = dcc.Markdown(result["details"], style={"white-space": "pre-line"})
                         rows.append(html.Tr([html.Td(dcc.Checklist(id={"type": "candidate-select-checkbox", "index": result["id"]}, options=[{"label": "", "value": "selected"}], value=[], className="candidate-checkbox")), html.Td(result["name"]), html.Td(result["email"]), html.Td(result["score"], id=score_id), dbc.Popover([html.P("Score Breakdown", className="custom-popover-header"), tooltip_content], target=score_id, body=True, trigger="hover", placement="right", className="custom-popover")]))
 
                     table = dbc.Table([html.Thead(html.Tr([html.Th("Select"), html.Th("Name"), html.Th("Email"), html.Th("Score")])), html.Tbody(rows)], bordered=True, className="table")
