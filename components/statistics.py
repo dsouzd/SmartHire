@@ -87,7 +87,7 @@ def statistics():
                         html.P(className='statistics-metric-value', children=[html.Span(id='statistics-ethnicity-distribution', children='Loading...')])
                     ])
                 ]),
-                html.Div(id='statistics-compliance-info', children='Loading...')
+                html.Markdown(id='statistics-compliance-info', children='Loading...')
             ]),
             html.Section(id='statistics-efficiency-analytics', className='statistics-panel', children=[
                 html.H3('Recruiter Efficiency'),

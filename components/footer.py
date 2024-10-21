@@ -9,7 +9,7 @@ def footer():
                     dbc.Col(
                         [
                             html.P(
-                                "MSG Global© 2024",
+                                ".msg global© 2024",
                                 className="text-center mb-0",
                                 style={
                                     "fontWeight": "bold",
@@ -61,7 +61,6 @@ def footer():
                         className="d-flex justify-content-center align-items-center"
                     ),
                 ],
-                className="pt-3"
             )
         ],
         fluid=True,
@@ -69,8 +68,8 @@ def footer():
         style={
             "backgroundColor": "#a01441", 
             "color": "#ffffff",  
-            "paddingTop": "20px",
-            "paddingBottom": "20px",
+            "paddingTop": "11px",
+            "paddingBottom": "11px",
             "position": "relative", 
             "zIndex": "1000", 
         }
