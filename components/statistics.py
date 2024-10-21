@@ -18,11 +18,9 @@ def statistics():
                 html.Li(html.A('KPIs', href='#statistics-kpis')),
                 html.Li(html.A('Job Analytics', href='#statistics-job-analytics')),
                 html.Li(html.A('Sourcing Analytics', href='#statistics-sourcing-analytics')),
-                html.Li(html.A('Cost per Source', href='#statistics-cost-per-source-analytics')),
                 html.Li(html.A('Geographical Sourcing', href='#statistics-geo-sourcing-analytics')),
                 html.Li(html.A('Screening & Interview Analytics', href='#statistics-screening-analytics')),
                 html.Li(html.A('Diversity & Inclusion', href='#statistics-diversity-analytics')),
-                html.Li(html.A('Compliance & Legal', href='#statistics-compliance-analytics')),
                 html.Li(html.A('Recruitment Efficiency', href='#statistics-efficiency-analytics')),
                 html.Li(html.A('Candidate Experience', href='#statistics-experience-analytics')),
                 html.Li(html.A('Offer & Hiring Analytics', href='#statistics-offer-hiring-analytics'))
@@ -58,9 +56,6 @@ def statistics():
             ]),
             html.Section(id='statistics-sourcing-analytics', className='statistics-panel', children=[
                 html.H3('Candidate Sourcing Analytics'),
-                dcc.Graph(id='statistics-sourceChart'),
-                html.Div(id='statistics-sourceChart-info', children='Loading...'),
-                dcc.Graph(id='statistics-costPerSourceChart'),
                 dcc.Graph(id='statistics-geoSourcingChart')
             ]),
             html.Section(id='statistics-screening-analytics', className='statistics-panel', children=[
@@ -70,24 +65,6 @@ def statistics():
             html.Section(id='statistics-diversity-analytics', className='statistics-panel', children=[
                 html.H3('Diversity & Inclusion Metrics'),
                 dcc.Graph(id='statistics-diversityChart')
-            ]),
-            html.Section(id='statistics-compliance-analytics', className='statistics-panel', children=[
-                html.H3('Compliance & Legal Metrics'),
-                html.Div(className='statistics-metrics-container', children=[
-                    html.Div(className='statistics-metric-card', children=[
-                        html.H4('GDPR Compliance Rate'),
-                        html.P(className='statistics-metric-value', children=[html.Span(id='statistics-gdpr-compliance-rate', children='Loading...')])
-                    ]),
-                    html.Div(className='statistics-metric-card', children=[
-                        html.H4('Gender Distribution'),
-                        html.P(className='statistics-metric-value', children=[html.Span(id='statistics-gender-distribution', children='Loading...')])
-                    ]),
-                    html.Div(className='statistics-metric-card', children=[
-                        html.H4('Ethnicity Distribution'),
-                        html.P(className='statistics-metric-value', children=[html.Span(id='statistics-ethnicity-distribution', children='Loading...')])
-                    ])
-                ]),
-                html.Markdown(id='statistics-compliance-info', children='Loading...')
             ]),
             html.Section(id='statistics-efficiency-analytics', className='statistics-panel', children=[
                 html.H3('Recruiter Efficiency'),

@@ -66,9 +66,6 @@ def register_callbacks(app):
 
     # Combine sourcing analytics into one callback
     @app.callback(
-        Output('statistics-sourceChart', 'figure'),
-        Output('statistics-sourceChart-info', 'children'),
-        Output('statistics-costPerSourceChart', 'figure'),
         Output('statistics-geoSourcingChart', 'figure'),
         Input('page-load-trigger-sourcing', 'children')
     )
@@ -77,26 +74,6 @@ def register_callbacks(app):
             response = requests.get(f'{API_BASE_URL}/analytics/sourcing')
             response.raise_for_status()
             data = response.json()['data']
-            info = response.json()['info']
-
-            # Source Chart
-            source_labels = list(data['source_breakdown'].keys())
-            source_counts = list(data['source_breakdown'].values())
-            source_chart_figure = {
-                'data': [go.Pie(labels=source_labels, values=source_counts)],
-                'layout': go.Layout(title='Candidates by Source')
-            }
-
-            # Source Chart Info
-            source_chart_info = info['source_breakdown_summary'] + "\n\n" + info['cost_per_source_summary']
-
-            # Cost per Source Chart
-            cost_labels = list(data['cost_per_source'].keys())
-            cost_values = list(data['cost_per_source'].values())
-            cost_per_source_chart_figure = {
-                'data': [go.Bar(x=cost_labels, y=cost_values)],
-                'layout': go.Layout(title='Cost per Source')
-            }
 
             # Geo Sourcing Chart
             geo_labels = list(data['geographical_sourcing'].keys())
@@ -106,10 +83,10 @@ def register_callbacks(app):
                 'layout': go.Layout(title='Geographical Sourcing')
             }
 
-            return source_chart_figure, source_chart_info, cost_per_source_chart_figure, geo_sourcing_chart_figure
+            return geo_sourcing_chart_figure
         except (requests.exceptions.RequestException, KeyError, ValueError) as e:
             print(f"Error fetching sourcing analytics: {e}")
-            return {}, 'Error fetching data', {}, {}
+            return {}
 
     # Update screening analytics on page load
     @app.callback(

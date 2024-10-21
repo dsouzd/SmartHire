@@ -9,18 +9,9 @@ def footer():
                     dbc.Col(
                         [
                             html.P(
-                                ".msg global© 2024",
+                                "© 2024 msg global solutions",
                                 className="text-center mb-0",
                                 style={
-                                    "fontWeight": "bold",
-                                    "fontSize": "18px"
-                                }
-                            ),
-                            html.P(
-                                "All Rights Reserved",
-                                className="text-center mb-0",
-                                style={
-                                    "color": "#f0f0f0", 
                                     "fontSize": "14px"
                                 }
                             ),
